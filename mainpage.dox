@@ -1,0 +1,8 @@
+/**
+* @author David Desmarest
+* @date Dec. 2014
+* @mainpage TD #6 Jeu de la vie
+
+L'objectif du TD #6 est de réaliser un jeu de la vie en utilisant quelques classes GUI Qt. Le design proposé pourra être réutilisé et amélioré pour le projet
+
+*/
