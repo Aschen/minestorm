@@ -9,14 +9,7 @@ TARGET = TD5
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-    DrawableObject.cpp \
-    Display.cpp \
-    MainWindow.cpp \
-    Controller.cpp \
-    GameBoard.cpp \
-    GameProxy.cpp \
-    server/Core.cpp \
+SOURCES += server/Core.cpp \
     client/Controller.cpp \
     client/Display.cpp \
     client/GameBoard.cpp \
@@ -25,15 +18,7 @@ SOURCES += main.cpp\
     shared/GameProxy.cpp \
     shared/main.cpp
 
-HEADERS  += \
-    DrawableObject.hh \
-    Display.hh \
-    MainWindow.hh \
-    Controller.hh \
-    Minestorm.hh \
-    GameBoard.hh \
-    GameProxy.hh \
-    server/Core.hh \
+HEADERS  += server/Core.hh \
     client/Controller.hh \
     client/Display.hh \
     client/GameBoard.hh \
