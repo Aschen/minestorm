@@ -1,19 +1,19 @@
 #include <QVBoxLayout>
 #include "MainWindow.hh"
 #include "Controller.hh"
-#include "Menu.hh"
+#include "GameBoard.hh"
 
 MainWindow::MainWindow(Display *display, QWidget *parent)
     : QMainWindow(parent)
 {
     auto window = new QWidget(this);
     auto controller = new Controller(display, window);
-    auto menu = new Menu(display, window);
+    auto gameboard = new GameBoard(display, window);
     auto layout = new QVBoxLayout;
 
-    menu->setSizePolicy(QSizePolicy ::Expanding , QSizePolicy ::Expanding);
+    gameboard->setSizePolicy(QSizePolicy ::Expanding , QSizePolicy ::Expanding);
 
-    layout->addWidget(menu);
+    layout->addWidget(gameboard);
     layout->addWidget(controller);
 
     window->setLayout(layout);

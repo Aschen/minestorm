@@ -6,7 +6,9 @@ Display::Display(const QSize &size, QObject *parent)
       _size(size)
 {
     _timer.setSingleShot(false);
-    // Le signal timeout() est envoyé toutes les 40ms, on le connecte à la fonction Display::update()
+    /* Le signal timeout() est envoyé toutes les 40ms,
+    ** on le connecte à la fonction Display::update()
+    */
     connect(&_timer, SIGNAL(timeout()), this, SLOT(update()));
 }
 

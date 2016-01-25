@@ -3,10 +3,10 @@
 #include <QMouseEvent>
 #include <iostream>
 
-#include "Menu.hh"
+#include "GameBoard.hh"
 #include "Display.hh"
 
-Menu::Menu(Display *display,QWidget *parent)
+GameBoard::GameBoard(Display *display,QWidget *parent)
     : QWidget(parent),
       _display(display)
 {
@@ -16,7 +16,7 @@ Menu::Menu(Display *display,QWidget *parent)
     setMouseTracking(true);
 }
 
-void Menu::paintEvent(QPaintEvent * /* event */ )
+void GameBoard::paintEvent(QPaintEvent * /* event */ )
 {
     QPainter painter;
     painter.begin(this);
@@ -25,7 +25,7 @@ void Menu::paintEvent(QPaintEvent * /* event */ )
     painter.end();
 }
 
-void Menu::mousePressEvent (QMouseEvent * event)
+void GameBoard::mousePressEvent (QMouseEvent * event)
 {
     event->accept();
     // normalise les coordonnées pour le remettre à la taille du jeu
@@ -34,17 +34,17 @@ void Menu::mousePressEvent (QMouseEvent * event)
     _display->mousePressed(x, y);
 }
 
-void Menu::keyPressEvent(QKeyEvent * event)
+void GameBoard::keyPressEvent(QKeyEvent * event)
 {
     _display->keyPressed(event->key());
 }
 
-void Menu::keyReleaseEvent(QKeyEvent * event)
+void GameBoard::keyReleaseEvent(QKeyEvent * event)
 {
     _display->keyReleased(event->key());
 }
 
-void Menu::mouseMoveEvent(QMouseEvent * event)
+void GameBoard::mouseMoveEvent(QMouseEvent * event)
 {
     event->accept();
     auto x = event->x() * _display->size().width() / (double)rect().width();
@@ -52,7 +52,7 @@ void Menu::mouseMoveEvent(QMouseEvent * event)
     _display->mouseMoved(x, y);
 }
 
-void Menu::mouseReleaseEvent(QMouseEvent * event)
+void GameBoard::mouseReleaseEvent(QMouseEvent * event)
 {
    event->accept();
    auto x = event->x() * _display->size().width() / (double)rect().width();

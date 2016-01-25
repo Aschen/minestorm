@@ -1,5 +1,5 @@
-#ifndef MENU_HH
-# define MENU_HH
+#ifndef GAMEBOARD_HH
+# define GAMEBOARD_HH
 
 # include <QWidget>
 
@@ -8,14 +8,14 @@ class Display;
  * @brief La class GameBoard définit un widget permettant l'affichage d'un
  * jeu. Elle gère également les évènements souris et clavier
  */
-class Menu : public QWidget
+class GameBoard : public QWidget
 {
     Q_OBJECT
 private:
     Display *_display;
 
 public:
-    explicit Menu(Display *display, QWidget *parent = 0);
+    explicit GameBoard(Display *display, QWidget *parent = 0);
 
 signals:
 
@@ -30,4 +30,4 @@ protected:
     void mouseReleaseEvent(QMouseEvent * event);
 };
 
-#endif // MENU_HH
+#endif // GAMEBOARD_HH

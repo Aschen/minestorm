@@ -14,14 +14,14 @@ SOURCES += main.cpp\
     Display.cpp \
     MainWindow.cpp \
     Controller.cpp \
-    Menu.cpp
+    GameBoard.cpp
 
 HEADERS  += \
     DrawableObject.hh \
     Display.hh \
     MainWindow.hh \
     Controller.hh \
-    Menu.hh \
-    Minestorm.hh
+    Minestorm.hh \
+    GameBoard.hh
 
 FORMS    +=
