@@ -26,12 +26,13 @@ class Display : public QObject
 private:
     QTimer              _timer;
     bool                _isRunning;
-    QSize               _size;
+    const QSize         _size;
+    const int           _fps;
     DrawableObjectList  _objects;
     QMutex              _objectsMutex;
 
 public:
-    Display(const QSize &size, QObject *parent = nullptr);
+    Display(const QSize &size, int fps = 25, QObject *parent = nullptr);
 
     void                draw(QPainter &painter, QRect &size);
 
@@ -61,6 +62,10 @@ signals:
     void                sigMouseMoved(int x, int y);
     void                sigKeyPressed(int key);
     void                sigKeyReleased(int key);
+    void                sigStart();
+    void                sigPause();
+    void                sigReset();
+    void                sigTest();
 
 public slots:
     void                receiveObjects(const DrawableObjectList &objects);

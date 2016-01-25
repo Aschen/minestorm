@@ -18,7 +18,8 @@ SOURCES += server/Core.cpp \
     shared/GameProxy.cpp \
     shared/Mine.cpp\
     shared/main.cpp \
-    shared/Ship.cpp
+    shared/Ship.cpp \
+    server/Entity.cpp
 
 HEADERS  += server/Core.hh \
     client/Controller.hh \
@@ -29,7 +30,8 @@ HEADERS  += server/Core.hh \
     shared/GameProxy.hh \
     shared/Minestorm.hh\
     shared/Mine.hh \
-    shared/Ship.hh
+    shared/Ship.hh \
+    server/Entity.hh
 
 FORMS    +=
 

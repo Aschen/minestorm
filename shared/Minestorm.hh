@@ -3,8 +3,8 @@
 
 # include <iostream>
 
-# define DEBUG(x) do { \
-  std::cout << x << std::endl; \
+# define DEBUG(x,y) do { \
+  if (y) { std::cout << x << std::endl; } \
 } while (0)
 
 

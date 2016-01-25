@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 {
     QApplication    a(argc, argv);
     Display         display(QSize(400, 400));
-    Core            core;
+    Core            core(10);
     GameProxy       proxy(&core, &display);
     MainWindow      w(&display);
 

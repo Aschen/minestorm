@@ -4,6 +4,13 @@ GameProxy::GameProxy(Core *core, Display *display) :
     QObject(nullptr)
 {
     connect(display, SIGNAL(sigMousePressed(int,int)), core, SLOT(mousePressed(int,int)));
+    connect(display, SIGNAL(sigMouseReleased(int,int)), core, SLOT(mouseReleased(int,int)));
+    connect(display, SIGNAL(sigMouseMoved(int,int)), core, SLOT(mouseMoved(int,int)));
+    connect(display, SIGNAL(sigStart()), core, SLOT(start()));
+    connect(display, SIGNAL(sigPause()), core, SLOT(pause()));
+    connect(display, SIGNAL(sigReset()), core, SLOT(reset()));
+    connect(display, SIGNAL(sigTest()), core, SLOT(test()));
+
     connect(core, SIGNAL(sendObjects(DrawableObjectList)), display, SLOT(receiveObjects(DrawableObjectList)));
 }
 

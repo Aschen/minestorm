@@ -11,7 +11,7 @@
 class DrawableObject : public QPolygon
 {
 private:
-    std::string         _name;
+    const std::string   _name;
 
 public:
     DrawableObject(const std::string &name);
