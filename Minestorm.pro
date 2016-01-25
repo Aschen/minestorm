@@ -5,7 +5,7 @@ CONFIG+=C++11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = TD5
+TARGET = minestorme
 TEMPLATE = app
 
 
@@ -31,4 +31,4 @@ FORMS    +=
 
 INCLUDEPATH += $$PWD/shared
 INCLUDEPATH += $$PWD/server
-INCLUDEPATH += $$PWD/client
+INCLUDEPATH += $$PWD/client 
