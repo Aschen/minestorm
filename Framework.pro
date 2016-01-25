@@ -28,3 +28,7 @@ HEADERS  += server/Core.hh \
     shared/Minestorm.hh
 
 FORMS    +=
+
+INCLUDEPATH += $$PWD/shared
+INCLUDEPATH += $$PWD/server
+INCLUDEPATH += $$PWD/client
