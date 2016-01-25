@@ -72,35 +72,23 @@ void Display::update()
 /* EVENTS */
 void Display::mousePressed(int x, int y)
 {
-    shared_ptr<DrawableObject>  rec = make_shared<DrawableObject>();
-
-    *rec << QPoint(x, y) << QPoint(x + 42, y) << QPoint(x + 42, y + 21) << QPoint(x, y + 42);
-
-    _objectsMutex.lock();
-    _objects.push_front(rec);
-    _objectsMutex.unlock();
-
-    DEBUG("mousePressed(" << x << ", " << y << ")");
+    emit sigMousePressed(x, y);
 }
 
 void Display::mouseReleased(int x, int y)
 {
-    DEBUG("mouseReleased(" << x << ", " << y << ")");
 }
 
 void Display::mouseMoved(int x, int y)
 {
-    DEBUG("mouseMoved(" << x << ", " << y << ")");
 }
 
 void Display::keyPressed(int key)
 {
-    DEBUG("keyPressed(" << key << ")");
 }
 
 void Display::keyReleased(int key)
 {
-    DEBUG("keyReleased(" << key << ")");
 }
 
 /* GETTERS/SETTERS */
@@ -115,13 +103,14 @@ bool Display::isRunning() const
     return _isRunning;
 }
 
-DrawableObjectList &Display::objects() const
+const DrawableObjectList &Display::objects() const
 {
     return _objects;
 }
 
-void Display::objects(const DrawableObjectList &objects)
+void Display::receiveObjects(const DrawableObjectList &objects)
 {
+    DEBUG("Display::receiveObjects() : " << objects.size() << " objects received");
     _objectsMutex.lock();
     _objects = objects;
     _objectsMutex.unlock();

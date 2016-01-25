@@ -1,7 +1,7 @@
 
 QT       += core gui
 
-CONFIG+=C++14
+CONFIG+=C++11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,7 +14,9 @@ SOURCES += main.cpp\
     Display.cpp \
     MainWindow.cpp \
     Controller.cpp \
-    GameBoard.cpp
+    GameBoard.cpp \
+    GameProxy.cpp \
+    Core.cpp
 
 HEADERS  += \
     DrawableObject.hh \
@@ -22,6 +24,8 @@ HEADERS  += \
     MainWindow.hh \
     Controller.hh \
     Minestorm.hh \
-    GameBoard.hh
+    GameBoard.hh \
+    GameProxy.hh \
+    Core.hh
 
 FORMS    +=

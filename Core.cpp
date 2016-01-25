@@ -1,51 +1,65 @@
 #include "Core.hh"
 
-Core::Core(const QSize &size, QObject *parent)
-    : Game(size, parent)
+Core::Core() :
+    QObject()
 {
-    shared_ptr<DrawableObject>      rec = shared_ptr<DrawableObject>(new DrawableObject());
 
-    *rec << QPoint(5, 5) << QPoint(80, 5) << QPoint(80, 80) << QPoint(5, 60);
-    _objects.push_front(rec);
 }
 
-
-
-void Core::draw(QPainter &painter, QRect &size)
+bool Core::addObject(const DrawableObject &object)
 {
-    painter.setPen(QColor(236, 248, 230));
-    painter.setBrush(QBrush(QColor(236, 248, 230)));
-
-    for (auto object : _objects)
+    if (_objects.find(object.name()) != _objects.end())
     {
-        painter.drawConvexPolygon(*object);
+        DEBUG("Core::addObject() : Object " << object.name() << " already exist");
+        return false;
     }
+
+    _objects[object.name()] = std::shared_ptr<DrawableObject>(new DrawableObject(object));
+    return true;
+}
+
+bool Core::removeObject(const std::string &name)
+{
+    auto object_iterator = _objects.find(name);
+    if (object_iterator == _objects.end())
+    {
+        DEBUG("Core::removeObject() : Object " << name << " doesn't exist");
+        return false;
+    }
+
+    _objects.erase(object_iterator);
+    return true;
+}
+
+bool Core::removeObject(const DrawableObject &object)
+{
+    return removeObject(object.name());
 }
 
 void Core::mousePressed(int x, int y)
 {
+    DEBUG("Core::mousePressed : x = " << x << ", y = " << y);
+
+    emit sendObjects(_objectsList);
 }
 
 void Core::mouseReleased(int x, int y)
 {
+
 }
 
 void Core::mouseMoved(int x, int y)
 {
+
 }
 
 void Core::keyPressed(int key)
 {
+
 }
 
 void Core::keyReleased(int key)
 {
+
 }
 
-void Core::step()
-{
-}
-
-void Core::initialize()
-{
-}

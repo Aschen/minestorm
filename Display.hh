@@ -19,8 +19,6 @@ class QRect;
 
 using namespace std;
 
-using DrawableObjectList = list<shared_ptr<DrawableObject>>;
-
 class Display : public QObject
 {
     Q_OBJECT
@@ -50,8 +48,7 @@ public:
 
     const QSize         &size() const;
     bool                isRunning() const;
-    DrawableObjectList  &objects() const;
-    void                objects(const DrawableObjectList &objects);
+    const DrawableObjectList  &objects() const;
 
 protected:
     void                initialize();
@@ -59,6 +56,14 @@ protected:
 
 signals:
     void                changed();
+    void                sigMousePressed(int x, int y);
+    void                sigMouseReleased(int x, int y);
+    void                sigMouseMoved(int x, int y);
+    void                sigKeyPressed(int key);
+    void                sigKeyReleased(int key);
+
+public slots:
+    void                receiveObjects(const DrawableObjectList &objects);
 
 private slots:
     void                update();

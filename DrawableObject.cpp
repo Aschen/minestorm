@@ -1,13 +1,17 @@
 #include "DrawableObject.hh"
 
-DrawableObject::DrawableObject()
-    : QPolygon()
+DrawableObject::DrawableObject(const std::string &name)
+    : QPolygon(),
+      _name(name)
 {
-
 }
 
 DrawableObject::~DrawableObject()
 {
+}
 
+const std::string &DrawableObject::name() const
+{
+    return _name;
 }
 

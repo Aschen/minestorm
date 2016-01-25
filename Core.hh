@@ -1,36 +1,35 @@
 #ifndef CORE_HH
 # define CORE_HH
 
-# include <QPainter>
-# include <QBrush>
-# include <QPolygon>
-# include <memory>
-# include <list>
+# include <QObject>
+
 # include "DrawableObject.hh"
-# include "Display.hh"
+# include "Minestorm.hh"
 
-using namespace std;
+class Core : public QObject
+{    
+    Q_OBJECT
 
-class Core : public Display
-{
 private:
-    list<shared_ptr<DrawableObject>>         _objects;
+    DrawableObjectMap   _objects;
+    DrawableObjectList  _objectsList;
 
 public:
-    Core(const QSize &size, QObject *parent = nullptr);
+    Core();
 
-    // Display interface
-public:
-    void draw(QPainter &painter, QRect &size) override;
-    void mousePressed(int x, int y) override;
-    void mouseReleased(int x, int y) override;
-    void mouseMoved(int x, int y) override;
-    void keyPressed(int key) override;
-    void keyReleased(int key) override;
+    bool                addObject(const DrawableObject &object);
+    bool                removeObject(const std::string &name);
+    bool                removeObject(const DrawableObject &object);
 
-protected:
-    void step() override;
-    void initialize() override;
+public slots:
+    void                mousePressed(int x, int y);
+    void                mouseReleased(int x, int y);
+    void                mouseMoved(int x, int y);
+    void                keyPressed(int key);
+    void                keyReleased(int key);
+
+signals:
+    void                sendObjects(const DrawableObjectList &objects);
 };
 
 #endif // CORE_HH
