@@ -15,7 +15,6 @@ private slots:
     void start();
     void pause();
     void reset();
-    void changeSpeed( int speed );
 
 private:
     Game *_game;

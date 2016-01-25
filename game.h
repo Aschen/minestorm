@@ -17,13 +17,19 @@ class QRect;
 class Game: public QObject
 {
     Q_OBJECT
+
+private:
+    QTimer  _timer;
+    bool    _isRunning;
+    QSize   _size;
+
 public:
     /**
      * @brief Game contruit un jeu
      * @param size taille de la grille de jeu
      * @param parent
      */
-    Game(const QSize &size,QObject *parent);
+    Game(const QSize &size, QObject *parent);
     /**
      * @brief start démarre le jeu
      */
@@ -36,17 +42,6 @@ public:
      * @brief reset stop le jeu et le réinitialise
      */
     void reset();
-
-    /**
-     * @brief setSpeed modifie la vitesse d'exécution du jeu
-     * @param speed
-     */
-    void setSpeed( int speed );
-    /**
-     * @brief speed retourne la vitesse d'exécution du jeu
-     * @return
-     */
-    int speed() const ;
 
     /**
      * @brief size retourne la taille du jeu
@@ -110,17 +105,12 @@ protected:
      */
     virtual void initialize() = 0;
 
+
 signals:
     void changed();
 
 private slots:
-
     void update();
-private:
-    QTimer _timer;
-    bool _isRunning;
-    int _speed;
-    QSize _size;
 };
 
 #endif // GAME_H

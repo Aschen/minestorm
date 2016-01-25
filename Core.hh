@@ -19,8 +19,6 @@ private:
 public:
     Core(const QSize &size, QObject *parent = nullptr);
 
-
-
     // Game interface
 public:
     void draw(QPainter &painter, QRect &size) override;

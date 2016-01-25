@@ -14,7 +14,6 @@ SOURCES += main.cpp\
     controller.cpp \
     gameboard.cpp \
     game.cpp \
-    dummygame.cpp \
     Core.cpp \
     DrawableObject.cpp
 
@@ -22,7 +21,6 @@ HEADERS  += mainwindow.h \
     controller.h \
     gameboard.h \
     game.h \
-    dummygame.h \
     Core.hh \
     DrawableObject.hh
 

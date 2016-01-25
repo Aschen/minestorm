@@ -11,7 +11,7 @@ class GameBoard : public QWidget
 {
     Q_OBJECT
 public:
-    explicit GameBoard(Game *game,QWidget *parent = 0);
+    explicit GameBoard(Game *game, QWidget *parent = 0);
 
 signals:
 
