@@ -7,11 +7,11 @@
 # include <memory>
 # include <list>
 # include "DrawableObject.hh"
-# include "game.h"
+# include "Display.hh"
 
 using namespace std;
 
-class Core : public Game
+class Core : public Display
 {
 private:
     list<shared_ptr<DrawableObject>>         _objects;
@@ -19,7 +19,7 @@ private:
 public:
     Core(const QSize &size, QObject *parent = nullptr);
 
-    // Game interface
+    // Display interface
 public:
     void draw(QPainter &painter, QRect &size) override;
     void mousePressed(int x, int y) override;

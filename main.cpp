@@ -1,13 +1,14 @@
-#include "mainwindow.h"
-#include "Core.hh"
+#include "MainWindow.hh"
+#include "Display.hh"
 
 #include <QSize>
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    Core game(QSize(400,400));
-    MainWindow w(&game);
+    QApplication    a(argc, argv);
+    Display         display(QSize(400,400));
+    MainWindow      w(&display);
+
     return a.exec();
 }

@@ -1,9 +1,10 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef MAINWINDOW_HH
+# define MAINWINDOW_HH
 
-#include <QMainWindow>
+# include <QMainWindow>
 
-class Game;
+class Display;
+
 /**
  * @brief La classe MainWindow crée un widget contenant un controller et un gameboard pour le game
  * donné
@@ -13,10 +14,10 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(Game *game,QWidget *parent = 0);
+    explicit MainWindow(Display *display, QWidget *parent = 0);
     ~MainWindow();
 
 private:
 };
 
-#endif // MAINWINDOW_H
+#endif // MAINWINDOW_HH

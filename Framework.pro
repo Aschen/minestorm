@@ -10,18 +10,18 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    controller.cpp \
-    gameboard.cpp \
-    game.cpp \
-    Core.cpp \
-    DrawableObject.cpp
+    DrawableObject.cpp \
+    Display.cpp \
+    MainWindow.cpp \
+    Controller.cpp \
+    Menu.cpp
 
-HEADERS  += mainwindow.h \
-    controller.h \
-    gameboard.h \
-    game.h \
-    Core.hh \
-    DrawableObject.hh
+HEADERS  += \
+    DrawableObject.hh \
+    Display.hh \
+    MainWindow.hh \
+    Controller.hh \
+    Menu.hh \
+    Minestorm.hh
 
 FORMS    +=
