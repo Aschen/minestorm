@@ -16,7 +16,14 @@ SOURCES += main.cpp\
     Controller.cpp \
     GameBoard.cpp \
     GameProxy.cpp \
-    Core.cpp
+    server/Core.cpp \
+    client/Controller.cpp \
+    client/Display.cpp \
+    client/GameBoard.cpp \
+    client/MainWindow.cpp \
+    shared/DrawableObject.cpp \
+    shared/GameProxy.cpp \
+    shared/main.cpp
 
 HEADERS  += \
     DrawableObject.hh \
@@ -26,6 +33,13 @@ HEADERS  += \
     Minestorm.hh \
     GameBoard.hh \
     GameProxy.hh \
-    Core.hh
+    server/Core.hh \
+    client/Controller.hh \
+    client/Display.hh \
+    client/GameBoard.hh \
+    client/MainWindow.hh \
+    shared/DrawableObject.hh \
+    shared/GameProxy.hh \
+    shared/Minestorm.hh
 
 FORMS    +=
