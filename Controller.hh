@@ -21,6 +21,7 @@ private slots:
     void    start();
     void    pause();
     void    reset();
+    void    test();
 
 };
 

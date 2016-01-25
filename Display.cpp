@@ -8,6 +8,8 @@ Display::Display(const QSize &size, QObject *parent)
     _timer.setSingleShot(false);
     /* Le signal timeout() est envoyé toutes les 40ms,
     ** on le connecte à la fonction Display::update()
+    ** qui fait appel à GameBoard::paintEvent()
+    ** qui fait appel à Display::draw()
     */
     connect(&_timer, SIGNAL(timeout()), this, SLOT(update()));
 }
@@ -15,13 +17,15 @@ Display::Display(const QSize &size, QObject *parent)
 /* *** */
 void Display::draw(QPainter &painter, QRect &size)
 {
-//    painter.setPen(QColor(236, 248, 230));
-//    painter.setBrush(QBrush(QColor(236, 248, 230)));
+    painter.setPen(QColor(236, 248, 230));
+    painter.setBrush(QBrush(QColor(236, 248, 230)));
 
-//    for (auto object : _objects)
-//    {
-//        painter.drawConvexPolygon(*object);
-//    }
+    _objectsMutex.lock();
+    for (auto object : _objects)
+    {
+        painter.drawConvexPolygon(*object);
+    }
+    _objectsMutex.unlock();
 }
 
 void Display::initialize()
@@ -50,6 +54,11 @@ void Display::reset()
     DEBUG("reset()");
 }
 
+void Display::test()
+{
+    DEBUG("test()");
+}
+
 void Display::update()
 {
     if (_isRunning)
@@ -63,6 +72,14 @@ void Display::update()
 /* EVENTS */
 void Display::mousePressed(int x, int y)
 {
+    shared_ptr<DrawableObject>  rec = make_shared<DrawableObject>();
+
+    *rec << QPoint(x, y) << QPoint(x + 42, y) << QPoint(x + 42, y + 21) << QPoint(x, y + 42);
+
+    _objectsMutex.lock();
+    _objects.push_front(rec);
+    _objectsMutex.unlock();
+
     DEBUG("mousePressed(" << x << ", " << y << ")");
 }
 
@@ -96,4 +113,16 @@ const QSize &Display::size() const
 bool Display::isRunning() const
 {
     return _isRunning;
+}
+
+DrawableObjectList &Display::objects() const
+{
+    return _objects;
+}
+
+void Display::objects(const DrawableObjectList &objects)
+{
+    _objectsMutex.lock();
+    _objects = objects;
+    _objectsMutex.unlock();
 }
