@@ -11,7 +11,8 @@ class Core : public QObject
     Q_OBJECT
 
 private:
-    DrawableObjectMap   _objects;
+    DrawableObjectMap   _friendly;
+    DrawableObjectMap   _mines;
     DrawableObjectList  _objectsList;
 
 public:
