@@ -21,6 +21,7 @@ bool Core::addObject(const DrawableObject &object)
 bool Core::removeObject(const std::string &name)
 {
     auto object_iterator = _objects.find(name);
+
     if (object_iterator == _objects.end())
     {
         DEBUG("Core::removeObject() : Object " << name << " doesn't exist");

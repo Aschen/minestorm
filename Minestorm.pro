@@ -16,7 +16,9 @@ SOURCES += server/Core.cpp \
     client/MainWindow.cpp \
     shared/DrawableObject.cpp \
     shared/GameProxy.cpp \
-    shared/main.cpp
+    shared/Mine.cpp\
+    shared/main.cpp \
+    shared/Ship.cpp
 
 HEADERS  += server/Core.hh \
     client/Controller.hh \
@@ -25,7 +27,9 @@ HEADERS  += server/Core.hh \
     client/MainWindow.hh \
     shared/DrawableObject.hh \
     shared/GameProxy.hh \
-    shared/Minestorm.hh
+    shared/Minestorm.hh\
+    shared/Mine.hh \
+    shared/Ship.hh
 
 FORMS    +=
 
