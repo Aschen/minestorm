@@ -34,7 +34,8 @@ int main(int argc, char *argv[])
     {
         Client      *cli = new Client("127.0.0.1", 4242);
 
-        cli->connectServer();
+        cli->start();
+        cli->sendMessageFunction("Hello server !");
     }
 
     return a.exec();

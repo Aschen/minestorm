@@ -7,7 +7,7 @@ Server::Server(quint16 port, QObject *parent)
 {
     qDebug() << "Server::Server()";
     _timer.setSingleShot(false);
-    _timer.start(1000);
+    //_timer.start(1000);
     connect(&_timer, SIGNAL(timeout()), this, SLOT(broadcast()));
 }
 
@@ -43,10 +43,10 @@ void Server::incomingConnection(qintptr socketFd)
             worker, SLOT(deleteLater()));
 
     // Connect communications functions
-    connect(this,   SIGNAL(sendMessage(QByteArray)),
-            worker, SLOT(sendMessage(QByteArray)));
-    connect(worker, SIGNAL(receiveMessage(int, QByteArray)),
-            this,   SLOT(receiveMessage(int, QByteArray)));
+    connect(this,   SIGNAL(sendMessage(QString)),
+            worker, SLOT(sendMessage(QString)));
+    connect(worker, SIGNAL(receiveMessage(int, QString)),
+            this,   SLOT(receiveMessage(int, QString)));
 
     worker->start();
 }
@@ -54,10 +54,10 @@ void Server::incomingConnection(qintptr socketFd)
 void Server::broadcast()
 {
     qDebug() << "Server::broadcast()";
-    emit sendMessage(getMessage("Hello dears clients"));
+    emit sendMessage("Hello dears clients");
 }
 
-void Server::receiveMessage(int socketFd, const QByteArray &msg)
+void Server::receiveMessage(int socketFd, const QString &msg)
 {
     qDebug() << "Server::receiveMessage() : Worker " << socketFd << msg;
 }

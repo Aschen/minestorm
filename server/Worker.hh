@@ -14,6 +14,7 @@ class Worker : public QThread
 
 private:
     int             _socketFd;
+    quint16         _msgSize;
     QTcpSocket      *_socket;
 
 public:
@@ -27,18 +28,23 @@ protected:
     void            run() Q_DECL_OVERRIDE;
 
 private:
-    QByteArray      getMessage(const QString &message);
+    QByteArray      getMessage(const QString &msg);
 
 signals:
     void            error(QTcpSocket::SocketError socketError);
-    // Emit signal when receive message from client connected to worker
-    void            receiveMessage(int socketFd, const QByteArray &msg);
+    // Emit signal when the full message is received from client connected to worker
+    void            receiveMessage(int socketFd, const QString &msg);
 
 public slots:
-    void            readyRead();
+    // Received disconnected() signal from the socket
     void            disconnected();
+    // Read bytes on socket and emit receiveMessage() when full message arrived
+    void            readMessage();
     // Server emit signal to send message to client connected to worker
-    void            sendMessage(const QByteArray &msg);
+    void            sendMessage(const QString &msg);
+    // Receive error from the socket
+    void            displayError(QAbstractSocket::SocketError socketError);
+
 };
 
 #endif // WORKER_HH

@@ -32,11 +32,11 @@ public:
     void                        incomingConnection(qintptr socketFd) Q_DECL_OVERRIDE;
 
 signals:
-    void                        sendMessage(const QByteArray &msg);
+    void                        sendMessage(const QString &msg);
 
 public slots:
     void                        broadcast();
-    void                        receiveMessage(int socketFd, const QByteArray &msg);
+    void                        receiveMessage(int socketFd, const QString &msg);
 
 private:
     QByteArray                  getMessage(const QString &message);
