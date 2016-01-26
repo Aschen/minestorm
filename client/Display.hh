@@ -14,7 +14,6 @@
 # include <memory>
 
 # include "Minestorm.hh"
-# include "DrawableObject.hh"
 
 class QPainter;
 class QRect;

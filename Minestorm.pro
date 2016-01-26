@@ -15,9 +15,9 @@ SOURCES += server/Core.cpp \
     client/GameBoard.cpp \
     client/MainWindow.cpp \
     shared/GameProxy.cpp \
-    shared/Mine.cpp\
     shared/main.cpp \
-    shared/Ship.cpp \
+    server/Mine.cpp\
+    server/Ship.cpp \
     server/Entity.cpp \
     server/Carre.cpp
 
@@ -28,8 +28,8 @@ HEADERS  += server/Core.hh \
     client/MainWindow.hh \
     shared/GameProxy.hh \
     shared/Minestorm.hh\
-    shared/Mine.hh \
-    shared/Ship.hh \
+    server/Mine.hh \
+    server/Ship.hh \
     server/Entity.hh \
     server/Carre.hh
 

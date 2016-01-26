@@ -9,7 +9,6 @@
 
 # include <string>
 
-# include "DrawableObject.hh"
 # include "Minestorm.hh"
 # include "Entity.hh"
 # include "Carre.hh"
@@ -23,10 +22,6 @@ private:
     const int           _cps;
     QTimer              _timer;
     int                 _step;
-    //    DrawableObjectMap   _friendly;
-    //    DrawableObjectMap   _mines;
-    DrawableObjectMap   _objects;
-    DrawableObjectList  _objectsList;
     EntityList          _entities;
 
 public:
