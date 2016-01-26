@@ -4,7 +4,8 @@ Core::Core(int cps) :
     QObject(),
     _isRunning(false),
     _cps(cps),
-    _step(1)
+    _step(1),
+    _server(4242)
 {
     _timer.setSingleShot(false);
     connect(&_timer, SIGNAL(timeout()), this, SLOT(step()));
@@ -12,7 +13,7 @@ Core::Core(int cps) :
 
 void Core::step()
 {
-    DEBUG("Core::step() : " << _step, 0);
+    DEBUG("Core::step() : " << _step, 1);
     QVector<QPolygon>   objects;
 
     // On créé un vecteur de QPolygon à partir de nos entitées
@@ -59,12 +60,7 @@ void Core::test()
 {
     DEBUG("Core::test() : ", 1);
 
-    // Quand on reçoit un signal dans le slot test(),
-    // On affiche la liste des entitées
-    for (auto entity : _entities)
-    {
-        std::cout << entity->dump() << std::endl;
-    }
+    _server.start();
 }
 
 void Core::mousePressed(int x, int y)

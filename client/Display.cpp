@@ -4,7 +4,8 @@ Display::Display(const QSize &size, int fps, QObject *parent)
     : QObject(parent),
       _isRunning(false),
       _size(size),
-      _fps(fps)
+      _fps(fps),
+      _client("127.0.0.1", 4242)
 {
     _timer.setSingleShot(false);
     /* Le signal timeout() est envoyé toutes les 40ms,
@@ -62,7 +63,9 @@ void Display::reset()
 
 void Display::test()
 {
-    DEBUG("Display::test()", 0);
+    DEBUG("Display::test()", 1);
+    _client.connectServer();
+
     emit sigTest();
 }
 

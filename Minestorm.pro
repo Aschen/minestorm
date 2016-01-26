@@ -1,5 +1,5 @@
 
-QT       += core gui
+QT       += core gui network
 
 CONFIG+=C++11
 
@@ -19,7 +19,9 @@ SOURCES += server/Core.cpp \
     server/Mine.cpp\
     server/Ship.cpp \
     server/Entity.cpp \
-    server/Carre.cpp
+    server/Carre.cpp \
+    server/Server.cpp \
+    client/Client.cpp
 
 HEADERS  += server/Core.hh \
     client/Controller.hh \
@@ -31,7 +33,9 @@ HEADERS  += server/Core.hh \
     server/Mine.hh \
     server/Ship.hh \
     server/Entity.hh \
-    server/Carre.hh
+    server/Carre.hh \
+    server/Server.hh \
+    client/Client.hh
 
 FORMS    +=
 
