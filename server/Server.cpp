@@ -4,7 +4,7 @@ Server::Server(quint16 port)
     : _port(port),
       _address(QHostAddress::Any)
 {
-    connect(this, SIGNAL(newConnection()), this, SLOT(sendCycleNumber()));
+    connect(this, SIGNAL(newConnection()), this, SLOT(sendMessage()));
 }
 
 Server::~Server()
