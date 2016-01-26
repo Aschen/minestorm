@@ -23,7 +23,7 @@ SOURCES += server/Core.cpp \
     server/Server.cpp \
     client/Client.cpp \
     server/Worker.cpp \
-    shared/Protocol.cpp
+    shared/BaseSocket.cpp
 
 HEADERS  += server/Core.hh \
     client/Controller.hh \
@@ -39,7 +39,7 @@ HEADERS  += server/Core.hh \
     server/Server.hh \
     client/Client.hh \
     server/Worker.hh \
-    shared/Protocol.hh
+    shared/BaseSocket.hh
 
 FORMS    +=
 

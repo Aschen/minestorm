@@ -6,7 +6,7 @@
 # include <QByteArray>
 # include <QDebug>
 
-# include "Protocol.hh"
+# include "BaseSocket.hh"
 
 class Client : public QObject
 {
@@ -15,8 +15,7 @@ class Client : public QObject
 private:
     QString         _ip;
     quint16         _port;
-    quint16         _msgSize;
-    QTcpSocket      _socket;
+    BaseSocket      _socket;
 
 public:
     Client(const QString  &ip, quint16 port, QObject *parent = nullptr);
@@ -26,20 +25,10 @@ public:
     void            stop();
 
     void            sendMessageFunction(const QString &msg);
-    QByteArray      getMessage(const QString &msg);
 
 signals:
-    void            receiveMessage(const QString &msg);
     // For tests
     void            sigSendMsg(const QString &msg);
-
-private slots:
-    // Read bytes on socket and emit receiveMessage() when full message arrived
-    void            readMessage();
-    // Send message to the server connected to the client
-    void            sendMessage(const QString &msg);
-    void            displayError(QAbstractSocket::SocketError socketError);
-
 };
 
 #endif // CLIENT_HH

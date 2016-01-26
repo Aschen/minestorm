@@ -8,42 +8,29 @@
 # include <QChar>
 # include <QDebug>
 
+# include "BaseSocket.hh"
+
 class Worker : public QThread
 {
     Q_OBJECT
 
 private:
-    int             _socketFd;
-    quint16         _msgSize;
-    QTcpSocket      *_socket;
+    BaseSocket          _socket;
 
 public:
     Worker(int socketFd, QObject *parent = nullptr);
     ~Worker();
 
-    int             socketFd() const;
+    int                 socketFd() const;
+
+    const BaseSocket    *socket() const;
+
+signals:
+    void                receiveMessage(int socketFd, const QString &msg);
 
     // QThread interface
 protected:
-    void            run() Q_DECL_OVERRIDE;
-
-private:
-    QByteArray      getMessage(const QString &msg);
-
-signals:
-    void            error(QTcpSocket::SocketError socketError);
-    // Emit signal when the full message is received from client connected to worker
-    void            receiveMessage(int socketFd, const QString &msg);
-
-public slots:
-    // Received disconnected() signal from the socket
-    void            disconnected();
-    // Read bytes on socket and emit receiveMessage() when full message arrived
-    void            readMessage();
-    // Server emit signal to send message to client connected to worker
-    void            sendMessage(const QString &msg);
-    // Receive error from the socket
-    void            displayError(QAbstractSocket::SocketError socketError);
+    void                run() Q_DECL_OVERRIDE;
 
 };
 
