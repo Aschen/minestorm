@@ -1,1 +1,3 @@
-- Isoler la partie protocole (read depuis socket, conversion messages, connect().. ) de Worker et Client dans une classe à part
+- Ajouter signal communication des erreur depuis BaseSocket l'exterieur
+- Erreur "QObject: Cannot create children for a parent that is in a different thread.
+(Parent is QNativeSocketEngine(0x7f62040031c0), parent's thread is Worker(0x2162ae0), current thread is QThread(0x2068f10)" à voir
