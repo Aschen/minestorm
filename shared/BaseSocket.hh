@@ -23,14 +23,16 @@ public:
     int             fd() const;
 
 signals:
-    // Emit signal when the full message is received on socket
+    // Catch this signal on a slot to receive message from socket
     void            receiveMessage(int socketFd, const QString &msg);
 
 public slots:
+    // Send signal to this slot to send message throught socket
+    void            sendMessage(const QString &msg);
+
+private slots:
     // Read bytes on socket and emit receiveMessage() when full message arrived
     void            readMessage();
-    // Server emit signal to send message throught socket
-    void            sendMessage(const QString &msg);
     // Receive error from the socket
     void            displayError(QAbstractSocket::SocketError socketError);
 

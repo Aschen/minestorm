@@ -66,10 +66,10 @@ void Core::mousePressed(int x, int y)
 
     // Quand on reçoit un signal dans le slot mousePressed(),
     // On créé un carre depuis les coordonnées x et y
-//    Carre   carre("carre", QPoint(x, y), _step);
+    Carre   carre("carre", QPoint(x, y), _step);
 
-    // On ajoute le triangle créé à la liste des entités
-//    _entities.push_back(std::shared_ptr<Entity>(new Carre(carre)));
+    // On ajoute le carre créé à la liste des entités
+    _entities.push_back(std::shared_ptr<Entity>(new Carre(carre)));
 }
 
 void Core::mouseReleased(int x, int y)

@@ -4,7 +4,7 @@ Client::Client(const QString &ip, quint16 port, QObject *parent)
     : QObject(parent),
       _ip(ip),
       _port(port),
-      _socket(-1, parent)
+      _socket(-1)
 {
     qDebug() << "Client::Client()";
 
