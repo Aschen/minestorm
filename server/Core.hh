@@ -12,7 +12,6 @@
 # include "Minestorm.hh"
 # include "Entity.hh"
 # include "Carre.hh"
-# include "Server.hh" // REMOVE
 
 class Core : public QObject
 {    
@@ -23,7 +22,6 @@ private:
     const int           _cps;
     QTimer              _timer;
     int                 _step;
-    Server              _server;
     EntityList          _entities;
 
 public:

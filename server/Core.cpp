@@ -4,8 +4,7 @@ Core::Core(int cps) :
     QObject(),
     _isRunning(false),
     _cps(cps),
-    _step(1),
-    _server(4242)
+    _step(1)
 {
     _timer.setSingleShot(false);
     connect(&_timer, SIGNAL(timeout()), this, SLOT(step()));
@@ -59,8 +58,6 @@ void Core::reset()
 void Core::test()
 {
     DEBUG("Core::test() : ", 1);
-
-    _server.start();
 }
 
 void Core::mousePressed(int x, int y)
@@ -69,10 +66,10 @@ void Core::mousePressed(int x, int y)
 
     // Quand on reçoit un signal dans le slot mousePressed(),
     // On créé un carre depuis les coordonnées x et y
-    Carre   carre("carre", QPoint(x, y), _step);
+//    Carre   carre("carre", QPoint(x, y), _step);
 
     // On ajoute le triangle créé à la liste des entités
-    _entities.push_back(std::shared_ptr<Entity>(new Carre(carre)));
+//    _entities.push_back(std::shared_ptr<Entity>(new Carre(carre)));
 }
 
 void Core::mouseReleased(int x, int y)

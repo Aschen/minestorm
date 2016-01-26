@@ -6,8 +6,6 @@
 # include <QByteArray>
 # include <QDebug>
 
-# include <iostream>
-
 class Client : public QObject
 {
     Q_OBJECT
@@ -19,7 +17,7 @@ private:
     QTcpSocket      _clientSocket;
 
 public:
-    Client(const QString  &ip, quint16 port);
+    Client(const QString  &ip, quint16 port, QObject *parent = nullptr);
     ~Client();
 
     void            connectServer();

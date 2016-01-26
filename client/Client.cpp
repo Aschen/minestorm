@@ -1,10 +1,12 @@
 #include "Client.hh"
 
-Client::Client(const QString &ip, quint16 port)
-    : _ip(ip),
+Client::Client(const QString &ip, quint16 port, QObject *parent)
+    : QObject(parent),
+      _ip(ip),
       _port(port),
       _blockSize(0)
 {
+    qDebug() << "Client::Client()";
     connect(&_clientSocket, SIGNAL(readyRead()),
             this,           SLOT(receiveMessage()));
     connect(&_clientSocket, SIGNAL(error(QAbstractSocket::SocketError)),
@@ -13,10 +15,12 @@ Client::Client(const QString &ip, quint16 port)
 
 Client::~Client()
 {
+    qDebug() << "Client::~Client()";
 }
 
 void Client::connectServer()
 {
+    qDebug() << "Client::connectServer() : " << _ip << ":" << _port;
     _blockSize = 0;
     _clientSocket.abort();
     _clientSocket.connectToHost(_ip, _port);
@@ -26,6 +30,7 @@ void Client::receiveMessage()
 {
     QDataStream     in(&_clientSocket);
 
+    qDebug() << "Client::receiveMessage()";
     in.setVersion(QDataStream::Qt_4_0);
 
     if (_blockSize == 0)
@@ -48,7 +53,8 @@ void Client::receiveMessage()
     QString         message;
 
     in >> message;
-    qDebug() << "Received : " << message;
+    qDebug() << "Client::receiveMessage() : " << message;
+    _blockSize = 0;
 }
 
 void Client::displayError(QAbstractSocket::SocketError socketError)
@@ -64,6 +70,6 @@ void Client::displayError(QAbstractSocket::SocketError socketError)
         default:
             break;
         }
-    qDebug() << _clientSocket.errorString();
+    qDebug() << "Client::displayError() : " << _clientSocket.errorString();
 }
 

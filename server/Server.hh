@@ -3,32 +3,43 @@
 
 # include <QTcpServer>
 # include <QTcpSocket>
-# include <QHash>
 # include <QDataStream>
 # include <QByteArray>
+# include <QDebug>
+# include <QSharedPointer>
+# include <QTimer>
 
-# include <iostream>
+# include "Worker.hh"
+
+using namespace std;
 
 class Server : public QTcpServer
 {
     Q_OBJECT
 
 private:
-    quint16                         _port;
-    QHostAddress                    _address;
-    QHash<QString, QTcpSocket>      _clients;
+    quint16                     _port;
+    QHostAddress                _address;
+    QTimer                      _timer;
 
 public:
-    Server(quint16 port);
+    Server(quint16 port, QObject *parent = nullptr);
     ~Server();
 
-    void                            start();
+    void                        start();
 
-private slots:
-    void                            sendMessage();
+    // QTcpServer override
+    void                        incomingConnection(qintptr socketFd) Q_DECL_OVERRIDE;
+
+signals:
+    void                        sendMessage(const QByteArray &msg);
+
+public slots:
+    void                        broadcast();
+    void                        receiveMessage(int socketFd, const QByteArray &msg);
 
 private:
-    QByteArray                      getMessage(const QString &message);
+    QByteArray                  getMessage(const QString &message);
 };
 
 #endif // SERVER_HH

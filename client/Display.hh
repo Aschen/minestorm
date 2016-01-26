@@ -14,7 +14,6 @@
 # include <memory>
 
 # include "Minestorm.hh"
-# include "Client.hh" // Remove
 
 class QPainter;
 class QRect;
@@ -30,7 +29,6 @@ private:
     bool                _isRunning;
     const QSize         _size;
     const int           _fps;
-    Client              _client;
     QVector<QPolygon>   _objects;
     QMutex              _objectsMutex;
 

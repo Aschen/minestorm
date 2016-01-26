@@ -21,7 +21,8 @@ SOURCES += server/Core.cpp \
     server/Entity.cpp \
     server/Carre.cpp \
     server/Server.cpp \
-    client/Client.cpp
+    client/Client.cpp \
+    server/Worker.cpp
 
 HEADERS  += server/Core.hh \
     client/Controller.hh \
@@ -35,7 +36,8 @@ HEADERS  += server/Core.hh \
     server/Entity.hh \
     server/Carre.hh \
     server/Server.hh \
-    client/Client.hh
+    client/Client.hh \
+    server/Worker.hh
 
 FORMS    +=
 

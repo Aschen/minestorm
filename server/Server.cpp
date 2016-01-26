@@ -1,14 +1,19 @@
 #include "Server.hh"
 
-Server::Server(quint16 port)
-    : _port(port),
+Server::Server(quint16 port, QObject *parent)
+    : QTcpServer(parent),
+      _port(port),
       _address(QHostAddress::Any)
 {
-    connect(this, SIGNAL(newConnection()), this, SLOT(sendMessage()));
+    qDebug() << "Server::Server()";
+    _timer.setSingleShot(false);
+    _timer.start(1000);
+    connect(&_timer, SIGNAL(timeout()), this, SLOT(broadcast()));
 }
 
 Server::~Server()
 {
+    qDebug() << "Server::~Server()";
 }
 
 void Server::start()
@@ -17,22 +22,44 @@ void Server::start()
     {
         if (!listen(_address, _port))
         {
-            std::cout << "Server error listen" << std::endl;
+            qDebug() << "Server error listen";
         }
         else
         {
-            std::cout << "Server start listening on " << _port << std::endl;
+            qDebug() << "Server::start() : Listening on " << _port;
         }
     }
 }
 
-void Server::sendMessage()
+void Server::incomingConnection(qintptr socketFd)
 {
-    QTcpSocket  *clientSocket = nextPendingConnection();
-    connect(clientSocket, SIGNAL(disconnected()), clientSocket, SLOT(deleteLater()));
+    qDebug() << "Server::incomingConnection() : New connection " << socketFd;
 
-    clientSocket->write(getMessage("Hello from server"));
-    clientSocket->disconnectFromHost();
+    // Create worker to handle the new connection
+    Worker  *worker = new Worker(socketFd);
+
+    // When thread exit(), call deleteLater to destroy QObject which is a pointer here
+    connect(worker, SIGNAL(finished()),
+            worker, SLOT(deleteLater()));
+
+    // Connect communications functions
+    connect(this,   SIGNAL(sendMessage(QByteArray)),
+            worker, SLOT(sendMessage(QByteArray)));
+    connect(worker, SIGNAL(receiveMessage(int, QByteArray)),
+            this,   SLOT(receiveMessage(int, QByteArray)));
+
+    worker->start();
+}
+
+void Server::broadcast()
+{
+    qDebug() << "Server::broadcast()";
+    emit sendMessage(getMessage("Hello dears clients"));
+}
+
+void Server::receiveMessage(int socketFd, const QByteArray &msg)
+{
+    qDebug() << "Server::receiveMessage() : Worker " << socketFd << msg;
 }
 
 QByteArray Server::getMessage(const QString &message)
