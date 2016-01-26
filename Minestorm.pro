@@ -5,7 +5,7 @@ CONFIG+=C++11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = minestorme
+TARGET = minestorm
 TEMPLATE = app
 
 
@@ -19,7 +19,8 @@ SOURCES += server/Core.cpp \
     shared/Mine.cpp\
     shared/main.cpp \
     shared/Ship.cpp \
-    server/Entity.cpp
+    server/Entity.cpp \
+    server/Carre.cpp
 
 HEADERS  += server/Core.hh \
     client/Controller.hh \
@@ -31,7 +32,8 @@ HEADERS  += server/Core.hh \
     shared/Minestorm.hh\
     shared/Mine.hh \
     shared/Ship.hh \
-    server/Entity.hh
+    server/Entity.hh \
+    server/Carre.hh
 
 FORMS    +=
 

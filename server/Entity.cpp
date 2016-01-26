@@ -8,12 +8,11 @@ Entity::Entity(string name, Type type)
 
 Entity::~Entity()
 {
-
 }
 
 void Entity::addPoint(const QPoint &point)
 {
-    _points.push_back(point);
+    *this << point;
 }
 
 Entity::Type Entity::type() const
@@ -24,11 +23,6 @@ Entity::Type Entity::type() const
 const string Entity::name() const
 {
     return _name;
-}
-
-const QVector<QPoint> Entity::points() const
-{
-    return _points;
 }
 
 int Entity::speed() const
@@ -46,23 +40,16 @@ const std::string Entity::dump() const
     std::stringstream     ret;
 
     ret << TYPE_DISPLAY[_type] << " - " << _name << " : ";
-    for (int i = 0; i < _points.size(); ++i)
+    for (int i = 0; i < this->size(); ++i)
     {
         ret << static_cast<char>(i + 'A');
-        ret << "(" << _points[i].x() << "," << _points[i].y() << ") ";
+        ret << "(" << this->operator[](i).x() << "," <<this->operator[](i).y() << ") ";
     }
 
     return ret.str();
 }
 
-
-Entity &operator<<(Entity &entity, const QPoint &point)
-{
-    entity.addPoint(point);
-
-    return entity;
-}
-
 const char * const Entity::TYPE_DISPLAY[] = {"MINE",
                                              "SHIP",
-                                             "SHOT"};
+                                             "SHOT",
+                                             "CARRE"};

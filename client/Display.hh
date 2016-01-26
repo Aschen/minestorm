@@ -7,6 +7,8 @@
 # include <QMutex>
 # include <QPainter>
 # include <QBrush>
+# include <QVector>
+# include <QPolygon>
 
 # include <list>
 # include <memory>
@@ -28,7 +30,7 @@ private:
     bool                _isRunning;
     const QSize         _size;
     const int           _fps;
-    DrawableObjectList  _objects;
+    QVector<QPolygon>   _objects;
     QMutex              _objectsMutex;
 
 public:
@@ -49,7 +51,7 @@ public:
 
     const QSize         &size() const;
     bool                isRunning() const;
-    const DrawableObjectList  &objects() const;
+    const QVector<QPolygon>  &objects() const;
 
 protected:
     void                initialize();
@@ -68,7 +70,7 @@ signals:
     void                sigTest();
 
 public slots:
-    void                receiveObjects(const DrawableObjectList &objects);
+    void                receiveObjects(const QVector<QPolygon> &objects);
 
 private slots:
     void                update();

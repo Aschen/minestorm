@@ -4,12 +4,15 @@
 # include <QObject>
 # include <QTimer>
 # include <QPoint>
+# include <QVector>
+# include <QPolygon>
 
 # include <string>
 
 # include "DrawableObject.hh"
 # include "Minestorm.hh"
 # include "Entity.hh"
+# include "Carre.hh"
 
 class Core : public QObject
 {    
@@ -29,10 +32,6 @@ private:
 public:
     Core(int cps);
 
-    bool                addObject(const DrawableObject &object);
-    bool                removeObject(const std::string &name);
-    bool                removeObject(const DrawableObject &object);
-
 public slots:
     void                mousePressed(int x, int y);
     void                mouseReleased(int x, int y);
@@ -48,7 +47,7 @@ private slots:
     void                step();
 
 signals:
-    void                sendObjects(const DrawableObjectList &objects);
+    void                sendObjects(const QVector<QPolygon> &objects);
 };
 
 #endif // CORE_HH

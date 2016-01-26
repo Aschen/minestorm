@@ -12,7 +12,7 @@
 
 using namespace std;
 
-class Entity
+class Entity : public QPolygon
 {
 public:
     static const char * const           TYPE_DISPLAY[];
@@ -20,14 +20,14 @@ public:
     {
         MINE = 0,
         SHIP = 1,
-        SHOT = 2
+        SHOT = 2,
+        CARRE= 3 // Pour test
     };
 
-private:
+protected:
     const Type              _type;
     const string            _name;
     int                     _speed;
-    QVector<QPoint>         _points;
 
 public:
     Entity(string name, Type type);
@@ -37,14 +37,11 @@ public:
 
     Type                    type() const;
     const string            name() const;
-    const QVector<QPoint>   points() const;
     int                     speed() const;
     void                    speed(int value);
 
     const string            dump() const;
 };
-
-Entity                  &operator<<(Entity &entity, const QPoint &point);
 
 using EntityList = QList<std::shared_ptr<Entity>>;
 using EntityHash = QHash<std::string, std::shared_ptr<Entity>>;

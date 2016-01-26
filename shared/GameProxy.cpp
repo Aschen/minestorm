@@ -11,7 +11,7 @@ GameProxy::GameProxy(Core *core, Display *display) :
     connect(display, SIGNAL(sigReset()), core, SLOT(reset()));
     connect(display, SIGNAL(sigTest()), core, SLOT(test()));
 
-    connect(core, SIGNAL(sendObjects(DrawableObjectList)), display, SLOT(receiveObjects(DrawableObjectList)));
+    connect(core, SIGNAL(sendObjects(const QVector<QPolygon>&)), display, SLOT(receiveObjects(const QVector<QPolygon>&)));
 }
 
 GameProxy::~GameProxy()

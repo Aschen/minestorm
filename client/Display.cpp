@@ -19,13 +19,14 @@ Display::Display(const QSize &size, int fps, QObject *parent)
 void Display::draw(QPainter &painter, QRect &size)
 {
     (void) size;
-    painter.setPen(QColor(236, 248, 230));
-    painter.setBrush(QBrush(QColor(236, 248, 230)));
+    DEBUG("Display::draw() : " << _objects.size() << " objects to draw", 1);
+    painter.setPen(QColor(0, 0, 0));
+    painter.setBrush(QBrush(QColor(0, 0, 0)));
 
     _objectsMutex.lock();
     for (auto object : _objects)
     {
-        painter.drawConvexPolygon(*object);
+        painter.drawConvexPolygon(object);
     }
     _objectsMutex.unlock();
 }
@@ -70,7 +71,7 @@ void Display::update()
     if (_isRunning)
     {
         emit changed();
-        DEBUG("Display::update()", 1);
+        DEBUG("Display::update()", 0);
     }
 }
 
@@ -113,15 +114,16 @@ bool Display::isRunning() const
     return _isRunning;
 }
 
-const DrawableObjectList &Display::objects() const
+const QVector<QPolygon> &Display::objects() const
 {
     return _objects;
 }
 
-void Display::receiveObjects(const DrawableObjectList &objects)
+void Display::receiveObjects(const QVector<QPolygon> &objects)
 {
     DEBUG("Display::receiveObjects() : " << objects.size() << " objects received", 1);
     _objectsMutex.lock();
+    _objects.clear();
     _objects = objects;
     _objectsMutex.unlock();
 }
