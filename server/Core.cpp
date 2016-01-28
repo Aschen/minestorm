@@ -4,10 +4,24 @@ Core::Core(int cps) :
     QObject(),
     _isRunning(false),
     _cps(cps),
-    _step(1)
+    _step(1),
+    _server(4242)
 {
+    qDebug() << "Core::Core() : cps " << cps;
     _timer.setSingleShot(false);
-    connect(&_timer, SIGNAL(timeout()), this, SLOT(step()));
+    connect(&_timer,    SIGNAL(timeout()),
+            this,       SLOT(step()));
+
+    // Connect communications functions
+    connect(&_server,   SIGNAL(transfertMessage(qint32, const QString&)),
+            this,       SLOT(messageDispatcher(qint32, const QString&)));
+
+    _server.start();
+}
+
+Core::~Core()
+{
+    qDebug() << "Core::~Core()";
 }
 
 void Core::step()
@@ -21,9 +35,25 @@ void Core::step()
         objects.push_back(QPolygon(*entity));
     }
 
+    objects.size();
     // On envoi le vecteur de QPolygon à Display
-    emit sendObjects(objects);
+//    emit sendObjects(objects);
     ++_step;
+}
+
+void Core::messageDispatcher(qint32 socketFd, const QString &msg)
+{
+    qDebug() << "Core::receiveMessage() : client " << socketFd << " : " << msg;
+    QTextStream                 message(msg.toUtf8());
+    Protocol::MessageType       messageType = Protocol::getMessage(message);
+
+    switch (messageType)
+    {
+    case Protocol::MOUSE_PRESSED:
+        break;
+    default:
+        break;
+    }
 }
 
 void Core::start()

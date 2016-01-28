@@ -5,6 +5,8 @@
 # include <QSharedPointer>
 # include <QTimer>
 # include <QDebug>
+# include <QFile> // REMOVE
+# include <QByteArray> // REMOVE
 
 # include "Worker.hh"
 
@@ -19,6 +21,7 @@ private:
     quint16                     _port;
     QHostAddress                _address;
     QTimer                      _timer;
+    int _count;
 
 public:
     Server(quint16 port, QObject *parent = nullptr);
@@ -31,6 +34,7 @@ public:
 
 signals:
     void                        sendMessage(qint32 socketFd, const QString &msg);
+    void                        transfertMessage(qint32 socketFd, const QString &msg);
 
 public slots:
     void                        broadcast();

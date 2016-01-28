@@ -6,10 +6,15 @@
 # include <QPoint>
 # include <QVector>
 # include <QPolygon>
+# include <QString>
+# include <QTextStream>
 
 # include <string>
+# include <sstream>
 
 # include "Minestorm.hh"
+# include "Protocol.hh"
+# include "Server.hh"
 # include "Entity.hh"
 # include "Carre.hh"
 
@@ -22,10 +27,12 @@ private:
     const int           _cps;
     QTimer              _timer;
     int                 _step;
+    Server              _server;
     EntityList          _entities;
 
 public:
     Core(int cps);
+    ~Core();
 
 public slots:
     void                mousePressed(int x, int y);
@@ -40,6 +47,7 @@ public slots:
 
 private slots:
     void                step();
+    void                messageDispatcher(qint32 socketFd, const QString &msg);
 
 signals:
     void                sendObjects(const QVector<QPolygon> &objects);

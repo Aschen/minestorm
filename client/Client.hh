@@ -4,6 +4,7 @@
 # include <QTcpSocket>
 # include <QDataStream>
 # include <QByteArray>
+# include <QTextStream>
 # include <QDebug>
 
 # include "BaseSocket.hh"
@@ -18,17 +19,16 @@ private:
     BaseSocket      _socket;
 
 public:
-    Client(const QString  &ip, quint16 port, QObject *parent = nullptr);
+    Client(const QString &ip, quint16 port, QObject *parent = nullptr);
     ~Client();
 
     void            start();
     void            stop();
 
-    void            sendMessageFunction(const QString &msg);
+    void            sendMessage(const QString &msg);
 
 signals:
-    // For tests
-    void            sigSendMsg(qint32 socketFd, const QString &msg);
+    void            sigSendMessage(qint32 socketFd, const QString &msg);
 };
 
 #endif // CLIENT_HH

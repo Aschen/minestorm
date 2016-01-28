@@ -21,7 +21,7 @@ public:
     };
 
 protected:
-    int             _socketFd; /**< Socket descriptor (or socker ID) */
+    const qint32    _socketFd; /**< Socket descriptor (or socker ID) */
     quint16         _msgSize;  /**< Current message size*/
 
 public:

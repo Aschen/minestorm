@@ -39,7 +39,7 @@ void BaseSocket::readMessage()
 {
     QDataStream     in(this);
 
-    qDebug() << "BaseSocket::readMessage()";
+    qDebug() << "BaseSocket::readMessage() ";
     in.setVersion(QDataStream::Qt_4_0);
 
     // If it's a whole new message
@@ -66,7 +66,7 @@ void BaseSocket::readMessage()
 
     in >> message;
     emit receiveMessage(_socketFd, message);
-    qDebug() << "BaseSocket::readMessage() : Message readed : " << message;
+    qDebug() << "BaseSocket::readMessage() : Full message readed : " << message;
 
     // Prepare to read whole new message
     _msgSize = 0;

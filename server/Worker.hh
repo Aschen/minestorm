@@ -28,6 +28,9 @@ public:
     const BaseSocket    *socket() const;
 
 private slots:
+    /**
+     * @brief disconnected is received when the socket got disconnected
+     */
     void                disconnected();
 
     // QThread interface

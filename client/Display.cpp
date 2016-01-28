@@ -4,7 +4,8 @@ Display::Display(const QSize &size, int fps, QObject *parent)
     : QObject(parent),
       _isRunning(false),
       _size(size),
-      _fps(fps)
+      _fps(fps),
+      _client("127.0.0.1", 4242)
 {
     _timer.setSingleShot(false);
     /* Le signal timeout() est envoyé toutes les 40ms,
@@ -19,7 +20,7 @@ Display::Display(const QSize &size, int fps, QObject *parent)
 void Display::draw(QPainter &painter, QRect &size)
 {
     (void) size;
-    DEBUG("Display::draw() : " << _objects.size() << " objects to draw", 1);
+    DEBUG("Display::draw() : " << _objects.size() << " objects to draw", 0);
     painter.setPen(QColor(0, 0, 0));
     painter.setBrush(QBrush(QColor(0, 0, 0)));
 
@@ -37,26 +38,27 @@ void Display::initialize()
 
 void Display::start()
 {
+    DEBUG("Display::start()", 0);
     _timer.start(1000 / _fps); // Répète le timer en fonction des fps
     _isRunning = true;
-    DEBUG("Display::start()", 0);
+    _client.start();
     emit sigStart();
 }
 
 void Display::pause()
 {
+    DEBUG("Display::pause()", 0);
     _timer.stop();
     _isRunning = false;
-    DEBUG("Display::pause()", 0);
     emit sigPause();
 }
 
 void Display::reset()
 {
+    DEBUG("Display::reset()", 0);
     pause();
     initialize();
     emit changed();
-    DEBUG("Display::reset()", 0);
     emit sigReset();
 }
 
@@ -69,10 +71,10 @@ void Display::test()
 
 void Display::update()
 {
+    DEBUG("Display::update()", 0);
     if (_isRunning)
     {
         emit changed();
-        DEBUG("Display::update()", 0);
     }
 }
 
@@ -80,6 +82,8 @@ void Display::update()
 /* EVENTS */
 void Display::mousePressed(int x, int y)
 {
+    qDebug() << "Display::mousePressed : x = " << x << ", y = " << y;
+    _client.sendMessage("MOUSE_PRESSED " + QString::number(x) + " " + QString::number(y));
     emit sigMousePressed(x, y);
 }
 
