@@ -43,10 +43,10 @@ void Server::incomingConnection(qintptr socketFd)
             worker, SLOT(deleteLater()));
 
     // Connect communications functions
-    connect(this,               SIGNAL(sendMessage(QString)),
-            worker->socket(),   SLOT(sendMessage(QString)));
-    connect(worker->socket(),   SIGNAL(receiveMessage(int, QString)),
-            this,               SLOT(receiveMessage(int, QString)));
+    connect(this,               SIGNAL(sendMessage(qint32, const QString&)),
+            worker->socket(),   SLOT(sendMessage(qint32, const QString&)));
+    connect(worker->socket(),   SIGNAL(receiveMessage(qint32, const QString&)),
+            this,               SLOT(receiveMessage(qint32, const QString&)));
 
     worker->start();
 }
@@ -54,10 +54,10 @@ void Server::incomingConnection(qintptr socketFd)
 void Server::broadcast()
 {
     qDebug() << "Server::broadcast()";
-    emit sendMessage("Hello dears clients");
+    emit sendMessage(BaseSocket::BROADCAST, "Hello dears clients");
 }
 
-void Server::receiveMessage(int socketFd, const QString &msg)
+void Server::receiveMessage(qint32 socketFd, const QString &msg)
 {
     qDebug() << "Server::receiveMessage() : Worker " << socketFd << msg;
 }

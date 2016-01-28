@@ -1,10 +1,12 @@
 #include "Worker.hh"
 
-Worker::Worker(int socketFd, QObject *parent)
+Worker::Worker(qint32 socketFd, QObject *parent)
     : QThread(parent),
       _socket(socketFd, parent)
 {
     qDebug() << "Worker::Worker() " << _socket.fd();
+    connect(&_socket,   SIGNAL(disconnected()),
+            this,       SLOT(disconnected()));
 }
 
 Worker::~Worker()
@@ -12,7 +14,7 @@ Worker::~Worker()
     qDebug() << "Worker::~Worker() " << _socket.fd();
 }
 
-int Worker::socketFd() const
+qint32 Worker::socketFd() const
 {
     return _socket.fd();
 }
@@ -20,6 +22,12 @@ int Worker::socketFd() const
 const BaseSocket *Worker::socket() const
 {
     return &_socket;
+}
+
+void Worker::disconnected()
+{
+    qDebug() << "Worker::disconnected()";
+    exit(0);
 }
 
 void Worker::run()

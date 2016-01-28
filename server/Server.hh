@@ -2,17 +2,15 @@
 # define SERVER_HH
 
 # include <QTcpServer>
-# include <QTcpSocket>
-# include <QDataStream>
-# include <QByteArray>
-# include <QDebug>
 # include <QSharedPointer>
 # include <QTimer>
+# include <QDebug>
 
 # include "Worker.hh"
 
-using namespace std;
-
+/**
+ * @brief The Server class listen for new client and can receive or send message to any client
+ */
 class Server : public QTcpServer
 {
     Q_OBJECT
@@ -32,11 +30,11 @@ public:
     void                        incomingConnection(qintptr socketFd) Q_DECL_OVERRIDE;
 
 signals:
-    void                        sendMessage(const QString &msg);
+    void                        sendMessage(qint32 socketFd, const QString &msg);
 
 public slots:
     void                        broadcast();
-    void                        receiveMessage(int socketFd, const QString &msg);
+    void                        receiveMessage(qint32 socketFd, const QString &msg);
 
 private:
     QByteArray                  getMessage(const QString &message);

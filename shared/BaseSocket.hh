@@ -5,35 +5,57 @@
 # include <QDataStream>
 # include <QTcpSocket>
 
-
+/**
+ * @class BaseSocket
+ * @brief Represent a socket endpoint connected to an other throught network
+ *
+ */
 class BaseSocket : public QTcpSocket
 {
     Q_OBJECT
 
+public:
+    enum Destination
+    {
+        BROADCAST = -1
+    };
+
 protected:
-    int             _socketFd; // Useless for client side
-    quint16         _msgSize;
+    int             _socketFd; /**< Socket descriptor (or socker ID) */
+    quint16         _msgSize;  /**< Current message size*/
 
 public:
-    BaseSocket(int socketFd, QObject *parent = nullptr);
+    BaseSocket(qint32 socketFd, QObject *parent = nullptr);
     virtual ~BaseSocket();
 
     QByteArray      packMessage(const QString &msg) const;
 
-    int             fd() const;
+    qint32          fd() const;
 
 signals:
-    // Catch this signal on a slot to receive message from socket
-    void            receiveMessage(int socketFd, const QString &msg);
+    /**
+     * @brief receiveMessage is emited when a full message is available on socket
+     * @param socketFd The socket descriptor
+     * @param msg The message as a QString
+     */
+    void            receiveMessage(qint32 socketFd, const QString &msg);
 
 public slots:
-    // Send signal to this slot to send message throught socket
-    void            sendMessage(const QString &msg);
+    /**
+     * @brief sendMessage Emit a signal on this slot to send a message throught socket
+     * @param msg The message
+     */
+    void            sendMessage(qint32 socketFd, const QString &msg);
 
 private slots:
-    // Read bytes on socket and emit receiveMessage() when full message arrived
+    /**
+     * @brief readMessage read bytes from socket and emit receiveMessage() when full message arrived
+     */
     void            readMessage();
-    // Receive error from the socket
+    /**
+     * @brief displayError receive errors messages from the socket
+     * @param socketError contain the error message
+     */
     void            displayError(QAbstractSocket::SocketError socketError);
 
 };

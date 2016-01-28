@@ -1,6 +1,6 @@
 #include "BaseSocket.hh"
 
-BaseSocket::BaseSocket(int socketFd, QObject *parent)
+BaseSocket::BaseSocket(qint32 socketFd, QObject *parent)
     : QTcpSocket(parent),
       _socketFd(socketFd),
       _msgSize(0)
@@ -25,12 +25,12 @@ QByteArray BaseSocket::packMessage(const QString &msg) const
     out << (quint16) 0;
     out << msg;
     out.device()->seek(0);
-    out <<(quint16) (block.size() - sizeof(quint16));
+    out << (quint16) (block.size() - sizeof(quint16));
 
     return  block;
 }
 
-int BaseSocket::fd() const
+qint32 BaseSocket::fd() const
 {
     return _socketFd;
 }
@@ -45,7 +45,7 @@ void BaseSocket::readMessage()
     // If it's a whole new message
     if (_msgSize == 0)
     {
-        if (bytesAvailable() < (int) sizeof(quint16))
+        if (bytesAvailable() < (qint32) sizeof(quint16))
         {
             qDebug() << "BaseSocket::readMessage() : Error, to few bytes availables (< sizeof(quint16) )";
             return;
@@ -72,10 +72,13 @@ void BaseSocket::readMessage()
     _msgSize = 0;
 }
 
-void BaseSocket::sendMessage(const QString &msg)
+void BaseSocket::sendMessage(qint32 socketFd, const QString &msg)
 {
-    qDebug() << "BaseSocket::sendMessage() " << _socketFd << " : " << msg;
-    write(packMessage(msg));
+    if (socketFd == _socketFd || socketFd == BROADCAST)
+    {
+        qDebug() << "BaseSocket::sendMessage() " << _socketFd << " : " << msg;
+        write(packMessage(msg));
+    }
 }
 
 void BaseSocket::displayError(QAbstractSocket::SocketError socketError)
@@ -92,4 +95,5 @@ void BaseSocket::displayError(QAbstractSocket::SocketError socketError)
             break;
         }
     qDebug() << "BaseSocket::displayError() : " << errorString();
+   // emit disconnected();
 }

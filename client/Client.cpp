@@ -9,7 +9,8 @@ Client::Client(const QString &ip, quint16 port, QObject *parent)
     qDebug() << "Client::Client()";
 
     // For tests
-    connect(this, SIGNAL(sigSendMsg(QString)), &_socket, SLOT(sendMessage(QString)));
+    connect(this,       SIGNAL(sigSendMsg(qint32, const QString&)),
+            &_socket,   SLOT(sendMessage(qint32, const QString&)));
 }
 
 Client::~Client()
@@ -46,5 +47,5 @@ void Client::stop()
 
 void Client::sendMessageFunction(const QString &msg)
 {
-    emit sigSendMsg(msg);
+    emit sigSendMsg(BaseSocket::BROADCAST, msg);
 }

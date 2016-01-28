@@ -28,7 +28,7 @@ public:
 
 signals:
     // For tests
-    void            sigSendMsg(const QString &msg);
+    void            sigSendMsg(qint32 socketFd, const QString &msg);
 };
 
 #endif // CLIENT_HH
