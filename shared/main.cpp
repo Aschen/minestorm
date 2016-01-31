@@ -34,9 +34,10 @@ int main(int argc, char *argv[])
     Message     msg2("3 42");
     qDebug() << msg2.typeStr() << "keyCode: " << msg2.keyCode();
 
-    Message     msg3("7 3 2 42 21 1 84 3 12 21 34 43 56 65");
+    Message     msg3("7 3 2 42 21 84 48 3 12 21 34 43 56 65 1 23 22");
     qDebug() << msg3.typeStr() << "size: " << msg3.objects()->size();
     qDebug() << msg3.objects()->at(0).at(0).y();
+    qDebug() << sizeof(int);
     return 0;
 
 //    QMainWindow         window;

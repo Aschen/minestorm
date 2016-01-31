@@ -101,8 +101,9 @@ void Message::readInfoObjects(QTextStream &stream)
         {
             // For each pair of coordinate, add point to the polygon
             stream >> x >> y;
-            object << QPoint(x, y);
+            object[j] = QPoint(x, y);
         }
+        _objects->operator[](i) = object;
     }
 }
 
