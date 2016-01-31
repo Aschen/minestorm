@@ -13,6 +13,7 @@
 # include "Entity.hh"
 # include "Carre.hh"
 
+
 class Core : public QObject
 {    
     Q_OBJECT
@@ -33,10 +34,11 @@ public slots:
     void                mouseMoved(int x, int y);
     void                keyPressed(int key);
     void                keyReleased(int key);
-    void                start();
+    void                start(QSize size);
     void                pause();
     void                reset();
     void                test();
+    void                initialize(QSize size);
 
 private slots:
     void                step();

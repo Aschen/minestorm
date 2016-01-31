@@ -63,7 +63,7 @@ signals:
     void                sigMouseMoved(int x, int y);
     void                sigKeyPressed(int key);
     void                sigKeyReleased(int key);
-    void                sigStart();
+    void                sigStart(const QSize size);
     void                sigPause();
     void                sigReset();
     void                sigTest();

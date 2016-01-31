@@ -1,4 +1,5 @@
 #include "Core.hh"
+#include "Ship.hh"
 
 Core::Core(int cps) :
     QObject(),
@@ -26,13 +27,14 @@ void Core::step()
     ++_step;
 }
 
-void Core::start()
+void Core::start(QSize size)
 {
     DEBUG("Core::start()", 1);
     if (_isRunning == false)
     {
         _timer.start(1000 / _cps); // Nombre de cycle de jeu par seconde
         _isRunning = true;
+        initialize(size);
     }
 }
 
@@ -65,6 +67,14 @@ void Core::test()
     {
         std::cout << entity->dump() << std::endl;
     }
+}
+
+void Core::initialize(QSize size)
+{
+    DEBUG("Display::initialize()", 0);
+    Ship ship("ship",QRect(size.width()/2-25/2,size.height()/2-25/2,40,40), 3);
+    QPolygon polygon = QPolygon(ship.rect(), true);
+    _entities.push_back(std::shared_ptr<Entity>(new Ship(ship)));
 }
 
 void Core::mousePressed(int x, int y)

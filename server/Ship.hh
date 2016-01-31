@@ -4,12 +4,14 @@
 # include <QRect>
 # include "QImage"
 
-class Ship
+#include "Entity.hh"
+
+class Ship : public Entity
 {
 public:
     //Constructeurs
-    Ship();
-    Ship(QRect rect, int vie);
+    Ship(string name);
+    Ship(string name, QRect rect, int vie);
 
     //Getter & Setter
     int vie() const;

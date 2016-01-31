@@ -1,4 +1,5 @@
 #include "Display.hh"
+#include "Ship.hh"
 
 Display::Display(const QSize &size, int fps, QObject *parent)
     : QObject(parent),
@@ -20,8 +21,9 @@ void Display::draw(QPainter &painter, QRect &size)
 {
     (void) size;
     DEBUG("Display::draw() : " << _objects.size() << " objects to draw", 1);
-    painter.setPen(QColor(0, 0, 0));
-    painter.setBrush(QBrush(QColor(0, 0, 0)));
+    painter.fillRect(size, QColor(0,0,0));
+    painter.setPen(QColor(255,255,255));
+    painter.setBrush(QBrush(QColor(255, 255, 255)));
 
     _objectsMutex.lock();
     for (auto object : _objects)
@@ -33,6 +35,7 @@ void Display::draw(QPainter &painter, QRect &size)
 
 void Display::initialize()
 {
+
 }
 
 void Display::start()
@@ -40,7 +43,7 @@ void Display::start()
     _timer.start(1000 / _fps); // Répète le timer en fonction des fps
     _isRunning = true;
     DEBUG("Display::start()", 0);
-    emit sigStart();
+    emit sigStart(_size);
 }
 
 void Display::pause()
