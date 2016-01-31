@@ -13,7 +13,6 @@
 # include <sstream>
 
 # include "Minestorm.hh"
-# include "Protocol.hh"
 # include "Server.hh"
 # include "Entity.hh"
 # include "Carre.hh"

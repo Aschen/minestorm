@@ -43,17 +43,7 @@ void Core::step()
 
 void Core::messageDispatcher(qint32 socketFd, const QString &msg)
 {
-    qDebug() << "Core::receiveMessage() : client " << socketFd << " : " << msg;
-    QTextStream                 message(msg.toUtf8());
-    Protocol::MessageType       messageType = Protocol::getMessage(message);
-
-    switch (messageType)
-    {
-    case Protocol::MOUSE_PRESSED:
-        break;
-    default:
-        break;
-    }
+    qDebug() << "Core::messageDispatcher() : client " << socketFd << " : " << msg;
 }
 
 void Core::start()
