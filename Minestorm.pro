@@ -27,9 +27,9 @@ SOURCES += server/Core.cpp \
     client/Client.cpp \
     server/Worker.cpp \
     shared/BaseSocket.cpp \
-    shared/Message.cpp \
     test/TestMessage.cpp \
-    shared/test.cpp
+    shared/test.cpp \
+    shared/Message.cpp
 
 HEADERS  += server/Core.hh \
     client/Controller.hh \
@@ -46,8 +46,8 @@ HEADERS  += server/Core.hh \
     client/Client.hh \
     server/Worker.hh \
     shared/BaseSocket.hh \
-    shared/Message.hh \
-    test/TestMessage.hh
+    test/TestMessage.hh \
+    shared/Message.hh
 
 FORMS    +=
 
