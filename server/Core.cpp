@@ -38,10 +38,10 @@ void Core::step()
 
     if (objects.size())
     {
-        qDebug() << "Send " << objects.size() << " objects";
+        qDebug() << "Core::step() : Send " << objects.size() << " objects";
         MessageObjects      message(objects);
 
-        _server.broadcast(message.messageString());
+        emit _server.broadcast(message.messageString());
     }
 
     ++_step;
@@ -109,7 +109,7 @@ void Core::mousePressed(int x, int y)
 
     // Quand on reçoit un signal dans le slot mousePressed(),
     // On créé un carre depuis les coordonnées x et y
-    Carre   carre("carre", QPoint(x, y), _step);
+    Carre   carre("carre", QPoint(x, y), 42);
 
     // On ajoute le carre créé à la liste des entités
     _entities.push_back(std::shared_ptr<Entity>(new Carre(carre)));
