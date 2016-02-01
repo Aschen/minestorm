@@ -14,6 +14,7 @@ class Message
 public:
     enum Type
     {
+        ERROR = 0,
         MOUSE_PRESSED = 1,
         MOUSE_RELEASED = 2,
         KEY_PRESSED = 3,

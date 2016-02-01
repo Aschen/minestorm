@@ -1,7 +1,11 @@
 #include "Message.hh"
 
 Message::Message(const QString &msg)
-    : _rawMessage(msg)
+    : _rawMessage(msg),
+      _type(ERROR),
+      _keyCode(-1),
+      _point(nullptr),
+      _objects(nullptr)
 {
     qDebug() << "Message::Message() : " <<_rawMessage;
     QTextStream     stream(msg.toUtf8());
@@ -30,8 +34,11 @@ Message::Message(const QString &msg)
         readInfoObjects(stream);
         break;
 
+    case ERROR:
     default:
         qDebug() << "Unknown message type " << _type;
+        _type = Message::ERROR;
+        break;
     }
 }
 
@@ -108,6 +115,7 @@ void Message::readInfoObjects(QTextStream &stream)
 }
 
 const QHash<Message::Type, QString> Message::STRINGS = {
+    { Message::ERROR, "ERROR" },
     { Message::MOUSE_PRESSED, "MOUSE_PRESSED" },
     { Message::MOUSE_RELEASED, "MOUSE_RELEASED" },
     { Message::KEY_PRESSED, "KEY_PRESSED" },
@@ -146,6 +154,9 @@ QDebug &operator<<(QDebug &qdebug, const Message &msg)
 
     case Message::INFO_OBJECTS:
         qdebug << "count: " << msg.objects()->size();
+        break;
+
+    case Message::ERROR:
         break;
     }
 

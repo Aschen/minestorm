@@ -1,7 +1,10 @@
+QMAKE_CXX   =   clang++
+QMAKE_CC    =   clang
 
-QT       += core gui network
+QT      +=  core gui network testlib
 
-CONFIG+=C++11
+CONFIG  +=  C++11
+CONFIG  +=  testcase
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -24,7 +27,9 @@ SOURCES += server/Core.cpp \
     client/Client.cpp \
     server/Worker.cpp \
     shared/BaseSocket.cpp \
-    shared/Message.cpp
+    shared/Message.cpp \
+    test/TestMessage.cpp \
+    shared/test.cpp
 
 HEADERS  += server/Core.hh \
     client/Controller.hh \
@@ -41,7 +46,8 @@ HEADERS  += server/Core.hh \
     client/Client.hh \
     server/Worker.hh \
     shared/BaseSocket.hh \
-    shared/Message.hh
+    shared/Message.hh \
+    test/TestMessage.hh
 
 FORMS    +=
 

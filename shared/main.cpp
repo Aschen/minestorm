@@ -11,34 +11,50 @@
 
 #include "Message.hh"
 
+void        runTests();
+
 int main(int argc, char *argv[])
 {
-//    QApplication    a(argc, argv);
+    QString     arg(argv[1]);
 
-//    QString     arg(argv[1]);
+    if (arg == "srv")
+    {
+        QApplication    a(argc, argv);
+        Core            *core = new Core(20);
 
-//    if (arg == "srv")
-//    {
-//        Core            *core = new Core(20);
-//        return a.exec();
-//    }
-//    else
-//    {
-//        Display         display(QSize(400, 400));
-//        MainWindow      w(&display);
-//        return a.exec();
-//    }
-    Message     msg("1 21 42");
-    qDebug() << msg.typeStr() << " x: " << msg.point()->x() << " y: " << msg.point()->y();
+        return a.exec();
+    }
+    else if (arg == "cli")
+    {
+        QApplication    a(argc, argv);
+        Display         display(QSize(400, 400));
+        MainWindow      w(&display);
 
-    Message     msg2("3 42");
-    qDebug() << msg2.typeStr() << "keyCode: " << msg2.keyCode();
+        return a.exec();
+    }
+    else if (arg == "test")
+    {
+        runTests();
 
-    Message     msg3("7 3 2 42 21 84 48 3 12 21 34 43 56 65 1 23 22");
-    qDebug() << msg3.typeStr() << "size: " << msg3.objects()->size();
-    qDebug() << msg3.objects()->at(0).at(0).y();
-    qDebug() << sizeof(int);
-    return 0;
+        return 0;
+    }
+    else
+    {
+        qDebug() << "Usage : " << argv[0] << " <cli|srv|test>";
+
+        return 0;
+    }
+//    Message     msg("1 21 42");
+//    qDebug() << msg.typeStr() << " x: " << msg.point()->x() << " y: " << msg.point()->y();
+
+//    Message     msg2("3 42");
+//    qDebug() << msg2.typeStr() << "keyCode: " << msg2.keyCode();
+
+//    Message     msg3("7 3 2 42 21 84 48 3 12 21 34 43 56 65 1 23 22");
+//    qDebug() << msg3.typeStr() << "size: " << msg3.objects()->size();
+//    qDebug() << msg3.objects()->at(0).at(0).y();
+//    qDebug() << sizeof(int);
+//    return 0;
 
 //    QMainWindow         window;
 
