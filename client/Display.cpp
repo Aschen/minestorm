@@ -5,8 +5,10 @@ Display::Display(const QSize &size, int fps, QObject *parent)
       _isRunning(false),
       _size(size),
       _fps(fps),
-      _client("127.0.0.1", 4242)
+      _client("127.0.0.1", 4242),
+      _objects(nullptr)
 {
+    qDebug() << "Display::Display()";
     _timer.setSingleShot(false);
     /* Le signal timeout() est envoyé toutes les 40ms,
     ** on le connecte à la fonction Display::update()
@@ -14,22 +16,28 @@ Display::Display(const QSize &size, int fps, QObject *parent)
     ** qui fait appel à Display::draw()
     */
     connect(&_timer, SIGNAL(timeout()), this, SLOT(update()));
+
+    connect(&_client, SIGNAL(receiveInfoObjects(QSharedPointer<QVector<QPolygon> >)),
+            this, SLOT(receiveObjects(QSharedPointer<QVector<QPolygon> >)));
 }
 
 /* *** */
 void Display::draw(QPainter &painter, QRect &size)
 {
     (void) size;
-    DEBUG("Display::draw() : " << _objects.size() << " objects to draw", 0);
+    DEBUG("Display::draw() : " << _objects->size() << " objects to draw", 0);
     painter.setPen(QColor(0, 0, 0));
     painter.setBrush(QBrush(QColor(0, 0, 0)));
 
-    _objectsMutex.lock();
-    for (auto object : _objects)
+    if (_objects != nullptr)
     {
-        painter.drawConvexPolygon(object);
+        _objectsMutex.lock();
+        for (auto object : *_objects)
+        {
+            painter.drawConvexPolygon(object);
+        }
+        _objectsMutex.unlock();
     }
-    _objectsMutex.unlock();
 }
 
 void Display::initialize()
@@ -83,7 +91,7 @@ void Display::update()
 void Display::mousePressed(int x, int y)
 {
     qDebug() << "Display::mousePressed : x = " << x << ", y = " << y;
-    _client.sendMessage("MOUSE_PRESSED " + QString::number(x) + " " + QString::number(y));
+    _client.sendMessage("1 " + QString::number(x) + " " + QString::number(y));
     emit sigMousePressed(x, y);
 }
 
@@ -121,14 +129,13 @@ bool Display::isRunning() const
 
 const QVector<QPolygon> &Display::objects() const
 {
-    return _objects;
+    return *_objects;
 }
 
-void Display::receiveObjects(const QVector<QPolygon> &objects)
+void Display::receiveObjects(const QSharedPointer<QVector<QPolygon>> &objects)
 {
-    DEBUG("Display::receiveObjects() : " << objects.size() << " objects received", 1);
+    DEBUG("Display::receiveObjects() : " << objects->size() << " objects received", 1);
     _objectsMutex.lock();
-    _objects.clear();
     _objects = objects;
     _objectsMutex.unlock();
 }

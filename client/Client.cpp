@@ -11,6 +11,8 @@ Client::Client(const QString &ip, quint16 port, QObject *parent)
     // For tests
     connect(this,       SIGNAL(sigSendMessage(qint32, const QString&)),
             &_socket,   SLOT(sendMessage(qint32, const QString&)));
+    connect(&_socket,   SIGNAL(receiveMessage(qint32,QString)),
+            this,       SLOT(receiveMessage(qint32,QString)));
 }
 
 Client::~Client()
@@ -49,3 +51,59 @@ void Client::sendMessage(const QString &msg)
 {
     emit sigSendMessage(BaseSocket::BROADCAST, msg);
 }
+
+const BaseSocket *Client::socket() const
+{
+    return &_socket;
+}
+
+void Client::receiveMessage(qint32 socketFd, const QString &msg)
+{
+    (void) socketFd;
+
+    QTextStream     stream(msg.toUtf8());
+    qint32          type;
+    MessageBase::Type   msgType;
+
+    stream >> type;
+    msgType = (MessageBase::Type) type;
+
+    if (msgType == MessageBase::INFO_OBJECTS)
+    {
+        MessageObjects      message(msg);
+
+        qDebug() << "Receive " << message.objects()->size() << " objects";
+        emit receiveInfoObjects(message.objects());
+    }
+    else
+    {
+        qDebug() << msg;
+    }
+
+//    switch (msgType)
+//    {
+//    case MessageBase::INFO_OBJECTS:
+//        MessageObjects      message(msg);
+//        emit receiveInfoObjects(message.objects());
+//        break;
+
+//    default:
+//        break;
+//    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

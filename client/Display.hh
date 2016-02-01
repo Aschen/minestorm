@@ -32,7 +32,7 @@ private:
     const QSize         _size;
     const int           _fps;
     Client              _client;
-    QVector<QPolygon>   _objects;
+    QSharedPointer<QVector<QPolygon>>   _objects;
     QMutex              _objectsMutex;
 
 public:
@@ -72,7 +72,7 @@ signals:
     void                sigTest();
 
 public slots:
-    void                receiveObjects(const QVector<QPolygon> &objects);
+    void                receiveObjects(const QSharedPointer<QVector<QPolygon>> &objects);
 
 private slots:
     void                update();

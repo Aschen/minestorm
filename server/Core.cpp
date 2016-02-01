@@ -17,6 +17,7 @@ Core::Core(int cps) :
             this,       SLOT(messageDispatcher(qint32, const QString&)));
 
     _server.start();
+    start();
 }
 
 Core::~Core()
@@ -26,7 +27,7 @@ Core::~Core()
 
 void Core::step()
 {
-    DEBUG("Core::step() : " << _step, 1);
+    //DEBUG("Core::step() : " << _step, 1);
     QVector<QPolygon>   objects;
 
     // On créé un vecteur de QPolygon à partir de nos entitées
@@ -35,15 +36,37 @@ void Core::step()
         objects.push_back(QPolygon(*entity));
     }
 
-    objects.size();
-    // On envoi le vecteur de QPolygon à Display
-//    emit sendObjects(objects);
+    if (objects.size())
+    {
+        qDebug() << "Send " << objects.size() << " objects";
+        MessageObjects      message(objects);
+
+        _server.broadcast(message.messageString());
+    }
+
     ++_step;
 }
 
 void Core::messageDispatcher(qint32 socketFd, const QString &msg)
 {
     qDebug() << "Core::messageDispatcher() : client " << socketFd << " : " << msg;
+    qint32      type;
+    MessageBase::Type   msgType;
+    QTextStream stream(msg.toUtf8());
+
+   stream >> type;
+   msgType = (MessageBase::Type) type;
+
+   if (msgType == MessageBase::MOUSE_PRESSED)
+   {
+       MessageMouse     message(msg);
+
+       mousePressed(message.x(), message.y());
+   }
+   else
+   {
+       qDebug() << msg;
+   }
 }
 
 void Core::start()

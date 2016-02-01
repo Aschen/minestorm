@@ -3,7 +3,8 @@
 
 # include <QtTest/QTest>
 
-# include "Message.hh"
+# include "MessageMouse.hh"
+# include "MessageObjects.hh"
 
 class TestMessage : public QObject
 {

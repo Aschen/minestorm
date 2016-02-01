@@ -5,6 +5,7 @@ BaseSocket::BaseSocket(qint32 socketFd, QObject *parent)
       _socketFd(socketFd),
       _msgSize(0)
 {
+    qDebug() << "BaseSocket::BaseSocket() : " << socketFd;
     connect(this, SIGNAL(readyRead()),
             this, SLOT(readMessage()), Qt::DirectConnection);
     connect(this, SIGNAL(error(QAbstractSocket::SocketError)),
@@ -39,7 +40,7 @@ void BaseSocket::readMessage()
 {
     QDataStream     in(this);
 
-    qDebug() << "BaseSocket::readMessage() ";
+    //qDebug() << "BaseSocket::readMessage() ";
     in.setVersion(QDataStream::Qt_4_0);
 
     // If it's a whole new message
@@ -66,7 +67,7 @@ void BaseSocket::readMessage()
 
     in >> message;
     emit receiveMessage(_socketFd, message);
-    qDebug() << "BaseSocket::readMessage() : Full message readed : " << message;
+    //qDebug() << "BaseSocket::readMessage() : Full message readed : " << message;
 
     // Prepare to read whole new message
     _msgSize = 0;

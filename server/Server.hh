@@ -37,7 +37,7 @@ signals:
     void                        transfertMessage(qint32 socketFd, const QString &msg);
 
 public slots:
-    void                        broadcast();
+    void                        broadcast(const QString &message);
     void                        receiveMessage(qint32 socketFd, const QString &msg);
 
 private:

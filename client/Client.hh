@@ -6,7 +6,11 @@
 # include <QByteArray>
 # include <QTextStream>
 # include <QDebug>
+# include <QSharedPointer>
+# include <QVector>
+# include <QPolygon>
 
+# include "MessageObjects.hh"
 # include "BaseSocket.hh"
 
 class Client : public QObject
@@ -27,7 +31,13 @@ public:
 
     void            sendMessage(const QString &msg);
 
+    const BaseSocket    *socket() const;
+
+public slots:
+    void            receiveMessage(qint32 socketFd, const QString &msg);
+
 signals:
+    void            receiveInfoObjects(const QSharedPointer<QVector<QPolygon>> &objects);
     void            sigSendMessage(qint32 socketFd, const QString &msg);
 };
 
