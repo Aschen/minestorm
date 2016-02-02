@@ -8,11 +8,12 @@ Client::Client(const QString &ip, quint16 port, QObject *parent)
 {
     qDebug() << "Client::Client()";
 
-    // For tests
-    connect(this,       SIGNAL(sigSendMessage(qint32, const QString&)),
-            &_socket,   SLOT(sendMessage(qint32, const QString&)));
-    connect(&_socket,   SIGNAL(receiveMessage(qint32,QString)),
-            this,       SLOT(receiveMessage(qint32,QString)));
+    /* Quand la socket reçoit un message,
+    ** on l'envoi au message dispatcher qui emet le signal
+    ** pour le display correspondant au message reçu
+    */
+    connect(&_socket,   SIGNAL(receiveMessage(qint32, QString)),
+            this,       SLOT(messageDispatcher(qint32, QString)));
 }
 
 Client::~Client()
@@ -49,7 +50,7 @@ void Client::stop()
 
 void Client::sendMessage(const QString &msg)
 {
-    emit sigSendMessage(BaseSocket::BROADCAST, msg);
+    _socket.sendMessage(BaseSocket::BROADCAST, msg);
 }
 
 const BaseSocket *Client::socket() const
@@ -57,7 +58,7 @@ const BaseSocket *Client::socket() const
     return &_socket;
 }
 
-void Client::receiveMessage(qint32 socketFd, const QString &msg)
+void Client::messageDispatcher(qint32 socketFd, const QString &msg)
 {
     (void) socketFd;
 

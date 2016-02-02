@@ -9,7 +9,7 @@ class MessageBase
 public:
     enum Type
     {
-        ERROR = 0, // Error when try to extract int from QTextStream return 0
+        ERROR = 0, // Trying to extract int from QTextStream return 0 if error
         MOUSE_PRESSED = 1,
         MOUSE_RELEASED = 2,
         KEY_PRESSED = 3,
@@ -23,9 +23,6 @@ public:
 protected:
     Type                                _type;
     QString                             _messageString;
-//    int                                 _keyCode;
-//    QSharedPointer<QPoint>              _point; // Make union?
-//    QSharedPointer<QVector<QPolygon>>   _objects;
 
 
 public:
@@ -35,19 +32,7 @@ public:
     QString                             typeStr() const;
     MessageBase::Type                   type() const;
     const QString                       &messageString() const;
-//    int                                 keyCode() const;
-//    const QSharedPointer<QPoint>        point() const;
-//    const QSharedPointer<QVector<QPolygon>> objects() const;
-
-//private:
-//    void                                readMouseEvent(QTextStream &stream);
-//    void                                readKeyEvent(QTextStream &stream);
-//    void                                readInfoObjects(QTextStream &stream);
 };
-
-
-//QDebug              &operator<<(QDebug &qdebug, const MessageBase &msg);
-//QDebug              &operator<<(QDebug &qdebug, MessageBase::Type msgType);
 
 /**
   *           quint16               frameSize

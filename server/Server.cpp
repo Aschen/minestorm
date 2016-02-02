@@ -5,7 +5,8 @@ Server::Server(quint16 port, QObject *parent)
       _port(port),
       _address(QHostAddress::Any)
 {
-    qDebug() << "Server::Server()";
+    DEBUG("Server::Server()", true);
+
     _timer.setSingleShot(false);
 //    _timer.start(1000/ 20);
     _count = 0;
@@ -15,7 +16,7 @@ Server::Server(quint16 port, QObject *parent)
 
 Server::~Server()
 {
-    qDebug() << "Server::~Server()";
+    DEBUG("Server::~Server()", true);
 }
 
 void Server::start()
@@ -24,11 +25,11 @@ void Server::start()
     {
         if (!listen(_address, _port))
         {
-            qDebug() << "Server error listen";
+            DEBUG("Server error listen", true);
         }
         else
         {
-            qDebug() << "Server::start() : Listening on " << _port;
+            DEBUG("Server::start() : Listening on " << _port, true);
         }
     }
 }
@@ -44,7 +45,7 @@ void Server::incomingConnection(qintptr socketFd)
     connect(worker, SIGNAL(finished()),
             worker, SLOT(deleteLater()));
 
-    // Connect communications functions
+    // Connect communications functions for each worker
     connect(this,               SIGNAL(sendMessage(qint32, const QString&)),
             worker->socket(),   SLOT(sendMessage(qint32, const QString&)));
     connect(worker->socket(),   SIGNAL(receiveMessage(qint32, const QString&)),
@@ -65,19 +66,3 @@ void Server::receiveMessage(qint32 socketFd, const QString &msg)
     qDebug() << "Server::receiveMessage() : Worker " << socketFd << msg;
     emit transfertMessage(socketFd, msg);
 }
-
-QByteArray Server::getMessage(const QString &message)
-{
-    QByteArray  block;
-    QDataStream out(&block, QIODevice::WriteOnly);
-
-    out.setVersion(QDataStream::Qt_4_0);
-
-    out << (quint16) 0;
-    out << message;
-    out.device()->seek(0);
-    out <<(quint16) (block.size() - sizeof(quint16));
-
-    return  block;
-}
-

@@ -1,10 +1,10 @@
 #ifndef MINESTORM_HH
 # define MINESTORM_HH
 
-# include <iostream>
+# include <QDebug>
 
 # define DEBUG(x,y) do { \
-  if (y) { std::cout << x << std::endl; } \
+  if (x) { qDebug() << y; } \
 } while (0)
 
 

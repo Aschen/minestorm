@@ -17,8 +17,11 @@ Display::Display(const QSize &size, int fps, QObject *parent)
     */
     connect(&_timer, SIGNAL(timeout()), this, SLOT(update()));
 
-    connect(&_client, SIGNAL(receiveInfoObjects(QSharedPointer<QVector<QPolygon> >)),
-            this, SLOT(receiveObjects(QSharedPointer<QVector<QPolygon> >)));
+    /* Quand le client reçoit la liste des objets,
+    ** on appelle la fonction d'affichage
+    */
+    connect(&_client,   SIGNAL(receiveInfoObjects(QSharedPointer<QVector<QPolygon>>)),
+            this,       SLOT(receiveObjects(QSharedPointer<QVector<QPolygon>>)));
 }
 
 /* *** */

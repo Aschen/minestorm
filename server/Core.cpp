@@ -1,11 +1,11 @@
 #include "Core.hh"
 
-Core::Core(int cps) :
-    QObject(),
-    _isRunning(false),
-    _cps(cps),
-    _step(1),
-    _server(4242)
+Core::Core(int cps)
+    : QObject(),
+      _isRunning(false),
+      _cps(cps),
+      _step(1),
+      _server(4242)
 {
     qDebug() << "Core::Core() : cps " << cps;
     _timer.setSingleShot(false);
@@ -41,7 +41,7 @@ void Core::step()
         qDebug() << "Core::step() : Send " << objects.size() << " objects";
         MessageObjects      message(objects);
 
-        emit _server.broadcast(message.messageString());
+        _server.broadcast(message.messageString());
     }
 
     ++_step;

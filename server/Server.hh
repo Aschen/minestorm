@@ -5,9 +5,8 @@
 # include <QSharedPointer>
 # include <QTimer>
 # include <QDebug>
-# include <QFile> // REMOVE
-# include <QByteArray> // REMOVE
 
+# include "Minestorm.hh"
 # include "Worker.hh"
 
 /**
@@ -21,7 +20,7 @@ private:
     quint16                     _port;
     QHostAddress                _address;
     QTimer                      _timer;
-    int _count;
+    int                         _count;
 
 public:
     Server(quint16 port, QObject *parent = nullptr);
@@ -32,16 +31,14 @@ public:
     // QTcpServer override
     void                        incomingConnection(qintptr socketFd) Q_DECL_OVERRIDE;
 
+    void                        broadcast(const QString &message);
+
 signals:
     void                        sendMessage(qint32 socketFd, const QString &msg);
     void                        transfertMessage(qint32 socketFd, const QString &msg);
 
 public slots:
-    void                        broadcast(const QString &message);
     void                        receiveMessage(qint32 socketFd, const QString &msg);
-
-private:
-    QByteArray                  getMessage(const QString &message);
 };
 
 #endif // SERVER_HH

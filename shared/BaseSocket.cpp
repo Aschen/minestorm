@@ -36,6 +36,7 @@ qint32 BaseSocket::fd() const
     return _socketFd;
 }
 
+/* PRIVATE SLOT */
 void BaseSocket::readMessage()
 {
     QDataStream     in(this);
@@ -73,6 +74,7 @@ void BaseSocket::readMessage()
     _msgSize = 0;
 }
 
+/* PUBLIC SLOT */
 void BaseSocket::sendMessage(qint32 socketFd, const QString &msg)
 {
     if (socketFd == _socketFd || socketFd == BROADCAST)

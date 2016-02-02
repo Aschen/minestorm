@@ -29,13 +29,12 @@ private:
     QTimer              _timer;
     int                 _step;
     Server              _server;
-    EntityList          _entities;
+    EntityList          _entities ;
 
 public:
     Core(int cps);
     ~Core();
 
-public slots:
     void                mousePressed(int x, int y);
     void                mouseReleased(int x, int y);
     void                mouseMoved(int x, int y);
@@ -49,9 +48,6 @@ public slots:
 private slots:
     void                step();
     void                messageDispatcher(qint32 socketFd, const QString &msg);
-
-signals:
-    void                sendObjects(const QVector<QPolygon> &objects);
 };
 
 #endif // CORE_HH
