@@ -8,7 +8,7 @@ Display::Display(const QSize &size, int fps, QObject *parent)
       _client("127.0.0.1", 4242),
       _objects(nullptr)
 {
-    qDebug() << "Display::Display()";
+    DEBUG("Display::Display()", true);
     _timer.setSingleShot(false);
     /* Le signal timeout() est envoyé toutes les 40ms,
     ** on le connecte à la fonction Display::update()
@@ -28,7 +28,7 @@ Display::Display(const QSize &size, int fps, QObject *parent)
 void Display::draw(QPainter &painter, QRect &size)
 {
     (void) size;
-    DEBUG("Display::draw() : " << _objects->size() << " objects to draw", 0);
+    DEBUG("Display::draw() : " << _objects->size() << " objects to draw", false);
     painter.setPen(QColor(0, 0, 0));
     painter.setBrush(QBrush(QColor(0, 0, 0)));
 
@@ -49,7 +49,7 @@ void Display::initialize()
 
 void Display::start()
 {
-    DEBUG("Display::start()", 0);
+    DEBUG("Display::start()", false);
     _timer.start(1000 / _fps); // Répète le timer en fonction des fps
     _isRunning = true;
     _client.start();
@@ -58,7 +58,7 @@ void Display::start()
 
 void Display::pause()
 {
-    DEBUG("Display::pause()", 0);
+    DEBUG("Display::pause()", false);
     _timer.stop();
     _isRunning = false;
     emit sigPause();
@@ -66,7 +66,7 @@ void Display::pause()
 
 void Display::reset()
 {
-    DEBUG("Display::reset()", 0);
+    DEBUG("Display::reset()", false);
     pause();
     initialize();
     emit changed();
@@ -75,14 +75,14 @@ void Display::reset()
 
 void Display::test()
 {
-    DEBUG("Display::test()", 1);
+    DEBUG("Display::test()", false);
 
     emit sigTest();
 }
 
 void Display::update()
 {
-    DEBUG("Display::update()", 0);
+    DEBUG("Display::update()", false);
     if (_isRunning)
     {
         emit changed();
@@ -93,7 +93,7 @@ void Display::update()
 /* EVENTS */
 void Display::mousePressed(int x, int y)
 {
-    qDebug() << "Display::mousePressed : x = " << x << ", y = " << y;
+    DEBUG("Display::mousePressed() : x = " << x << ", y = " << y, true);
     _client.sendMessage("1 " + QString::number(x) + " " + QString::number(y));
     emit sigMousePressed(x, y);
 }
@@ -137,7 +137,7 @@ const QVector<QPolygon> &Display::objects() const
 
 void Display::receiveObjects(const QSharedPointer<QVector<QPolygon>> &objects)
 {
-    DEBUG("Display::receiveObjects() : " << objects->size() << " objects received", 1);
+    DEBUG("Display::receiveObjects() : " << objects->size() << " objects received", false);
     _objectsMutex.lock();
     _objects = objects;
     _objectsMutex.unlock();

@@ -9,9 +9,6 @@
 # include <QString>
 # include <QTextStream>
 
-# include <string>
-# include <sstream>
-
 # include "Minestorm.hh"
 # include "Server.hh"
 # include "Entity.hh"
@@ -25,21 +22,19 @@ class Core : public QObject
 
 private:
     bool                _isRunning;
-    const int           _cps;
+    const qint32        _cps;
     QTimer              _timer;
-    int                 _step;
+    qint32              _step;
     Server              _server;
-    EntityList          _entities ;
+    EntityList          _entities;
 
 public:
-    Core(int cps);
+    Core(qint32 cps);
     ~Core();
 
-    void                mousePressed(int x, int y);
-    void                mouseReleased(int x, int y);
-    void                mouseMoved(int x, int y);
-    void                keyPressed(int key);
-    void                keyReleased(int key);
+    void                mousePressed(qint32 idClient, qint32 x, qint32 y);
+    void                keyPressed(qint32 idClient, qint32 key);
+    void                keyReleased(qint32 idClient, qint32 key);
     void                start();
     void                pause();
     void                reset();
@@ -47,7 +42,7 @@ public:
 
 private slots:
     void                step();
-    void                messageDispatcher(qint32 socketFd, const QString &msg);
+    void                messageDispatcher(qint32 idClient, const QString &msg);
 };
 
 #endif // CORE_HH

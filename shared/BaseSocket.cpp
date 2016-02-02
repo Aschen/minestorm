@@ -5,7 +5,7 @@ BaseSocket::BaseSocket(qint32 socketFd, QObject *parent)
       _socketFd(socketFd),
       _msgSize(0)
 {
-    qDebug() << "BaseSocket::BaseSocket() : " << socketFd;
+    DEBUG("BaseSocket::BaseSocket() : " << socketFd, false);
     connect(this, SIGNAL(readyRead()),
             this, SLOT(readMessage()), Qt::DirectConnection);
     connect(this, SIGNAL(error(QAbstractSocket::SocketError)),
@@ -49,7 +49,7 @@ void BaseSocket::readMessage()
     {
         if (bytesAvailable() < (qint32) sizeof(quint16))
         {
-            qDebug() << "BaseSocket::readMessage() : Error, to few bytes availables (< sizeof(quint16) )";
+            DEBUG("BaseSocket::readMessage() : Error : Malformed frame)", true);
             return;
         }
 
@@ -60,15 +60,14 @@ void BaseSocket::readMessage()
     // If the full message isn't arrived, return and wait for more bytes
     if (bytesAvailable() < _msgSize)
     {
-        qDebug() << "BaseSocket::readMessage() : Error, too few bytes availables (< _msgSize)";
         return;
     }
 
     QString         message;
 
     in >> message;
+    DEBUG("BaseSocket::readMessage() : Full message readed : " << message, false);
     emit receiveMessage(_socketFd, message);
-    //qDebug() << "BaseSocket::readMessage() : Full message readed : " << message;
 
     // Prepare to read whole new message
     _msgSize = 0;
@@ -79,7 +78,7 @@ void BaseSocket::sendMessage(qint32 socketFd, const QString &msg)
 {
     if (socketFd == _socketFd || socketFd == BROADCAST)
     {
-        qDebug() << "BaseSocket::sendMessage() " << _socketFd << " : " << msg;
+        DEBUG("BaseSocket::sendMessage() " << _socketFd << " : " << msg, false);
         write(packMessage(msg));
     }
 }
@@ -97,6 +96,6 @@ void BaseSocket::displayError(QAbstractSocket::SocketError socketError)
         default:
             break;
         }
-    qDebug() << "BaseSocket::displayError() : " << errorString();
+    DEBUG("BaseSocket::displayError() : " << errorString(), true);
    // emit disconnected();
 }

@@ -3,15 +3,13 @@
 Server::Server(quint16 port, QObject *parent)
     : QTcpServer(parent),
       _port(port),
-      _address(QHostAddress::Any)
+      _address(QHostAddress::Any),
+      _clientCount(0)
 {
     DEBUG("Server::Server()", true);
-
     _timer.setSingleShot(false);
 //    _timer.start(1000/ 20);
-    _count = 0;
-   // connect(&_timer, SIGNAL(timeout()), this, SLOT(broadcast()));
-    //QTimer::singleShot(3000, this, SLOT(broadcast()));
+//    QTimer::singleShot(3000, this, SLOT(broadcast()));
 }
 
 Server::~Server()
@@ -36,7 +34,7 @@ void Server::start()
 
 void Server::incomingConnection(qintptr socketFd)
 {
-    qDebug() << "Server::incomingConnection() : New connection " << socketFd;
+    DEBUG("Server::incomingConnection() : New connection " << socketFd, true);
 
     // Create worker to handle the new connection
     Worker  *worker = new Worker(socketFd);
@@ -50,19 +48,33 @@ void Server::incomingConnection(qintptr socketFd)
             worker->socket(),   SLOT(sendMessage(qint32, const QString&)));
     connect(worker->socket(),   SIGNAL(receiveMessage(qint32, const QString&)),
             this,               SLOT(receiveMessage(qint32, const QString&)));
+    connect(worker,             SIGNAL(clientDisconnected(qint32)),
+            this,               SLOT(clientDisconnected(qint32)));
 
     worker->start();
+    _clientCount++;
+}
+
+void Server::clientDisconnected(qint32 socketFd)
+{
+    DEBUG("Server::clientDisconnected() : Client" << socketFd, true);
+    _clientCount--;
 }
 
 void Server::broadcast(const QString &message)
 {
-    //qDebug() << "Server::broadcast()";
+    DEBUG("Server::broadcast()", false);
 
     emit sendMessage(BaseSocket::BROADCAST, message);
 }
 
+qint32 Server::clientCount() const
+{
+    return _clientCount;
+}
+
 void Server::receiveMessage(qint32 socketFd, const QString &msg)
 {
-    qDebug() << "Server::receiveMessage() : Worker " << socketFd << msg;
+    DEBUG("Server::receiveMessage() : Worker " << socketFd << msg, false);
     emit transfertMessage(socketFd, msg);
 }

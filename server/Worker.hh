@@ -2,8 +2,8 @@
 # define WORKER_HH
 
 # include <QThread>
-# include <QDebug>
 
+# include "Minestorm.hh"
 # include "BaseSocket.hh"
 
 /**
@@ -26,6 +26,9 @@ public:
 
     qint32              socketFd() const;
     const BaseSocket    *socket() const;
+
+signals:
+    void                clientDisconnected(qint32 socketFd);
 
 private slots:
     /**

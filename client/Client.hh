@@ -1,15 +1,12 @@
 #ifndef CLIENT_HH
 # define CLIENT_HH
 
-# include <QTcpSocket>
-# include <QDataStream>
-# include <QByteArray>
 # include <QTextStream>
-# include <QDebug>
 # include <QSharedPointer>
 # include <QVector>
 # include <QPolygon>
 
+# include "Minestorm.hh"
 # include "MessageObjects.hh"
 # include "BaseSocket.hh"
 

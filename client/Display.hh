@@ -9,10 +9,6 @@
 # include <QBrush>
 # include <QVector>
 # include <QPolygon>
-# include <QDebug>
-
-# include <list>
-# include <memory>
 
 # include "Minestorm.hh"
 # include "Client.hh"

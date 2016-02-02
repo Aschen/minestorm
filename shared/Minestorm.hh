@@ -2,11 +2,17 @@
 # define MINESTORM_HH
 
 # include <QDebug>
+# include <iostream>
 
 # define DEBUG(x,y) do { \
-  if (x) { qDebug() << y; } \
+  if (y) { qDebug() << x; } \
 } while (0)
 
+//#ifdef _DEBUG
+//#define TRACE(MSG) std::cout << MSG << "\t" << __CLASS__ <<  __FUNCTION__ << " ligne " << __LINE__ << std::endl;
+//#else
+//#define TRACE(MSG)
+//#endi
 
 #endif // MINESTORM_HH
 

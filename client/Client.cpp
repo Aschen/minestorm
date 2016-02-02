@@ -6,7 +6,7 @@ Client::Client(const QString &ip, quint16 port, QObject *parent)
       _port(port),
       _socket(-1)
 {
-    qDebug() << "Client::Client()";
+    DEBUG("Client::Client()", true);
 
     /* Quand la socket reçoit un message,
     ** on l'envoi au message dispatcher qui emet le signal
@@ -18,19 +18,19 @@ Client::Client(const QString &ip, quint16 port, QObject *parent)
 
 Client::~Client()
 {
-    qDebug() << "Client::~Client()";
+    DEBUG("Client::~Client()", true);
 }
 
 void Client::start()
 {
     if (!_socket.isValid())
     {
-        qDebug() << "Client::start() : Connect to " << _ip << ":" << _port;
+        DEBUG("Client::start() : Connect to " << _ip << ":" << _port, true);
         _socket.connectToHost(_ip, _port);
     }
     else
     {
-        qDebug() << "Client::start() : Error, already connected";
+        DEBUG("Client::start() : Error, already connected", true);
     }
 }
 
@@ -38,13 +38,13 @@ void Client::stop()
 {
     if (_socket.isValid())
     {
-        qDebug() << "Client::stop() : Stop connection";
+        DEBUG("Client::stop() : Stop connection", true);
         // Need to reset _msgSize when stop socket
         _socket.abort();
     }
     else
     {
-        qDebug() << "Client::stop() : Error, not connected";
+        DEBUG("Client::stop() : Error, not connected", true);
     }
 }
 
@@ -73,12 +73,12 @@ void Client::messageDispatcher(qint32 socketFd, const QString &msg)
     {
         MessageObjects      message(msg);
 
-        qDebug() << "Receive " << message.objects()->size() << " objects";
+        DEBUG("Client::MessageDispatcher() : Receive " << message.objects()->size() << " objects", false);
         emit receiveInfoObjects(message.objects());
     }
     else
     {
-        qDebug() << msg;
+        DEBUG(msg, true);
     }
 
 //    switch (msgType)

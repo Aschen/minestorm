@@ -4,14 +4,14 @@ Worker::Worker(qint32 socketFd, QObject *parent)
     : QThread(parent),
       _socket(socketFd, parent)
 {
-    qDebug() << "Worker::Worker() " << _socket.fd();
+    DEBUG("Worker::Worker() " << _socket.fd(), false);
     connect(&_socket,   SIGNAL(disconnected()),
             this,       SLOT(disconnected()));
 }
 
 Worker::~Worker()
 {
-    qDebug() << "Worker::~Worker() " << _socket.fd();
+    DEBUG("Worker::~Worker() " << _socket.fd(), false);
 }
 
 qint32 Worker::socketFd() const
@@ -26,19 +26,21 @@ const BaseSocket *Worker::socket() const
 
 void Worker::disconnected()
 {
-    qDebug() << "Worker::disconnected()";
+    DEBUG("Worker::disconnected() : " << _socket.fd(), false);
+
+    emit clientDisconnected(_socket.fd());
     exit(0);
 }
 
 void Worker::run()
 {
-    qDebug() << "Worker::run() " << _socket.fd();
+    DEBUG("Worker::run() " << _socket.fd(), false);
 
     if (!_socket.setSocketDescriptor(_socket.fd()))
     {
 //        emit error(_socket.error());
-        qDebug() << "Error on worker" << _socket.error();
-        return; // Exit thread
+        DEBUG("Worker::run() : Error on worker " << _socket.fd() << _socket.error(), true);
+        return;
     }
 
     exec();

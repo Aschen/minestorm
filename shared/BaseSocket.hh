@@ -5,6 +5,8 @@
 # include <QDataStream>
 # include <QTcpSocket>
 
+# include "Minestorm.hh"
+
 /**
  * @class BaseSocket
  * @brief Represent a socket endpoint connected to an other throught network
