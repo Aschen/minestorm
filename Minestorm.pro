@@ -51,7 +51,8 @@ HEADERS  += server/Core.hh \
     test/TestMessage.hh \
     shared/MessageBase.hh \
     shared/MessageMouse.hh \
-    shared/MessageObjects.hh
+    shared/MessageObjects.hh \
+    shared/MessageFactory.hpp
 
 FORMS    +=
 

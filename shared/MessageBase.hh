@@ -4,6 +4,8 @@
 # include <QString>
 # include <QHash>
 
+# include "Minestorm.hh"
+
 class MessageBase
 {
 public:
@@ -24,7 +26,6 @@ protected:
     Type                                _type;
     QString                             _messageString;
 
-
 public:
     MessageBase(Type type, const QString &messageString);
     virtual ~MessageBase();
@@ -32,6 +33,8 @@ public:
     QString                             typeStr() const;
     MessageBase::Type                   type() const;
     const QString                       &messageString() const;
+
+    static  MessageBase::Type           getMessageType(const QString &msg);
 };
 
 /**

@@ -12,9 +12,8 @@
 # include "Minestorm.hh"
 # include "Server.hh"
 # include "Entity.hh"
-# include "MessageMouse.hh"
-# include "MessageObjects.hh"
 # include "Carre.hh"
+# include "MessageFactory.hpp"
 
 class Core : public QObject
 {    

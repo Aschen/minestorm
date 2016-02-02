@@ -1,5 +1,6 @@
 #include <QSize>
 #include <QApplication>
+#include <QSharedPointer>
 
 #include "MainWindow.hh"
 #include "GameProxy.hh"
@@ -9,7 +10,7 @@
 #include "Server.hh"
 #include "Client.hh"
 
-#include "MessageBase.hh"
+#include "MessageFactory.hpp"
 
 void        runTests();
 

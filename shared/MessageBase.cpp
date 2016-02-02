@@ -20,6 +20,15 @@ const QString &MessageBase::messageString() const
     return _messageString;
 }
 
+MessageBase::Type MessageBase::getMessageType(const QString &msg)
+{
+    QTextStream         stream(msg.toUtf8());
+    qint32              type;
+
+    stream >> type;
+    return (MessageBase::Type) type;
+}
+
 QString MessageBase::typeStr() const
 {
     return MessageBase::STRINGS[_type];

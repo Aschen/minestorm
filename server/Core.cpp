@@ -50,23 +50,25 @@ void Core::step()
 void Core::messageDispatcher(qint32 idClient, const QString &msg)
 {
     DEBUG("Core::messageDispatcher() : client " << idClient << " : " << msg, false);
-    qint32      type;
-    MessageBase::Type   msgType;
-    QTextStream stream(msg.toUtf8());
 
-   stream >> type;
-   msgType = (MessageBase::Type) type;
+    MessageBase::Type       msgType = MessageBase::getMessageType(msg);
 
-   if (msgType == MessageBase::MOUSE_PRESSED)
-   {
-       MessageMouse     message(msg);
+    switch (msgType)
+    {
+    case MessageBase::MOUSE_PRESSED:
+    case MessageBase::MOUSE_RELEASED:
+    {
+        MessageMouse        message(msg);
 
-       mousePressed(idClient, message.x(), message.y());
-   }
-   else
-   {
-       qDebug() << msg;
-   }
+        mousePressed(idClient, message.x(), message.y());
+        break;
+    }
+    default:
+    {
+        DEBUG("Core::messageDispatcher() : Unknown message" << msg, true);
+        break;
+    }
+    }
 }
 
 void Core::start()

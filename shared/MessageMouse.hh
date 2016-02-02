@@ -14,12 +14,16 @@ private:
 
 public:
     MessageMouse(const QString &msg);
+    MessageMouse(MessageBase::Type type, QTextStream &stream);
     MessageMouse(MessageBase::Type type, qint32 x, qint32 y);
     ~MessageMouse();
 
     const QPoint        &point() const;
     qint32              x() const;
     qint32              y() const;
+
+private:
+    void                createPoint(QTextStream &stream);
 };
 
 #endif // MESSAGEMOUSE_HH
