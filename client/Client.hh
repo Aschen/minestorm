@@ -30,11 +30,11 @@ public:
 
     const BaseSocket    *socket() const;
 
-public slots:
-    void                messageDispatcher(qint32 socketFd, const QString &msg);
-
 signals:
-    void                receiveInfoObjects(const QSharedPointer<QVector<QPolygon>> &objects);
+    void                transfertMessage(qint32 socketFd, const QString &msg);
+
+public slots:
+    void                receiveMessage(qint32 socketFd, const QString &msg);
 };
 
 #endif // CLIENT_HH

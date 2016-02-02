@@ -72,6 +72,7 @@ public slots:
 
 private slots:
     void                update();
+    void                messageDispatcher(qint32 socketFd, const QString &msg);
 };
 
 #endif // DISPLAY_HH

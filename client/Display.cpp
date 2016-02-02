@@ -17,11 +17,8 @@ Display::Display(const QSize &size, int fps, QObject *parent)
     */
     connect(&_timer, SIGNAL(timeout()), this, SLOT(update()));
 
-    /* Quand le client reçoit la liste des objets,
-    ** on appelle la fonction d'affichage
-    */
-    connect(&_client,   SIGNAL(receiveInfoObjects(QSharedPointer<QVector<QPolygon>>)),
-            this,       SLOT(receiveObjects(QSharedPointer<QVector<QPolygon>>)));
+    connect(&_client,   SIGNAL(transfertMessage(qint32, QString)),
+            this,       SLOT(messageDispatcher(qint32,QString)));
 }
 
 /* *** */
@@ -86,6 +83,31 @@ void Display::update()
     if (_isRunning)
     {
         emit changed();
+    }
+}
+
+void Display::messageDispatcher(qint32 socketFd, const QString &msg)
+{
+    (void) socketFd;
+    DEBUG("Display::messageDispatcher() :" << msg, false);
+
+    MessageBase::Type       msgType = MessageBase::getMessageType(msg);
+
+    switch (msgType)
+    {
+    case MessageBase::INFO_OBJECTS:
+    {
+        MessageObjects      message(msg);
+
+        DEBUG("Client::MessageDispatcher() : Receive " << message.objects()->size() << " objects", false);
+        receiveObjects (message.objects());
+        break;
+    }
+    default:
+    {
+        DEBUG("Display::messageDispatcher() : Unknown message" << msg, true);
+        break;
+    }
     }
 }
 
