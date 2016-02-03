@@ -97,6 +97,6 @@ void BaseSocket::displayError(QAbstractSocket::SocketError socketError)
         default:
             break;
         }
-    DEBUG("BaseSocket::displayError() : " << errorString(), true);
+    DEBUG("BaseSocket::displayError() : " << errorString(), false);
    // emit disconnected();
 }

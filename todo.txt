@@ -2,5 +2,3 @@
 - Erreur "QObject: Cannot create children for a parent that is in a different thread.
 (Parent is QNativeSocketEngine(0x7f62040031c0), parent's thread is Worker(0x2162ae0), current thread is QThread(0x2068f10)" à voir
 - Fonction Server::registerCallback("receiveMessage", object, callback())
-- MessageFactory à la reception
-- simplifier chaine de signals ( --' )

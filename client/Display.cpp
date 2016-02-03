@@ -95,11 +95,11 @@ void Display::keyPressed(qint32 key)
 
 void Display::keyReleased(qint32 key)
 {
-    DEBUG("Display::keyReleased() : key =" << key, true);
+    DEBUG("Display::keyReleased() : key =" << key, false);
 
-    MessageKey    message(MessageBase::KEY_RELEASED, key);
+//    MessageKey    message(MessageBase::KEY_RELEASED, key);
 
-    _client->sendMessage(message.messageString());
+//    _client->sendMessage(message.messageString());
 }
 
 void Display::startNewGame()

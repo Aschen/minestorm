@@ -36,10 +36,12 @@ void GameBoard::mousePressEvent (QMouseEvent * event)
 
 void GameBoard::keyPressEvent(QKeyEvent * event)
 {
+    event->accept();
     _display->keyPressed(event->key());
 }
 
 void GameBoard::keyReleaseEvent(QKeyEvent * event)
 {
+    event->accept();
     _display->keyReleased(event->key());
 }

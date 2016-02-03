@@ -63,6 +63,10 @@ MessageObjects::MessageObjects(const EntityHash &entities)
             serializeCarre(dynamic_cast<Carre&>(*entity));
             break;
 
+        case Entity::MINE:
+
+            break;
+
         default:
             DEBUG("MessageObjects::MessageObjects() : Unknown entity" << entity->type(), true);
             assert(false);
