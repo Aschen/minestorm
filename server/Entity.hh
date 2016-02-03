@@ -26,8 +26,12 @@ public:
 
 protected:
     const Type              _type;
-    const string            _name;
+    const QString           _name;
+    QPoint                  _xy;
+    QSize                   _size;
     int                     _speed;
+    double                  _angle;
+
 
 public:
     Entity(string name, Type type);
@@ -36,9 +40,15 @@ public:
     void                    addPoint(const QPoint &point);
 
     Type                    type() const;
-    const string            name() const;
-    int                     speed() const;
+    const QString           name() const;
+    QPoint                  xy();
+    void                    xy(QPoint value);
+    QSize                   size();
+    void                    size(QSize value);
+    int                     speed();
     void                    speed(int value);
+    double                  angle();
+    void                    angle(double value);
 
     const string            dump() const;
 };

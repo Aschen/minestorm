@@ -27,6 +27,7 @@ private:
     qint32              _step;
     Server              _server;
     EntityList          _entities;
+    EntityHash          _entitiesMap;
 
 public:
     Core(qint32 cps);
@@ -39,7 +40,8 @@ public:
     void                pause();
     void                reset();
     void                test();
-    void                initialize(QSize size);
+
+    void                initialize(qint32 idClient, QSize size);
 
 private slots:
     void                step();

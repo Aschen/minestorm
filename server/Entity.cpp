@@ -1,6 +1,6 @@
 #include "Entity.hh"
 
-Entity::Entity(string name, Type type)
+Entity::Entity(QString name, Type type)
     : _type(type),
       _name(name)
 {
@@ -15,17 +15,38 @@ void Entity::addPoint(const QPoint &point)
     *this << point;
 }
 
+
 Entity::Type Entity::type() const
 {
     return _type;
 }
 
-const string Entity::name() const
+const QString Entity::name() const
 {
     return _name;
 }
 
-int Entity::speed() const
+QPoint Entity::xy()
+{
+    return _xy;
+}
+
+void Entity::xy(QPoint value)
+{
+    _xy = value;
+}
+
+QSize Entity::size()
+{
+    return _size;
+}
+
+void Entity::size(QSize value)
+{
+    _size = value;
+}
+
+int Entity::speed()
 {
     return _speed;
 }
@@ -33,6 +54,16 @@ int Entity::speed() const
 void Entity::speed(int value)
 {
     _speed = value;
+}
+
+double Entity::angle() const
+{
+    return _angle;
+}
+
+void Entity::angle(double value)
+{
+    _angle = value;
 }
 
 const std::string Entity::dump() const

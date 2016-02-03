@@ -7,7 +7,7 @@ Ship::Ship(string name)
     _speed = 21;
 }
 
-Ship::Ship(string name, QRect rect, int vie)
+Ship::Ship(qint32 name, QRect rect, int vie)
     : Entity(name, Entity::SHIP)
 {
     _speed = 21;
@@ -15,7 +15,11 @@ Ship::Ship(string name, QRect rect, int vie)
     _vie = vie;
     _img = QImage("images/shipAlpha.png");
 
-    this->addPoint(QPoint(_rect.x(), _rect.y()));
+
+}
+void Ship::drawShip()
+{
+    //this->addPoint(QPoint(_rect.x(), _rect.y()));
     this->addPoint(QPoint(_rect.x() + _rect.height(), _rect.y()));
     this->addPoint(QPoint(_rect.x()+ _rect.height(), _rect.y() + _rect.width()));
     this->addPoint(QPoint(_rect.x(), _rect.y() + _rect.width()));
@@ -37,7 +41,7 @@ QRect Ship::rect() const
     return _rect;
 }
 
-void Ship::setRect(const QRect &rect)
+void Ship::setRect(const QSize &rect)
 {
     _rect = rect;
 }

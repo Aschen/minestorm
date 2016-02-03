@@ -79,7 +79,7 @@ void Core::start()
     {
         _timer.start(1000 / _cps); // Nombre de cycle de jeu par seconde
         _isRunning = true;
-        initialize(size);
+        //initialize(12,1);
     }
 }
 
@@ -107,13 +107,17 @@ void Core::test()
     DEBUG("Core::test() : ", 1);
 }
 
-void Core::initialize(QSize size)
+void Core::initialize(qint32 idClient, QSize size)
 {
     DEBUG("Display::initialize()", 0);
-    Ship ship("ship",QRect(size.width()/2-25/2,size.height()/2-25/2,40,40), 3);
+
+    Ship ship(idClient,QRect(size.width()/2-40/2,size.height()/2-40/2,40,40), 3);
     QPolygon polygon = QPolygon(ship.rect(), true);
+
     _entities.push_back(std::shared_ptr<Entity>(new Ship(ship)));
+    _entitiesMap[idClient] = _entities.last();
 }
+
 
 void Core::mousePressed(qint32 idClient, qint32 x, qint32 y)
 {
@@ -125,11 +129,33 @@ void Core::mousePressed(qint32 idClient, qint32 x, qint32 y)
 
     // On ajoute le carre créé à la liste des entités
     _entities.push_back(std::shared_ptr<Entity>(new Carre(carre)));
+
 }
 
 void Core::keyPressed(qint32 idClient, qint32 key)
 {
+    switch(key)
+    {
+    case Qt::Key_Right:
+        DEBUG("Display::KeyRight"<<idClient, true);
 
+    break;
+    case Qt::Key_Left:
+        DEBUG("Display::KeyLeft"<<idClient, true);
+
+    break;
+    case Qt::Key_Up:
+        DEBUG("Display::KeyUp"<<idClient, true);
+
+    break;
+    case Qt::Key_Down:
+        DEBUG("Display::KeyDown"<<idClient, true);
+
+    break;
+    default:
+
+    break;
+    }
 }
 
 void Core::keyReleased(qint32 idClient, qint32 key)
