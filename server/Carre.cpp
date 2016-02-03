@@ -6,8 +6,9 @@ Carre::Carre(qint32 id)
     _speed = 21;
 }
 
-Carre::Carre(qint32 id, const QPoint &a, qint32 size)
-    : Entity(id, Entity::CARRE)
+Carre::Carre(qint32 id, const QPoint &a, qint32 size, qint32 color)
+    : Entity(id, Entity::CARRE),
+      _color(color)
 {
     _speed = 21;
 
@@ -19,5 +20,10 @@ Carre::Carre(qint32 id, const QPoint &a, qint32 size)
 
 Carre::~Carre()
 {
+}
+
+qint32 Carre::color() const
+{
+    return _color;
 }
 

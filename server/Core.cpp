@@ -30,18 +30,11 @@ Core::~Core()
 void Core::step()
 {
     DEBUG("Core::step() : " << _step, false);
-    QVector<QPolygon>   objects;
 
-    // On créé un vecteur de QPolygon à partir de nos entitées
-    for (auto entity : _entities)
+    if (!_entitiesMap.empty() && _server.clientCount())
     {
-        objects.push_back(QPolygon(*entity));
-    }
-
-    if (objects.size() && _server.clientCount())
-    {
-        DEBUG("Core::step() : Send " << objects.size() << " objects", false);
-        MessageObjects      message(objects);
+        DEBUG("Core::step() : Send " << _entitiesMap.size() << " objects", false);
+        MessageObjects      message(_entitiesMap);
 
         _server.broadcast(message.messageString());
     }
@@ -117,7 +110,7 @@ void Core::reset()
 {
     DEBUG("Core::reset()", 1);
     pause();
-    _entities.clear();
+    _entitiesMap.clear();
     step();
     _step = 1;
 }
@@ -142,8 +135,7 @@ void Core::initialize(qint32 idClient)
 
 //>>>>>>> da38e671911a97810df6a31e728546ee32c4d6e7
 
-    _entities.push_back(QSharedPointer<Entity>(new Ship(ship)));
-    _entitiesMap[idClient] = _entities.last();
+    _entitiesMap[idClient] = QSharedPointer<Entity>(new Ship(ship));
 }
 
 
@@ -153,11 +145,10 @@ void Core::mousePressed(qint32 idClient, qint32 x, qint32 y)
 
     // Quand on reçoit un signal dans le slot mousePressed(),
     // On créé un carre depuis les coordonnées x et y
-    Carre   carre(_step, QPoint(x, y), 42);
+    Carre   carre(_step, QPoint(x, y), 42, idClient * idClient * idClient % 255);
 
     // On ajoute le carre créé à la liste des entités
-    _entities.push_back(QSharedPointer<Entity>(new Carre(carre)));
-
+    _entitiesMap[_step] = QSharedPointer<Entity>(new Carre(carre));
 }
 
 void Core::keyPressed(qint32 idClient, qint32 key)
@@ -169,7 +160,7 @@ void Core::keyPressed(qint32 idClient, qint32 key)
         break;
 
     case Qt::Key_Left:
-        DEBUG("Core::keyPressed Client" << idClient << " KeyLeft", true);
+        DEBUG("Core::keyPressed : Client" << idClient << " KeyLeft", true);
         break;
 
     case Qt::Key_Up:

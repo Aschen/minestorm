@@ -14,6 +14,7 @@
 # include "Minestorm.hh"
 # include "MessageFactory.hpp"
 # include "Client.hh"
+# include "Element.hh"
 
 class Display : public QObject
 {
@@ -23,9 +24,9 @@ private:
     QTimer              _timer;
     bool                _isRunning;
     const QSize         _size;
-    const int           _fps;
+    const qint32        _fps;
     QSharedPointer<Client>              _client;
-    QSharedPointer<QVector<QPolygon>>   _objects;
+    QSharedPointer<QVector<Element>>    _objects;
     QMutex              _objectsMutex;
 
 public:
@@ -48,14 +49,14 @@ public:
 
     const QSize         &size() const;
     bool                isRunning() const;
-    const QVector<QPolygon>  &objects() const;
+    const QVector<Element> &objects() const;
 
 
 signals:
     void                changed();
 
 public slots:
-    void                receiveObjects(const QSharedPointer<QVector<QPolygon>> &objects);
+    void                receiveObjects(const QSharedPointer<QVector<Element> > &objects);
 
 private slots:
     void                update();

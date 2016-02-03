@@ -26,7 +26,6 @@ private:
     QTimer              _timer;
     qint32              _step;
     Server              _server;
-    EntityList          _entities;
     EntityHash          _entitiesMap;
 
 public:

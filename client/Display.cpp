@@ -18,8 +18,8 @@ Display::Display(const QSize &size, qint32 fps, QObject *parent)
     */
     connect(&_timer, SIGNAL(timeout()), this, SLOT(update()));
 
-    connect(_client.data(),   SIGNAL(transfertMessage(qint32, QString)),
-            this,       SLOT(messageDispatcher(qint32,QString)));
+    connect(_client.data(), SIGNAL(transfertMessage(qint32, QString)),
+            this,           SLOT(messageDispatcher(qint32,QString)));
 }
 
 /* *** */
@@ -28,15 +28,15 @@ void Display::draw(QPainter &painter, QRect &size)
     (void) size;
     DEBUG("Display::draw() : " << _objects->size() << " objects to draw", false);
     painter.fillRect(size, QColor(255,255,255));
-    painter.setPen(QColor(0, 0, 0));
-    painter.setBrush(QBrush(QColor(0, 0, 0)));
 
     if (_objects != nullptr)
     {
         _objectsMutex.lock();
-        for (auto object : *_objects)
+        for (Element &object : *_objects)
         {
-            painter.drawConvexPolygon(object);
+            painter.setPen(QColor(object.imgId(), 0, 0));
+            painter.setBrush(QBrush(QColor(object.imgId(), 0, 0)));
+            painter.drawConvexPolygon(object.polygon());
         }
         _objectsMutex.unlock();
     }
@@ -139,14 +139,15 @@ bool Display::isRunning() const
     return _isRunning;
 }
 
-const QVector<QPolygon> &Display::objects() const
+const QVector<Element> &Display::objects() const
 {
     return *_objects;
 }
 
-void Display::receiveObjects(const QSharedPointer<QVector<QPolygon>> &objects)
+void Display::receiveObjects(const QSharedPointer<QVector<Element>> &objects)
 {
     DEBUG("Display::receiveObjects() : " << objects->size() << " objects received", false);
+
     _objectsMutex.lock();
     _objects = objects;
     _objectsMutex.unlock();
