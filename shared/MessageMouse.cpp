@@ -22,9 +22,9 @@ MessageMouse::MessageMouse(MessageBase::Type type, qint32 x, qint32 y)
 {
     _messageString = QString::number((qint32) type);
     _messageString += " ";
-    _messageString = QString::number(x);
+    _messageString += QString::number(x);
     _messageString += " ";
-    _messageString = QString::number(y);
+    _messageString += QString::number(y);
 }
 
 MessageMouse::~MessageMouse()
@@ -51,10 +51,10 @@ void MessageMouse::createPoint(QTextStream &stream)
     qint32          x;
     quint32         y;
 
-    stream >> x >> y;
     assert(_type == MessageBase::MOUSE_PRESSED
            || _type == MessageBase::MOUSE_RELEASED);
 
+    stream >> x >> y;
     _point = QPoint(x, y);
 }
 

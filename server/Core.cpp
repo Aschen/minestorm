@@ -54,11 +54,24 @@ void Core::messageDispatcher(qint32 idClient, const QString &msg)
     switch (msgType)
     {
     case MessageBase::MOUSE_PRESSED:
-    case MessageBase::MOUSE_RELEASED:
     {
         MessageMouse        message(msg);
 
         mousePressed(idClient, message.x(), message.y());
+        break;
+    }
+    case MessageBase::KEY_PRESSED:
+    {
+        MessageKey          message(msg);
+
+        keyReleased(idClient, message.keyCode());
+        break;
+    }
+    case MessageBase::KEY_RELEASED:
+    {
+        MessageKey          message(msg);
+
+        keyPressed(idClient, message.keyCode());
         break;
     }
     default:
@@ -135,28 +148,50 @@ void Core::keyPressed(qint32 idClient, qint32 key)
     switch(key)
     {
     case Qt::Key_Right:
-        DEBUG("Display::KeyRight"<<idClient, true);
+        DEBUG("Display::keyPressed : Client" << idClient << " KeyRight", true);
+        break;
 
-    break;
     case Qt::Key_Left:
-        DEBUG("Display::KeyLeft"<<idClient, true);
+        DEBUG("Display::keyPressed Client" << idClient << " KeyLeft", true);
+        break;
 
-    break;
     case Qt::Key_Up:
-        DEBUG("Display::KeyUp"<<idClient, true);
+        DEBUG("Display::keyPressed : Client" << idClient << " KeyUp", true);
+        break;
 
-    break;
     case Qt::Key_Down:
-        DEBUG("Display::KeyDown"<<idClient, true);
+        DEBUG("Display::keyPressed : Client" << idClient << " KeyDown", true);
+        break;
 
-    break;
     default:
-
-    break;
+        DEBUG("Display::keyPressed : Client" << idClient << " Unknown key:" << key, true);
+        break;
     }
 }
 
 void Core::keyReleased(qint32 idClient, qint32 key)
 {
+    switch(key)
+    {
+    case Qt::Key_Right:
+        DEBUG("Display::keyReleased : Client" << idClient << " KeyRight", true);
+        break;
+
+    case Qt::Key_Left:
+        DEBUG("Display::keyReleased Client" << idClient << " KeyLeft", true);
+        break;
+
+    case Qt::Key_Up:
+        DEBUG("Display::keyReleased : Client" << idClient << " KeyUp", true);
+        break;
+
+    case Qt::Key_Down:
+        DEBUG("Display::keyReleased : Client" << idClient << " KeyDown", true);
+        break;
+
+    default:
+        DEBUG("Display::keyReleased : Client" << idClient << " Unknown key:" << key, true);
+        break;
+    }
 
 }

@@ -9,7 +9,6 @@
 # include <cassert>
 
 # include "Minestorm.hh"
-# include "MessageObjects.hh"
 # include "BaseSocket.hh"
 
 class Client : public QObject

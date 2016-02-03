@@ -12,12 +12,8 @@
 # include <QApplication>
 
 # include "Minestorm.hh"
+# include "MessageFactory.hpp"
 # include "Client.hh"
-
-class QPainter;
-class QRect;
-
-using namespace std;
 
 class Display : public QObject
 {
@@ -33,17 +29,16 @@ private:
     QMutex              _objectsMutex;
 
 public:
-    Display(const QSize &size, int fps = 25, QObject *parent = nullptr);
+    Display(const QSize &size, qint32 fps = 25, QObject *parent = nullptr);
 
     void                draw(QPainter &painter, QRect &size);
     void                startDisplay();
 
     // Events triggered from Gameboard
-    void                mousePressed(int x, int y);
-    void                mouseReleased(int x, int y);
-    void                mouseMoved(int x, int y);
-    void                keyPressed(int key);
-    void                keyReleased(int key);
+    void                mousePressed(qint32 x, qint32 y);
+    void                mouseReleased(qint32 x, qint32 y);
+    void                keyPressed(qint32 key);
+    void                keyReleased(qint32 key);
 
     // Events triggered from Controller
     void                startNewGame();

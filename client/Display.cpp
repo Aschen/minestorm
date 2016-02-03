@@ -1,7 +1,7 @@
 #include "Display.hh"
 #include "Ship.hh"
 
-Display::Display(const QSize &size, int fps, QObject *parent)
+Display::Display(const QSize &size, qint32 fps, QObject *parent)
     : QObject(parent),
       _isRunning(false),
       _size(size),
@@ -75,26 +75,31 @@ void Display::messageDispatcher(qint32 socketFd, const QString &msg)
 
 
 /* EVENTS */
-void Display::mousePressed(int x, int y)
+void Display::mousePressed(qint32 x, qint32 y)
 {
     DEBUG("Display::mousePressed() : x = " << x << ", y = " << y, true);
-    _client->sendMessage("1 " + QString::number(x) + " " + QString::number(y));
+
+    MessageMouse    message(MessageBase::MOUSE_PRESSED, x, y);
+
+    _client->sendMessage(message.messageString());
 }
 
-void Display::mouseReleased(int x, int y)
+void Display::keyPressed(qint32 key)
 {
+    DEBUG("Display::keyPressed() : key =" << key, true);
+
+    MessageKey    message(MessageBase::KEY_PRESSED, key);
+
+    _client->sendMessage(message.messageString());
 }
 
-void Display::mouseMoved(int x, int y)
+void Display::keyReleased(qint32 key)
 {
-}
+    DEBUG("Display::keyReleased() : key =" << key, true);
 
-void Display::keyPressed(int key)
-{
-}
+    MessageKey    message(MessageBase::KEY_RELEASED, key);
 
-void Display::keyReleased(int key)
-{
+    _client->sendMessage(message.messageString());
 }
 
 void Display::startNewGame()

@@ -3,6 +3,7 @@
 
 # include <QPoint>
 # include <QTextStream>
+
 # include <cassert>
 
 # include "MessageBase.hh"

@@ -26,8 +26,6 @@ protected:
     void mousePressEvent(QMouseEvent * event);
     void keyPressEvent(QKeyEvent * event);
     void keyReleaseEvent(QKeyEvent * event);
-    void mouseMoveEvent(QMouseEvent * event);
-    void mouseReleaseEvent(QMouseEvent * event);
 };
 
 #endif // GAMEBOARD_HH

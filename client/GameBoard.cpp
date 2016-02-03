@@ -43,19 +43,3 @@ void GameBoard::keyReleaseEvent(QKeyEvent * event)
 {
     _display->keyReleased(event->key());
 }
-
-void GameBoard::mouseMoveEvent(QMouseEvent * event)
-{
-    event->accept();
-    auto x = event->x() * _display->size().width() / (double)rect().width();
-    auto y = event->y() * _display->size().height() / (double)rect().height();
-    _display->mouseMoved(x, y);
-}
-
-void GameBoard::mouseReleaseEvent(QMouseEvent * event)
-{
-   event->accept();
-   auto x = event->x() * _display->size().width() / (double)rect().width();
-   auto y = event->y() * _display->size().height() / (double)rect().height();
-   _display->mouseReleased(x, y);
-}

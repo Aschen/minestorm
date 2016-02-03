@@ -6,6 +6,7 @@
 # include "Minestorm.hh"
 # include "MessageBase.hh"
 # include "MessageMouse.hh"
+# include "MessageKey.hh"
 # include "MessageObjects.hh"
 
 class MessageFactory
