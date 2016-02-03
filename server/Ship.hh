@@ -3,9 +3,8 @@
 
 # include <QRect>
 # include "QImage"
-
-#include "Entity.hh"
-
+# include "Entity.hh"
+# include "Minestorm.hh"
 class Ship : public Entity
 {
 private:
@@ -20,6 +19,7 @@ public:
     Ship(qint32 id, QRect rect, quint32 vie, qint32 shipId);
 
     void            createShipPolygon();
+    void            moveShipForward();
 
     //Getter & Setter
     quint32         vie() const;

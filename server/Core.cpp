@@ -33,14 +33,14 @@ void Core::step()
     QVector<QPolygon>   objects;
 
     // On créé un vecteur de QPolygon à partir de nos entitées
-    for (auto entity : _entities)
+    for (auto entity : _entitiesMap)
     {
         objects.push_back(QPolygon(*entity));
     }
 
     if (objects.size() && _server.clientCount())
     {
-        DEBUG("Core::step() : Send " << objects.size() << " objects", false);
+        DEBUG("Core::step() : Send " << objects.size() << " objects", true);
         MessageObjects      message(objects);
 
         _server.broadcast(message.messageString());
@@ -88,7 +88,14 @@ void Core::messageDispatcher(qint32 idClient, const QString &msg)
 
 void Core::newPlayer(qint32 idClient)
 {
+    DEBUG("Core::NewPlayer() : " << idClient, true);
+    Ship ship(idClient);
+    ship.xy(QPoint(SCREEN_SIZE / 2, SCREEN_SIZE / 2));
+    ship.size(QSize(42,42));
+    ship.createShipPolygon();
 
+    _entities.push_back(QSharedPointer<Entity>(new Ship(ship)));
+    _entitiesMap[idClient] = _entities.last();
 }
 
 void Core::startGame()
@@ -174,6 +181,13 @@ void Core::keyPressed(qint32 idClient, qint32 key)
 
     case Qt::Key_Up:
         DEBUG("Core::keyPressed : Client" << idClient << " KeyUp", true);
+
+        DEBUG("Ship::BMoved" <<  dynamic_cast<Ship*>(_entitiesMap[idClient].data())->xy().x(),true);
+        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->moveShipForward();
+
+
+        DEBUG("Ship::AMoved" <<  dynamic_cast<Ship*>(_entitiesMap[idClient].data())->xy().x(),true);
+
         break;
 
     case Qt::Key_Down:

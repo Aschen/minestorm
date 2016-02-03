@@ -19,10 +19,11 @@ Ship::Ship(qint32 id, QRect rect, quint32 vie, qint32 shipId)
 }
 void Ship::createShipPolygon()
 {
+    this->clear();
     //this->addPoint(QPoint(_rect.x(), _rect.y()));
     this->addPoint(QPoint(this->xy().x() + this->size().height(), this->xy().y()));
     this->addPoint(QPoint(this->xy().x() + this->size().height(), this->xy().y() + this->size().width()));
-    this->addPoint(QPoint(this->xy().x() + this->size().height(), this->xy().y()));
+    this->addPoint(QPoint(this->xy().x() + this->size().height() /2, this->xy().y() + this->size().width() / 2));
 
 
 }
@@ -32,6 +33,7 @@ quint32 Ship::vie() const
 {
     return _vie;
 }
+
 
 void Ship::setVie(quint32 vie)
 {
@@ -59,6 +61,13 @@ void Ship::setImage(const QImage &img)
 qint32 Ship::shipId() const
 {
     return _shipId;
+}
+void Ship::moveShipForward()
+{
+    DEBUG("Ship::Coord : Client" << this->xy().x() << ";" << this->xy().y(), false);
+    this->xy(QPoint(this->xy().x() + 10, this->xy().y() + 10));
+    this->createShipPolygon();
+    DEBUG("Ship::Coord : Client" << this->xy().x() << ";" << this->xy().y(), false);
 }
 
 
