@@ -17,12 +17,13 @@ Ship::Ship(qint32 id, QRect rect, quint32 vie, qint32 shipId)
     _shipId = shipId;
 
 }
-void Ship::drawShip()
+void Ship::createShipPolygon()
 {
     //this->addPoint(QPoint(_rect.x(), _rect.y()));
-    this->addPoint(QPoint(_rect.x() + _rect.height(), _rect.y()));
-    this->addPoint(QPoint(_rect.x()+ _rect.height(), _rect.y() + _rect.width()));
-    this->addPoint(QPoint(_rect.x(), _rect.y() + _rect.width()));
+    this->addPoint(QPoint(this->xy().x() + this->size().height(), this->xy().y()));
+    this->addPoint(QPoint(this->xy().x() + this->size().height(), this->xy().y() + this->size().width()));
+    this->addPoint(QPoint(this->xy().x() + this->size().height(), this->xy().y()));
+
 
 }
 

@@ -19,7 +19,7 @@ public:
     Ship(qint32 id);
     Ship(qint32 id, QRect rect, quint32 vie, qint32 shipId);
 
-    void            drawShip();
+    void            createShipPolygon();
 
     //Getter & Setter
     quint32         vie() const;

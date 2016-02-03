@@ -27,9 +27,9 @@ void Display::draw(QPainter &painter, QRect &size)
 {
     (void) size;
     DEBUG("Display::draw() : " << _objects->size() << " objects to draw", false);
-    painter.fillRect(size, QColor(0,0,0));
-    painter.setPen(QColor(255, 255, 255));
-    painter.setBrush(QBrush(QColor(255, 255, 255)));
+    painter.fillRect(size, QColor(255,255,255));
+    painter.setPen(QColor(0, 0, 0));
+    painter.setBrush(QBrush(QColor(0, 0, 0)));
 
     if (_objects != nullptr)
     {

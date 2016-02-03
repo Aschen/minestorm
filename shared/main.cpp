@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     else
     {
         QApplication    app(argc, argv);
-        Display         display(QSize(400, 400));
+        Display         display(QSize(SCREEN_SIZE, SCREEN_SIZE));
         MainWindow      window(&display);
 
         return app.exec();

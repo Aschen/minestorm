@@ -51,6 +51,8 @@ void Server::incomingConnection(qintptr socketFd)
     connect(worker,             SIGNAL(clientDisconnected(qint32)),
             this,               SLOT(clientDisconnected(qint32)));
 
+    emit clientConnected(worker->socketFd());
+
     worker->start();
     _clientCount++;
 }
