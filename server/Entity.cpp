@@ -36,7 +36,7 @@ void Entity::xy(const QPoint &value)
     _xy = value;
 }
 
-QSize Entity::size() const
+const QSize &Entity::size() const
 {
     return _size;
 }
