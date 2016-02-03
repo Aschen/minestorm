@@ -31,7 +31,7 @@ SOURCES += server/Core.cpp \
     shared/MessageBase.cpp \
     shared/MessageMouse.cpp \
     shared/MessageObjects.cpp \
-    shared/Game.cpp
+    server/CoreRunner.cpp
 
 HEADERS  += server/Core.hh \
     client/Controller.hh \
@@ -52,7 +52,7 @@ HEADERS  += server/Core.hh \
     shared/MessageMouse.hh \
     shared/MessageObjects.hh \
     shared/MessageFactory.hpp \
-    shared/Game.hh
+    server/CoreRunner.hh
 
 FORMS    +=
 

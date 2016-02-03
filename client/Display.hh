@@ -46,7 +46,7 @@ public:
     void                keyReleased(int key);
 
     // Events triggered from Controller
-    void                startGame();
+    void                startNewGame();
     void                joinGame(const QString &host);
     void                exitGame();
 

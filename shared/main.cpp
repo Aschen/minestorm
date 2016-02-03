@@ -15,22 +15,22 @@ int main(int argc, char *argv[])
 {
     QString     arg(argv[1]);
 
-    if (arg == "srv")
-    {
-        QApplication    a(argc, argv);
-        Core            *core = new Core(20);
+//    if (arg == "srv")
+//    {
+//        QApplication    a(argc, argv);
+//        Core            *core = new Core(20);
 
-        return a.exec();
-    }
-    else if (arg == "cli")
-    {
-        QApplication    a(argc, argv);
-        Display         display(QSize(400, 400));
-        MainWindow      w(&display);
+//        return a.exec();
+//    }
+//    else if (arg == "cli")
+//    {
+//        QApplication    a(argc, argv);
+//        Display         display(QSize(400, 400));
+//        MainWindow      w(&display);
 
-        return a.exec();
-    }
-    else if (arg == "test")
+//        return a.exec();
+//    }
+    if (arg == "test")
     {
         runTests();
 
@@ -38,8 +38,10 @@ int main(int argc, char *argv[])
     }
     else
     {
-        qDebug() << "Usage : " << argv[0] << " <cli|srv|test>";
+        QApplication    app(argc, argv);
+        Display         display(QSize(400, 400));
+        MainWindow      window(&display);
 
-        return 0;
+        return app.exec();
     }
 }

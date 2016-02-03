@@ -4,6 +4,8 @@
 # include <QWidget>
 # include <QLineEdit>
 
+# include "CoreRunner.hh"
+
 class Display;
 
 /**
@@ -15,6 +17,7 @@ class Controller : public QWidget
 private:
     Display     *_display;
     QLineEdit   *_inputHost;
+    QSharedPointer<CoreRunner>  _coreRunner;
 
 public:
     Controller(Display *display, QWidget *parent = nullptr);

@@ -15,9 +15,6 @@ Core::Core(qint32 cps)
     // Connect communications functions
     connect(&_server,   SIGNAL(transfertMessage(qint32, const QString&)),
             this,       SLOT(messageDispatcher(qint32, const QString&)));
-
-    _server.start();
-    start();
 }
 
 Core::~Core()
@@ -71,11 +68,12 @@ void Core::messageDispatcher(qint32 idClient, const QString &msg)
     }
 }
 
-void Core::start()
+void Core::startGame()
 {
-    DEBUG("Core::start()", 1);
+    DEBUG("Core::startGame()", true);
     if (_isRunning == false)
     {
+        _server.start();
         _timer.start(1000 / _cps); // Nombre de cycle de jeu par seconde
         _isRunning = true;
     }

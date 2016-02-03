@@ -99,11 +99,12 @@ void Display::keyReleased(int key)
 {
 }
 
-void Display::startGame()
+void Display::startNewGame()
 {
-//    DEBUG("Display::startGame()" << , false);
-//    _client.start();
-//    emit sigStart();
+    DEBUG("Display::startNewGame()", true);
+
+    _client->start("localhost");
+    startDisplay();
 }
 
 void Display::joinGame(const QString &host)

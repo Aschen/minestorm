@@ -34,7 +34,7 @@ public:
     void                mousePressed(qint32 idClient, qint32 x, qint32 y);
     void                keyPressed(qint32 idClient, qint32 key);
     void                keyReleased(qint32 idClient, qint32 key);
-    void                start();
+    void                startGame();
     void                pause();
     void                reset();
     void                test();

@@ -8,7 +8,8 @@
 Controller::Controller(Display *display, QWidget *parent)
     : QWidget(parent),
       _display(display),
-      _inputHost(new QLineEdit("localhost", this))
+      _inputHost(new QLineEdit("localhost", this)),
+      _coreRunner(QSharedPointer<CoreRunner>(new CoreRunner(20)))
 {
     auto startNewGame = new QPushButton("New Game", this);
     auto joinGame = new QPushButton("Join Game", this);
@@ -23,14 +24,15 @@ Controller::Controller(Display *display, QWidget *parent)
 
     setLayout(layout);
 
-    connect(startNewGame, SIGNAL(clicked()), this, SLOT(startNewGame()));
-    connect(joinGame, SIGNAL(clicked()), this, SLOT(joinGame()));
-    connect(exitGame, SIGNAL(clicked()), this, SLOT(exitGame()));
+    connect(startNewGame,   SIGNAL(clicked()), this, SLOT(startNewGame()));
+    connect(joinGame,       SIGNAL(clicked()), this, SLOT(joinGame()));
+    connect(exitGame,       SIGNAL(clicked()), this, SLOT(exitGame()));
 }
 
 void Controller::startNewGame()
 {
-    _display->startGame();
+    _coreRunner->start();
+    _display->startNewGame();
 }
 
 void Controller::joinGame()
@@ -40,5 +42,6 @@ void Controller::joinGame()
 
 void Controller::exitGame()
 {
+    _coreRunner.clear();
     _display->exitGame();
 }
