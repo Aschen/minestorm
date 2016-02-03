@@ -25,6 +25,7 @@ public:
     void            moveShipForward();
     void            rotateShipLeft();
     void            rotateShipRight();
+    void            slowDownShip();
     double          getRadian();
 
     //Getter & Setter
