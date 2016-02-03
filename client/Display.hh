@@ -10,10 +10,8 @@
 # include <QVector>
 # include <QPolygon>
 
-# include <list>
-# include <memory>
-
 # include "Minestorm.hh"
+# include "Client.hh"
 
 class QPainter;
 class QRect;
@@ -29,7 +27,8 @@ private:
     bool                _isRunning;
     const QSize         _size;
     const int           _fps;
-    QVector<QPolygon>   _objects;
+    Client              _client;
+    QSharedPointer<QVector<QPolygon>>   _objects;
     QMutex              _objectsMutex;
 
 public:
@@ -69,10 +68,11 @@ signals:
     void                sigTest();
 
 public slots:
-    void                receiveObjects(const QVector<QPolygon> &objects);
+    void                receiveObjects(const QSharedPointer<QVector<QPolygon>> &objects);
 
 private slots:
     void                update();
+    void                messageDispatcher(qint32 socketFd, const QString &msg);
 };
 
 #endif // DISPLAY_HH

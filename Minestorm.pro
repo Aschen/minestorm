@@ -1,7 +1,10 @@
+QMAKE_CXX   =   clang++
+QMAKE_CC    =   clang
 
-QT       += core gui
+QT      +=  core gui network testlib
 
-CONFIG+=C++11
+CONFIG  +=  C++11
+CONFIG  +=  testcase
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -19,7 +22,16 @@ SOURCES += server/Core.cpp \
     server/Mine.cpp\
     server/Ship.cpp \
     server/Entity.cpp \
-    server/Carre.cpp
+    server/Carre.cpp \
+    server/Server.cpp \
+    client/Client.cpp \
+    server/Worker.cpp \
+    shared/BaseSocket.cpp \
+    test/TestMessage.cpp \
+    shared/test.cpp \
+    shared/MessageBase.cpp \
+    shared/MessageMouse.cpp \
+    shared/MessageObjects.cpp
 
 HEADERS  += server/Core.hh \
     client/Controller.hh \
@@ -31,7 +43,16 @@ HEADERS  += server/Core.hh \
     server/Mine.hh \
     server/Ship.hh \
     server/Entity.hh \
-    server/Carre.hh
+    server/Carre.hh \
+    server/Server.hh \
+    client/Client.hh \
+    server/Worker.hh \
+    shared/BaseSocket.hh \
+    test/TestMessage.hh \
+    shared/MessageBase.hh \
+    shared/MessageMouse.hh \
+    shared/MessageObjects.hh \
+    shared/MessageFactory.hpp
 
 FORMS    +=
 

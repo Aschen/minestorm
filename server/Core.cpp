@@ -1,19 +1,34 @@
 #include "Core.hh"
 #include "Ship.hh"
 
-Core::Core(int cps) :
-    QObject(),
-    _isRunning(false),
-    _cps(cps),
-    _step(1)
+Core::Core(qint32 cps)
+    : QObject(),
+      _isRunning(false),
+      _cps(cps),
+      _step(1),
+      _server(4242)
 {
+    DEBUG("Core::Core() : cps " << cps, true);
     _timer.setSingleShot(false);
-    connect(&_timer, SIGNAL(timeout()), this, SLOT(step()));
+    connect(&_timer,    SIGNAL(timeout()),
+            this,       SLOT(step()));
+
+    // Connect communications functions
+    connect(&_server,   SIGNAL(transfertMessage(qint32, const QString&)),
+            this,       SLOT(messageDispatcher(qint32, const QString&)));
+
+    _server.start();
+    start();
+}
+
+Core::~Core()
+{
+    DEBUG("Core::~Core()", false);
 }
 
 void Core::step()
 {
-    DEBUG("Core::step() : " << _step, 0);
+    DEBUG("Core::step() : " << _step, false);
     QVector<QPolygon>   objects;
 
     // On créé un vecteur de QPolygon à partir de nos entitées
@@ -22,12 +37,42 @@ void Core::step()
         objects.push_back(QPolygon(*entity));
     }
 
-    // On envoi le vecteur de QPolygon à Display
-    emit sendObjects(objects);
+    if (objects.size() && _server.clientCount())
+    {
+        DEBUG("Core::step() : Send " << objects.size() << " objects", false);
+        MessageObjects      message(objects);
+
+        _server.broadcast(message.messageString());
+    }
+
     ++_step;
 }
 
-void Core::start(QSize size)
+void Core::messageDispatcher(qint32 idClient, const QString &msg)
+{
+    DEBUG("Core::messageDispatcher() : client " << idClient << " : " << msg, false);
+
+    MessageBase::Type       msgType = MessageBase::getMessageType(msg);
+
+    switch (msgType)
+    {
+    case MessageBase::MOUSE_PRESSED:
+    case MessageBase::MOUSE_RELEASED:
+    {
+        MessageMouse        message(msg);
+
+        mousePressed(idClient, message.x(), message.y());
+        break;
+    }
+    default:
+    {
+        DEBUG("Core::messageDispatcher() : Unknown message" << msg, true);
+        break;
+    }
+    }
+}
+
+void Core::start()
 {
     DEBUG("Core::start()", 1);
     if (_isRunning == false)
@@ -60,13 +105,6 @@ void Core::reset()
 void Core::test()
 {
     DEBUG("Core::test() : ", 1);
-
-    // Quand on reçoit un signal dans le slot test(),
-    // On affiche la liste des entitées
-    for (auto entity : _entities)
-    {
-        std::cout << entity->dump() << std::endl;
-    }
 }
 
 void Core::initialize(QSize size)
@@ -77,34 +115,24 @@ void Core::initialize(QSize size)
     _entities.push_back(std::shared_ptr<Entity>(new Ship(ship)));
 }
 
-void Core::mousePressed(int x, int y)
+void Core::mousePressed(qint32 idClient, qint32 x, qint32 y)
 {
-    DEBUG("Core::mousePressed : x = " << x << ", y = " << y, 1);
+    qDebug() << "Core::mousePressed() : Client " << idClient << " x =" << x << ", y =" << y;
 
     // Quand on reçoit un signal dans le slot mousePressed(),
     // On créé un carre depuis les coordonnées x et y
-    Carre   carre("carre", QPoint(x, y), _step);
+    Carre   carre("carre", QPoint(x, y), 42);
 
-    // On ajoute le triangle créé à la liste des entités
+    // On ajoute le carre créé à la liste des entités
     _entities.push_back(std::shared_ptr<Entity>(new Carre(carre)));
 }
 
-void Core::mouseReleased(int x, int y)
+void Core::keyPressed(qint32 idClient, qint32 key)
 {
 
 }
 
-void Core::mouseMoved(int x, int y)
-{
-
-}
-
-void Core::keyPressed(int key)
-{
-
-}
-
-void Core::keyReleased(int key)
+void Core::keyReleased(qint32 idClient, qint32 key)
 {
 
 }

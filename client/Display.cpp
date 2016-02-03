@@ -5,8 +5,11 @@ Display::Display(const QSize &size, int fps, QObject *parent)
     : QObject(parent),
       _isRunning(false),
       _size(size),
-      _fps(fps)
+      _fps(fps),
+      _client("127.0.0.1", 4242),
+      _objects(nullptr)
 {
+    DEBUG("Display::Display()", true);
     _timer.setSingleShot(false);
     /* Le signal timeout() est envoyé toutes les 40ms,
     ** on le connecte à la fonction Display::update()
@@ -14,23 +17,29 @@ Display::Display(const QSize &size, int fps, QObject *parent)
     ** qui fait appel à Display::draw()
     */
     connect(&_timer, SIGNAL(timeout()), this, SLOT(update()));
+
+    connect(&_client,   SIGNAL(transfertMessage(qint32, QString)),
+            this,       SLOT(messageDispatcher(qint32,QString)));
 }
 
 /* *** */
 void Display::draw(QPainter &painter, QRect &size)
 {
     (void) size;
-    DEBUG("Display::draw() : " << _objects.size() << " objects to draw", 1);
+    DEBUG("Display::draw() : " << _objects->size() << " objects to draw", false);
     painter.fillRect(size, QColor(0,0,0));
-    painter.setPen(QColor(255,255,255));
-    painter.setBrush(QBrush(QColor(255, 255, 255)));
+    painter.setPen(QColor(0, 0, 0));
+    painter.setBrush(QBrush(QColor(0, 0, 0)));
 
-    _objectsMutex.lock();
-    for (auto object : _objects)
+    if (_objects != nullptr)
     {
-        painter.drawConvexPolygon(object);
+        _objectsMutex.lock();
+        for (auto object : *_objects)
+        {
+            painter.drawConvexPolygon(object);
+        }
+        _objectsMutex.unlock();
     }
-    _objectsMutex.unlock();
 }
 
 void Display::initialize()
@@ -40,41 +49,68 @@ void Display::initialize()
 
 void Display::start()
 {
+    DEBUG("Display::start()", false);
     _timer.start(1000 / _fps); // Répète le timer en fonction des fps
     _isRunning = true;
-    DEBUG("Display::start()", 0);
-    emit sigStart(_size);
+    _client.start();
+    emit sigStart();
 }
 
 void Display::pause()
 {
+    DEBUG("Display::pause()", false);
     _timer.stop();
     _isRunning = false;
-    DEBUG("Display::pause()", 0);
     emit sigPause();
 }
 
 void Display::reset()
 {
+    DEBUG("Display::reset()", false);
     pause();
     initialize();
     emit changed();
-    DEBUG("Display::reset()", 0);
     emit sigReset();
 }
 
 void Display::test()
 {
-    DEBUG("Display::test()", 0);
+    DEBUG("Display::test()", false);
+
     emit sigTest();
 }
 
 void Display::update()
 {
+    DEBUG("Display::update()", false);
     if (_isRunning)
     {
         emit changed();
-        DEBUG("Display::update()", 0);
+    }
+}
+
+void Display::messageDispatcher(qint32 socketFd, const QString &msg)
+{
+    (void) socketFd;
+    DEBUG("Display::messageDispatcher() :" << msg, false);
+
+    MessageBase::Type       msgType = MessageBase::getMessageType(msg);
+
+    switch (msgType)
+    {
+    case MessageBase::INFO_OBJECTS:
+    {
+        MessageObjects      message(msg);
+
+        DEBUG("Client::MessageDispatcher() : Receive " << message.objects()->size() << " objects", false);
+        receiveObjects (message.objects());
+        break;
+    }
+    default:
+    {
+        DEBUG("Display::messageDispatcher() : Unknown message" << msg, true);
+        break;
+    }
     }
 }
 
@@ -82,6 +118,8 @@ void Display::update()
 /* EVENTS */
 void Display::mousePressed(int x, int y)
 {
+    DEBUG("Display::mousePressed() : x = " << x << ", y = " << y, true);
+    _client.sendMessage("1 " + QString::number(x) + " " + QString::number(y));
     emit sigMousePressed(x, y);
 }
 
@@ -119,14 +157,13 @@ bool Display::isRunning() const
 
 const QVector<QPolygon> &Display::objects() const
 {
-    return _objects;
+    return *_objects;
 }
 
-void Display::receiveObjects(const QVector<QPolygon> &objects)
+void Display::receiveObjects(const QSharedPointer<QVector<QPolygon>> &objects)
 {
-    DEBUG("Display::receiveObjects() : " << objects.size() << " objects received", 1);
+    DEBUG("Display::receiveObjects() : " << objects->size() << " objects received", false);
     _objectsMutex.lock();
-    _objects.clear();
     _objects = objects;
     _objectsMutex.unlock();
 }
