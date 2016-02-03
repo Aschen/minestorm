@@ -15,33 +15,35 @@ int main(int argc, char *argv[])
 {
     QString     arg(argv[1]);
 
-//    if (arg == "srv")
-//    {
-//        QApplication    a(argc, argv);
-//        Core            *core = new Core(20);
-
-//        return a.exec();
-//    }
-//    else if (arg == "cli")
-//    {
-//        QApplication    a(argc, argv);
-//        Display         display(QSize(400, 400));
-//        MainWindow      w(&display);
-
-//        return a.exec();
-//    }
-    if (arg == "test")
+    if (arg == "srv")
     {
-        runTests();
+        QApplication    a(argc, argv);
+        Core            *core = new Core(20);
 
-        return 0;
+        core->startGame();
+
+        return a.exec();
     }
     else
     {
-        QApplication    app(argc, argv);
-        Display         display(QSize(SCREEN_SIZE, SCREEN_SIZE));
-        MainWindow      window(&display);
+        QApplication    a(argc, argv);
+        Display         display(QSize(400, 400));
+        MainWindow      w(&display);
 
-        return app.exec();
+        return a.exec();
     }
+//    if (arg == "test")
+//    {
+//        runTests();
+
+//        return 0;
+//    }
+//    else
+//    {
+//        QApplication    app(argc, argv);
+//        Display         display(QSize(SCREEN_SIZE, SCREEN_SIZE));
+//        MainWindow      window(&display);
+
+//        return app.exec();
+//    }
 }

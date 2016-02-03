@@ -9,7 +9,7 @@ Controller::Controller(Display *display, QWidget *parent)
     : QWidget(parent),
       _display(display),
       _inputHost(new QLineEdit("localhost", this)),
-      _coreRunner(QSharedPointer<CoreRunner>(new CoreRunner(20)))
+      _coreRunner(nullptr)
 {
     auto startNewGame = new QPushButton("New Game", this);
     auto joinGame = new QPushButton("Join Game", this);
@@ -31,6 +31,8 @@ Controller::Controller(Display *display, QWidget *parent)
 
 void Controller::startNewGame()
 {
+    return;
+    _coreRunner = QSharedPointer<CoreRunner>(new CoreRunner(20));
     _coreRunner->start();
     _display->startNewGame();
 }
