@@ -122,7 +122,7 @@ void Core::initialize(qint32 idClient, QSize size)
 {
     DEBUG("Display::initialize()", 0);
 
-    Ship ship(idClient,QRect(size.width()/2-40/2,size.height()/2-40/2,40,40), 3);
+    Ship ship(idClient,QRect(size.width()/2-40/2,size.height()/2-40/2,40,40), 3, 0);
     QPolygon polygon = QPolygon(ship.rect(), true);
 
     _entities.push_back(QSharedPointer<Entity>(new Ship(ship)));

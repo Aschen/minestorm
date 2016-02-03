@@ -21,7 +21,7 @@ public:
         MINE = 0,
         SHIP = 1,
         SHOT = 2,
-        CARRE= 3 // Pour test
+        CARRE= 9 // Pour test
     };
 
 protected:

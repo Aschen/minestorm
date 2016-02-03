@@ -7,14 +7,14 @@ Ship::Ship(qint32 id)
     _speed = 21;
 }
 
-Ship::Ship(qint32 id, QRect rect, quint32 vie)
+Ship::Ship(qint32 id, QRect rect, quint32 vie, qint32 shipId)
     : Entity(id, Entity::SHIP)
 {
     _speed = 21;
     _rect = rect;
     _vie = vie;
     _img = QImage("images/shipAlpha.png");
-
+    _shipId = shipId;
 
 }
 void Ship::drawShip()
@@ -53,6 +53,11 @@ QImage Ship::img() const
 void Ship::setImage(const QImage &img)
 {
     _img = img;
+}
+
+qint32 Ship::shipId() const
+{
+    return _shipId;
 }
 
 

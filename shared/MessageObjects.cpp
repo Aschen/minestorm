@@ -61,12 +61,59 @@ MessageObjects::MessageObjects(const QVector<QPolygon> &objects)
     // Don't keep a copy of objects ?
 }
 
+MessageObjects::MessageObjects(const EntityHash &entities)
+    : MessageBase(MessageBase::INFO_OBJECTS, ""),
+      _objects(nullptr)
+{
+    /* Write message type */
+    _messageString = QString::number((qint32) _type) + " ";
+
+    /* Write total objects count */
+    _messageString += QString::number(entities.count()) + " ";
+
+    /* Write each object */
+    for (const QSharedPointer<Entity> &entity : entities)
+    {
+        /* Write object type */
+        _messageString += QString::number((qint32) entity->type()) + " ";
+
+        switch (entity->type())
+        {
+        case Entity::SHIP:
+            serializeShip(dynamic_cast<Ship&>(*entity));
+            break;
+
+        default:
+            DEBUG("MessageObjects::MessageObjects() : Unknown entity" << entity->type(), true);
+            assert(false);
+            break;
+        }
+    }
+}
+
 MessageObjects::~MessageObjects()
 {
 }
 
-const QSharedPointer<QVector<QPolygon> > &MessageObjects::objects() const
+const QSharedPointer<QVector<QPolygon>> &MessageObjects::objects() const
 {
     return _objects;
+}
+
+void MessageObjects::serializeShip(const Ship &ship)
+{
+    /* Write id ship */
+    _messageString += QString::number(ship.shipId()) + " ";
+
+    /* Write points count */
+    _messageString += QString::number(ship.count()) + " ";
+
+    /* Write coordinates for each point */
+    for (const QPoint &point : ship)
+    {
+        _messageString += QString::number(point.x()) + " ";
+        _messageString += QString::number(point.y()) + " ";
+    }
+
 }
 
