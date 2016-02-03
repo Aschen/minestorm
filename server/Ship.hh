@@ -1,10 +1,13 @@
 #ifndef SHIP_HH
 # define SHIP_HH
 
+# define PI 3.141592654
+
 # include <QRect>
 # include "QImage"
 # include "Entity.hh"
 # include "Minestorm.hh"
+
 class Ship : public Entity
 {
 private:
@@ -20,6 +23,9 @@ public:
 
     void            createShipPolygon();
     void            moveShipForward();
+    void            rotateShipLeft();
+    void            rotateShipRight();
+    double          getRadian();
 
     //Getter & Setter
     quint32         vie() const;

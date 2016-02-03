@@ -66,6 +66,7 @@ void Entity::angle(double value)
     _angle = value;
 }
 
+
 const std::string Entity::dump() const
 {
     std::stringstream     ret;

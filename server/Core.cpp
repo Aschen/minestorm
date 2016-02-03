@@ -173,25 +173,30 @@ void Core::keyPressed(qint32 idClient, qint32 key)
     {
     case Qt::Key_Right:
         DEBUG("Core::keyPressed : Client" << idClient << " KeyRight", true);
+        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->rotateShipRight();
+
         break;
 
     case Qt::Key_Left:
         DEBUG("Core::keyPressed Client" << idClient << " KeyLeft", true);
+        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->rotateShipLeft();
+
         break;
 
     case Qt::Key_Up:
         DEBUG("Core::keyPressed : Client" << idClient << " KeyUp", true);
-
-        DEBUG("Ship::BMoved" <<  dynamic_cast<Ship*>(_entitiesMap[idClient].data())->xy().x(),true);
+        DEBUG("Ship::BMoved" <<  dynamic_cast<Ship*>(_entitiesMap[idClient].data())->xy().x(),false);
         dynamic_cast<Ship*>(_entitiesMap[idClient].data())->moveShipForward();
 
 
-        DEBUG("Ship::AMoved" <<  dynamic_cast<Ship*>(_entitiesMap[idClient].data())->xy().x(),true);
+        DEBUG("Ship::AMoved" <<  dynamic_cast<Ship*>(_entitiesMap[idClient].data())->xy().x(),false);
 
         break;
 
     case Qt::Key_Down:
         DEBUG("Core::keyPressed : Client" << idClient << " KeyDown", true);
+        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->slowDownShip();
+
         break;
 
     default:

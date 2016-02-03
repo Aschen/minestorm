@@ -4,13 +4,13 @@
 Ship::Ship(qint32 id)
     : Entity(id, Entity::SHIP)
 {
-    _speed = 21;
+    _speed = 0;
 }
 
 Ship::Ship(qint32 id, QRect rect, quint32 vie, qint32 shipId)
     : Entity(id, Entity::SHIP)
 {
-    _speed = 21;
+    _speed = 0;
     _rect = rect;
     _vie = vie;
     _img = QImage("images/shipAlpha.png");
@@ -20,12 +20,10 @@ Ship::Ship(qint32 id, QRect rect, quint32 vie, qint32 shipId)
 void Ship::createShipPolygon()
 {
     this->clear();
-    //this->addPoint(QPoint(_rect.x(), _rect.y()));
+
     this->addPoint(QPoint(this->xy().x() + this->size().height(), this->xy().y()));
     this->addPoint(QPoint(this->xy().x() + this->size().height(), this->xy().y() + this->size().width()));
     this->addPoint(QPoint(this->xy().x() + this->size().height() /2, this->xy().y() + this->size().width() / 2));
-
-
 }
 
 //Getter & Setter
@@ -62,12 +60,48 @@ qint32 Ship::shipId() const
 {
     return _shipId;
 }
+
 void Ship::moveShipForward()
 {
     DEBUG("Ship::Coord : Client" << this->xy().x() << ";" << this->xy().y(), false);
-    this->xy(QPoint(this->xy().x() + 10, this->xy().y() + 10));
+    _speed++;
+    this->xy(QPoint(
+                 this->xy().x() + _speed * cos(getRadian()),
+                 this->xy().y() + _speed * sin(getRadian())
+                 ));
+    /*
+    this->xy(
+            QPoint(
+                 this->xy().y() * sin( getRadian() - this->xy().x() * cos(getRadian())),
+                 this->xy().y() * cos( getRadian() + this->xy().x() * sin(getRadian()))
+            )
+    );
+*/
     this->createShipPolygon();
+
     DEBUG("Ship::Coord : Client" << this->xy().x() << ";" << this->xy().y(), false);
+}
+
+void Ship::rotateShipRight()
+{
+    this->angle(this->angle() + 1);
+    this->createShipPolygon();
+}
+
+void Ship::slowDownShip()
+{
+    _speed--;
+}
+
+void Ship::rotateShipLeft()
+{
+    this->angle(this->angle() - 1);
+    this->createShipPolygon();
+}
+
+double Ship::getRadian()
+{
+    return this->angle() / 180 * PI;
 }
 
 

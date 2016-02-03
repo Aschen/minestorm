@@ -38,7 +38,6 @@ public:
     virtual ~Entity();
 
     void                    addPoint(const QPoint &point);
-
     Type                    type() const;
     qint32                  id() const;
     const QPoint            &xy() const;
