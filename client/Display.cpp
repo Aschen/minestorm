@@ -16,7 +16,7 @@ Display::Display(const QSize &size, qint32 fps, QObject *parent)
     ** qui fait appel à GameBoard::paintEvent()
     ** qui fait appel à Display::draw()
     */
-    connect(&_timer, SIGNAL(timeout()), this, SLOT(update()));
+//    connect(&_timer, SIGNAL(timeout()), this, SLOT(update()));
 
     connect(_client.data(), SIGNAL(transfertMessage(qint32, QString)),
             this,           SLOT(messageDispatcher(qint32,QString)));
@@ -44,7 +44,7 @@ void Display::draw(QPainter &painter, QRect &size)
 
 void Display::startDisplay()
 {
-    _timer.start(1000 / _fps); // Répète le timer en fonction des fps
+    //_timer.start(1000 / _fps); // Répète le timer en fonction des fps
     _isRunning = true;
 }
 
@@ -150,6 +150,7 @@ void Display::receiveObjects(const QSharedPointer<QVector<Element>> &objects)
 
     _objectsMutex.lock();
     _objects = objects;
+    emit changed();
     _objectsMutex.unlock();
 }
 
