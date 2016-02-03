@@ -66,8 +66,8 @@ void Ship::moveShipForward()
     DEBUG("Ship::Coord : Client" << this->xy().x() << ";" << this->xy().y(), false);
     _speed++;
     this->xy(QPoint(
-                 this->xy().x() + _speed * cos(getRadian()),
-                 this->xy().y() + _speed * sin(getRadian())
+                 this->xy().x() + 2,
+                 this->xy().y()
                  ));
     /*
     this->xy(

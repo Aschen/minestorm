@@ -20,6 +20,13 @@ Core::Core(qint32 cps)
     connect(&_server,   SIGNAL(clientConnected(qint32)),
             this,       SLOT(newPlayer(qint32)));
 
+    Ship * nShip = new Ship(24);
+    nShip->size(QSize(40,40));
+    nShip->xy(QPoint(0,SCREEN_SIZE / 2));
+
+    _entitiesMap[42] = QSharedPointer<Entity>(nShip);
+
+
 }
 
 Core::~Core()
@@ -43,6 +50,7 @@ void Core::step()
         DEBUG("Core::step() : Send " << objects.size() << " objects", true);
         MessageObjects      message(objects);
 
+        dynamic_cast<Ship*>(_entitiesMap[42].data())->moveShipForward();
         _server.broadcast(message.messageString());
     }
 
