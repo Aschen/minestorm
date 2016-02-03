@@ -16,6 +16,10 @@ Core::Core(qint32 cps)
     // Connect communications functions
     connect(&_server,   SIGNAL(transfertMessage(qint32, const QString&)),
             this,       SLOT(messageDispatcher(qint32, const QString&)));
+
+    connect(&_server,   SIGNAL(clientConnected(qint32)),
+            this,       SLOT(newPlayer(qint32)));
+
 }
 
 Core::~Core()
@@ -64,14 +68,14 @@ void Core::messageDispatcher(qint32 idClient, const QString &msg)
     {
         MessageKey          message(msg);
 
-        keyReleased(idClient, message.keyCode());
+        keyPressed(idClient, message.keyCode());
         break;
     }
     case MessageBase::KEY_RELEASED:
     {
         MessageKey          message(msg);
 
-        keyPressed(idClient, message.keyCode());
+        keyReleased(idClient, message.keyCode());
         break;
     }
     default:
@@ -80,6 +84,11 @@ void Core::messageDispatcher(qint32 idClient, const QString &msg)
         break;
     }
     }
+}
+
+void Core::newPlayer(qint32 idClient)
+{
+
 }
 
 void Core::startGame()
@@ -118,12 +127,15 @@ void Core::test()
     DEBUG("Core::test() : ", 1);
 }
 
-void Core::initialize(qint32 idClient, QSize size)
+void Core::initialize(qint32 idClient)
 {
     DEBUG("Display::initialize()", 0);
 
-    Ship ship(idClient,QRect(size.width()/2-40/2,size.height()/2-40/2,40,40), 3);
-    QPolygon polygon = QPolygon(ship.rect(), true);
+    Ship ship(idClient);
+    ship.xy(QPoint(SCREEN_SIZE / 2, SCREEN_SIZE /  2));
+    ship.size(QSize(25,25));
+    ship.createShipPolygon();
+
 
     _entities.push_back(QSharedPointer<Entity>(new Ship(ship)));
     _entitiesMap[idClient] = _entities.last();
@@ -148,23 +160,23 @@ void Core::keyPressed(qint32 idClient, qint32 key)
     switch(key)
     {
     case Qt::Key_Right:
-        DEBUG("Display::keyPressed : Client" << idClient << " KeyRight", true);
+        DEBUG("Core::keyPressed : Client" << idClient << " KeyRight", true);
         break;
 
     case Qt::Key_Left:
-        DEBUG("Display::keyPressed Client" << idClient << " KeyLeft", true);
+        DEBUG("Core::keyPressed Client" << idClient << " KeyLeft", true);
         break;
 
     case Qt::Key_Up:
-        DEBUG("Display::keyPressed : Client" << idClient << " KeyUp", true);
+        DEBUG("Core::keyPressed : Client" << idClient << " KeyUp", true);
         break;
 
     case Qt::Key_Down:
-        DEBUG("Display::keyPressed : Client" << idClient << " KeyDown", true);
+        DEBUG("Core::keyPressed : Client" << idClient << " KeyDown", true);
         break;
 
     default:
-        DEBUG("Display::keyPressed : Client" << idClient << " Unknown key:" << key, true);
+        DEBUG("Core::keyPressed : Client" << idClient << " Unknown key:" << key, true);
         break;
     }
 }
@@ -174,23 +186,23 @@ void Core::keyReleased(qint32 idClient, qint32 key)
     switch(key)
     {
     case Qt::Key_Right:
-        DEBUG("Display::keyReleased : Client" << idClient << " KeyRight", true);
+        DEBUG("Core::keyReleased : Client" << idClient << " KeyRight", true);
         break;
 
     case Qt::Key_Left:
-        DEBUG("Display::keyReleased Client" << idClient << " KeyLeft", true);
+        DEBUG("Core::keyReleased Client" << idClient << " KeyLeft", true);
         break;
 
     case Qt::Key_Up:
-        DEBUG("Display::keyReleased : Client" << idClient << " KeyUp", true);
+        DEBUG("Core::keyReleased : Client" << idClient << " KeyUp", true);
         break;
 
     case Qt::Key_Down:
-        DEBUG("Display::keyReleased : Client" << idClient << " KeyDown", true);
+        DEBUG("Core::keyReleased : Client" << idClient << " KeyDown", true);
         break;
 
     default:
-        DEBUG("Display::keyReleased : Client" << idClient << " Unknown key:" << key, true);
+        DEBUG("Core::keyReleased : Client" << idClient << " Unknown key:" << key, true);
         break;
     }
 

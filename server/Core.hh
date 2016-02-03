@@ -41,11 +41,12 @@ public:
     void                reset();
     void                test();
 
-    void                initialize(qint32 idClient, QSize size);
+    void                initialize(qint32 idClient);
 
 private slots:
     void                step();
     void                messageDispatcher(qint32 idClient, const QString &msg);
+    void                newPlayer(qint32 idClient);
 };
 
 #endif // CORE_HH

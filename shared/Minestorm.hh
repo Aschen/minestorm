@@ -8,6 +8,7 @@
   if (y) { qDebug() << x; } \
 } while (0)
 
+# define SCREEN_SIZE 400
 //#ifdef _DEBUG
 //#define TRACE(MSG) std::cout << MSG << "\t" << __CLASS__ <<  __FUNCTION__ << " ligne " << __LINE__ << std::endl;
 //#else
