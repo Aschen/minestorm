@@ -1,8 +1,8 @@
 #include "Entity.hh"
 
-Entity::Entity(QString name, Type type)
+Entity::Entity(qint32 id, Type type)
     : _type(type),
-      _name(name)
+      _id(id)
 {
 }
 
@@ -21,37 +21,37 @@ Entity::Type Entity::type() const
     return _type;
 }
 
-const QString Entity::name() const
+qint32 Entity::id() const
 {
-    return _name;
+    return _id;
 }
 
-QPoint Entity::xy()
+const QPoint &Entity::xy() const
 {
     return _xy;
 }
 
-void Entity::xy(QPoint value)
+void Entity::xy(const QPoint &value)
 {
     _xy = value;
 }
 
-QSize Entity::size()
+QSize Entity::size() const
 {
     return _size;
 }
 
-void Entity::size(QSize value)
+void Entity::size(const QSize &value)
 {
     _size = value;
 }
 
-int Entity::speed()
+qint32 Entity::speed() const
 {
     return _speed;
 }
 
-void Entity::speed(int value)
+void Entity::speed(qint32 value)
 {
     _speed = value;
 }
@@ -70,12 +70,12 @@ const std::string Entity::dump() const
 {
     std::stringstream     ret;
 
-    ret << TYPE_DISPLAY[_type] << " - " << _name << " : ";
-    for (int i = 0; i < this->size(); ++i)
-    {
-        ret << static_cast<char>(i + 'A');
-        ret << "(" << this->operator[](i).x() << "," <<this->operator[](i).y() << ") ";
-    }
+//    ret << TYPE_DISPLAY[_type] << " - " << _id << " : ";
+//    for (int i = 0; i < this->size(); ++i)
+//    {
+//        ret << static_cast<char>(i + 'A');
+//        ret << "(" << this->operator[](i).x() << "," <<this->operator[](i).y() << ") ";
+//    }
 
     return ret.str();
 }

@@ -9,6 +9,7 @@
 # include <QBrush>
 # include <QVector>
 # include <QPolygon>
+# include <QApplication>
 
 # include "Minestorm.hh"
 # include "Client.hh"
@@ -27,7 +28,7 @@ private:
     bool                _isRunning;
     const QSize         _size;
     const int           _fps;
-    Client              _client;
+    QSharedPointer<Client>              _client;
     QSharedPointer<QVector<QPolygon>>   _objects;
     QMutex              _objectsMutex;
 
@@ -35,37 +36,28 @@ public:
     Display(const QSize &size, int fps = 25, QObject *parent = nullptr);
 
     void                draw(QPainter &painter, QRect &size);
+    void                startDisplay();
 
+    // Events triggered from Gameboard
     void                mousePressed(int x, int y);
     void                mouseReleased(int x, int y);
     void                mouseMoved(int x, int y);
     void                keyPressed(int key);
     void                keyReleased(int key);
 
-    void                start();
-    void                pause();
-    void                reset();
-    void                test();
+    // Events triggered from Controller
+    void                startNewGame();
+    void                joinGame(const QString &host);
+    void                exitGame();
+
 
     const QSize         &size() const;
     bool                isRunning() const;
     const QVector<QPolygon>  &objects() const;
 
-protected:
-    void                initialize();
-
 
 signals:
     void                changed();
-    void                sigMousePressed(int x, int y);
-    void                sigMouseReleased(int x, int y);
-    void                sigMouseMoved(int x, int y);
-    void                sigKeyPressed(int key);
-    void                sigKeyReleased(int key);
-    void                sigStart(const QSize size);
-    void                sigPause();
-    void                sigReset();
-    void                sigTest();
 
 public slots:
     void                receiveObjects(const QSharedPointer<QVector<QPolygon>> &objects);

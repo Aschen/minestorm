@@ -7,42 +7,41 @@
 
 Controller::Controller(Display *display, QWidget *parent)
     : QWidget(parent),
-      _display(display)
+      _display(display),
+      _inputHost(new QLineEdit("localhost", this)),
+      _coreRunner(QSharedPointer<CoreRunner>(new CoreRunner(20)))
 {
-    auto button1 = new QPushButton("Start");
-    auto button2 = new QPushButton("Pause");
-    auto button3 = new QPushButton("Reset");
-    auto button4 = new QPushButton("Test");
-    QHBoxLayout *layout = new QHBoxLayout;
+    auto startNewGame = new QPushButton("New Game", this);
+    auto joinGame = new QPushButton("Join Game", this);
+    auto exitGame = new QPushButton("Quit", this);
 
-    layout->addWidget(button1);
-    layout->addWidget(button2);
-    layout->addWidget(button3);
-    layout->addWidget(button4);
+    QHBoxLayout *layout = new QHBoxLayout(this);
+
+    layout->addWidget(startNewGame);
+    layout->addWidget(joinGame);
+    layout->addWidget(_inputHost);
+    layout->addWidget(exitGame);
 
     setLayout(layout);
 
-    connect(button1, SIGNAL(clicked()), this, SLOT(start()));
-    connect(button2, SIGNAL(clicked()), this, SLOT(pause()));
-    connect(button3, SIGNAL(clicked()), this, SLOT(reset()));
-    connect(button4, SIGNAL(clicked()), this, SLOT(test()));
-}
-void Controller::start()
-{
-    _display->start();
+    connect(startNewGame,   SIGNAL(clicked()), this, SLOT(startNewGame()));
+    connect(joinGame,       SIGNAL(clicked()), this, SLOT(joinGame()));
+    connect(exitGame,       SIGNAL(clicked()), this, SLOT(exitGame()));
 }
 
-void Controller::pause()
+void Controller::startNewGame()
 {
-    _display->pause();
+    _coreRunner->start();
+    _display->startNewGame();
 }
 
-void Controller::reset()
+void Controller::joinGame()
 {
-    _display->reset();
+    _display->joinGame(_inputHost->text());
 }
 
-void Controller::test()
+void Controller::exitGame()
 {
-    _display->test();
+    _coreRunner.clear();
+    _display->exitGame();
 }

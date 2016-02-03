@@ -6,8 +6,8 @@
 class Carre : public Entity
 {
 public:
-    Carre(string name);
-    Carre(string name, const QPoint &a, int size);
+    Carre(qint32 id);
+    Carre(qint32 id, const QPoint &a, qint32 size);
     virtual ~Carre();
 };
 

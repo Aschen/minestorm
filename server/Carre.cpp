@@ -1,13 +1,13 @@
 #include "Carre.hh"
 
-Carre::Carre(string name)
-    : Entity(name, Entity::CARRE)
+Carre::Carre(qint32 id)
+    : Entity(id, Entity::CARRE)
 {
     _speed = 21;
 }
 
-Carre::Carre(string name, const QPoint &a, int size)
-    : Entity(name, Entity::CARRE)
+Carre::Carre(qint32 id, const QPoint &a, qint32 size)
+    : Entity(id, Entity::CARRE)
 {
     _speed = 21;
 
@@ -19,6 +19,5 @@ Carre::Carre(string name, const QPoint &a, int size)
 
 Carre::~Carre()
 {
-
 }
 

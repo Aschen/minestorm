@@ -8,27 +8,26 @@
 
 class Ship : public Entity
 {
+private:
+    quint32         _vie;
+    QRect           _rect;
+    QImage          _img;
+
 public:
     //Constructeurs
-    Ship(qint32 name);
-    Ship(qint32 name, QRect rect, int vie);
+    Ship(qint32 id);
+    Ship(qint32 id, QRect rect, quint32 vie);
 
     void            drawShip();
 
     //Getter & Setter
-    int             vie() const;
-    void            setVie(int vie);
+    quint32         vie() const;
+    void            setVie(quint32 vie);
     QRect           rect() const;
     void            setRect(const QRect &rect);
 
     QImage          img() const;
     void            setImage(const QImage &img);
-
-private:
-    int             _vie;
-    QRect           _rect;
-    QImage          _img;
-
 };
 
 #endif // SHIP_HH

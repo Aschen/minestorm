@@ -6,9 +6,9 @@
 # include <QVector>
 # include <QList>
 # include <QHash>
+# include <QSharedPointer>
 
 # include <sstream>
-# include <memory>
 
 using namespace std;
 
@@ -26,34 +26,34 @@ public:
 
 protected:
     const Type              _type;
-    const QString           _name;
+    const qint32            _id;
     QPoint                  _xy;
     QSize                   _size;
-    int                     _speed;
+    qint32                  _speed;
     double                  _angle;
 
 
 public:
-    Entity(string name, Type type);
+    Entity(qint32 id, Type type);
     virtual ~Entity();
 
     void                    addPoint(const QPoint &point);
 
     Type                    type() const;
-    const QString           name() const;
-    QPoint                  xy();
-    void                    xy(QPoint value);
-    QSize                   size();
-    void                    size(QSize value);
-    int                     speed();
-    void                    speed(int value);
-    double                  angle();
+    qint32                  id() const;
+    const QPoint            &xy() const;
+    void                    xy(const QPoint &value);
+    QSize                   size() const;
+    void                    size(const QSize &value);
+    qint32                  speed() const;
+    void                    speed(qint32 value);
+    double                  angle() const;
     void                    angle(double value);
 
     const string            dump() const;
 };
 
-using EntityList = QList<std::shared_ptr<Entity>>;
-using EntityHash = QHash<std::string, std::shared_ptr<Entity>>;
+using EntityList = QList<QSharedPointer<Entity>>;
+using EntityHash = QHash<qint32, QSharedPointer<Entity>>;
 
 #endif // ENTITY_HH

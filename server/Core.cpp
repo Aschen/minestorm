@@ -16,9 +16,6 @@ Core::Core(qint32 cps)
     // Connect communications functions
     connect(&_server,   SIGNAL(transfertMessage(qint32, const QString&)),
             this,       SLOT(messageDispatcher(qint32, const QString&)));
-
-    _server.start();
-    start();
 }
 
 Core::~Core()
@@ -72,11 +69,12 @@ void Core::messageDispatcher(qint32 idClient, const QString &msg)
     }
 }
 
-void Core::start()
+void Core::startGame()
 {
-    DEBUG("Core::start()", 1);
+    DEBUG("Core::startGame()", true);
     if (_isRunning == false)
     {
+        _server.start();
         _timer.start(1000 / _cps); // Nombre de cycle de jeu par seconde
         _isRunning = true;
         //initialize(12,1);
@@ -114,7 +112,7 @@ void Core::initialize(qint32 idClient, QSize size)
     Ship ship(idClient,QRect(size.width()/2-40/2,size.height()/2-40/2,40,40), 3);
     QPolygon polygon = QPolygon(ship.rect(), true);
 
-    _entities.push_back(std::shared_ptr<Entity>(new Ship(ship)));
+    _entities.push_back(QSharedPointer<Entity>(new Ship(ship)));
     _entitiesMap[idClient] = _entities.last();
 }
 
@@ -125,10 +123,10 @@ void Core::mousePressed(qint32 idClient, qint32 x, qint32 y)
 
     // Quand on reçoit un signal dans le slot mousePressed(),
     // On créé un carre depuis les coordonnées x et y
-    Carre   carre("carre", QPoint(x, y), 42);
+    Carre   carre(_step, QPoint(x, y), 42);
 
     // On ajoute le carre créé à la liste des entités
-    _entities.push_back(std::shared_ptr<Entity>(new Carre(carre)));
+    _entities.push_back(QSharedPointer<Entity>(new Carre(carre)));
 
 }
 

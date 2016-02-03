@@ -1,14 +1,14 @@
 #include "Ship.hh"
 
 
-Ship::Ship(string name)
-    : Entity(name, Entity::SHIP)
+Ship::Ship(qint32 id)
+    : Entity(id, Entity::SHIP)
 {
     _speed = 21;
 }
 
-Ship::Ship(qint32 name, QRect rect, int vie)
-    : Entity(name, Entity::SHIP)
+Ship::Ship(qint32 id, QRect rect, quint32 vie)
+    : Entity(id, Entity::SHIP)
 {
     _speed = 21;
     _rect = rect;
@@ -27,12 +27,12 @@ void Ship::drawShip()
 }
 
 //Getter & Setter
-int Ship::vie() const
+quint32 Ship::vie() const
 {
     return _vie;
 }
 
-void Ship::setVie(int vie)
+void Ship::setVie(quint32 vie)
 {
     _vie = vie;
 }
@@ -41,7 +41,7 @@ QRect Ship::rect() const
     return _rect;
 }
 
-void Ship::setRect(const QSize &rect)
+void Ship::setRect(const QRect &rect)
 {
     _rect = rect;
 }
@@ -50,7 +50,7 @@ QImage Ship::img() const
     return _img;
 }
 
-void Ship::setImg(const QImage &img)
+void Ship::setImage(const QImage &img)
 {
     _img = img;
 }

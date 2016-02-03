@@ -14,6 +14,7 @@ BaseSocket::BaseSocket(qint32 socketFd, QObject *parent)
 
 BaseSocket::~BaseSocket()
 {
+    DEBUG("BaseSocket::~BaseSocket()", true);
 }
 
 QByteArray BaseSocket::packMessage(const QString &msg) const

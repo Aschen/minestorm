@@ -2,6 +2,9 @@
 # define CONTROLLER_HH
 
 # include <QWidget>
+# include <QLineEdit>
+
+# include "CoreRunner.hh"
 
 class Display;
 
@@ -12,16 +15,17 @@ class Controller : public QWidget
 {
     Q_OBJECT
 private:
-    Display *_display;
+    Display     *_display;
+    QLineEdit   *_inputHost;
+    QSharedPointer<CoreRunner>  _coreRunner;
 
 public:
     Controller(Display *display, QWidget *parent = nullptr);
 
 private slots:
-    void    start();
-    void    pause();
-    void    reset();
-    void    test();
+    void        startNewGame();
+    void        joinGame();
+    void        exitGame();
 
 };
 
