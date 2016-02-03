@@ -17,7 +17,6 @@ SOURCES += server/Core.cpp \
     client/Display.cpp \
     client/GameBoard.cpp \
     client/MainWindow.cpp \
-    shared/GameProxy.cpp \
     shared/main.cpp \
     server/Mine.cpp\
     server/Ship.cpp \
@@ -31,14 +30,14 @@ SOURCES += server/Core.cpp \
     shared/test.cpp \
     shared/MessageBase.cpp \
     shared/MessageMouse.cpp \
-    shared/MessageObjects.cpp
+    shared/MessageObjects.cpp \
+    shared/Game.cpp
 
 HEADERS  += server/Core.hh \
     client/Controller.hh \
     client/Display.hh \
     client/GameBoard.hh \
     client/MainWindow.hh \
-    shared/GameProxy.hh \
     shared/Minestorm.hh\
     server/Mine.hh \
     server/Ship.hh \
@@ -52,7 +51,8 @@ HEADERS  += server/Core.hh \
     shared/MessageBase.hh \
     shared/MessageMouse.hh \
     shared/MessageObjects.hh \
-    shared/MessageFactory.hpp
+    shared/MessageFactory.hpp \
+    shared/Game.hh
 
 FORMS    +=
 

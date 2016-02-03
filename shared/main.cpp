@@ -3,14 +3,11 @@
 #include <QSharedPointer>
 
 #include "MainWindow.hh"
-#include "GameProxy.hh"
 #include "Display.hh"
 #include "Core.hh"
 
 #include "Server.hh"
 #include "Client.hh"
-
-#include "MessageFactory.hpp"
 
 void        runTests();
 
