@@ -64,10 +64,12 @@ qint32 Ship::shipId() const
 void Ship::moveShipForward()
 {
     DEBUG("Ship::Coord : Client" << this->xy().x() << ";" << this->xy().y(), false);
-    _speed++;
+    if(_speed < 10)
+       _speed++;
+
     this->xy(QPoint(
-                 this->xy().x() + 2,
-                 this->xy().y()
+                 this->xy().x() + _speed * cos(getRadian()),
+                 this->xy().y() + _speed * sin(getRadian())
                  ));
     /*
     this->xy(
@@ -78,12 +80,16 @@ void Ship::moveShipForward()
     );
 */
     this->createShipPolygon();
+    DEBUG("Ship::speed:" << _speed, true);
 
     DEBUG("Ship::Coord : Client" << this->xy().x() << ";" << this->xy().y(), false);
 }
 
 void Ship::rotateShipRight()
 {
+    DEBUG("Ship::angle:" << _angle, true);
+    _angle++;
+    DEBUG("Ship::angle:" << _angle, true);
     this->angle(this->angle() + 1);
     this->createShipPolygon();
 }
@@ -95,13 +101,15 @@ void Ship::slowDownShip()
 
 void Ship::rotateShipLeft()
 {
-    this->angle(this->angle() - 1);
+    DEBUG("Ship::angle:" << _angle, true);
+    _angle--;
     this->createShipPolygon();
+    DEBUG("Ship::angle:" << _angle, true);
 }
 
 double Ship::getRadian()
 {
-    return this->angle() / 180 * PI;
+    return ( this->angle() * ( PI / 180));
 }
 
 

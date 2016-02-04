@@ -44,7 +44,7 @@ void Display::draw(QPainter &painter, QRect &size)
 
 void Display::startDisplay()
 {
-    _timer.start(1000 / _fps); // Répète le timer en fonction des fps
+    //_timer.start(1000 / _fps); // Répète le timer en fonction des fps
     _isRunning = true;
 }
 
@@ -147,9 +147,10 @@ const QVector<QPolygon> &Display::objects() const
 void Display::receiveObjects(const QSharedPointer<QVector<QPolygon>> &objects)
 {
     DEBUG("Display::receiveObjects() : " << objects->size() << " objects received", false);
-    _objectsMutex.lock();
+//    _objectsMutex.lock();
     _objects = objects;
-    _objectsMutex.unlock();
+    emit changed();
+//    _objectsMutex.unlock();
 }
 
 void Display::update()

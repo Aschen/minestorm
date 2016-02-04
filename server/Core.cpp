@@ -47,10 +47,10 @@ void Core::step()
 
     if (objects.size() && _server.clientCount())
     {
-        DEBUG("Core::step() : Send " << objects.size() << " objects", true);
+        DEBUG("Core::step() : Send " << objects.size() << " objects", false);
         MessageObjects      message(objects);
 
-        dynamic_cast<Ship*>(_entitiesMap[42].data())->moveShipForward();
+        // dynamic_cast<Ship*>(_entitiesMap[].data())-> moveShipForward();
         _server.broadcast(message.messageString());
     }
 
@@ -180,19 +180,19 @@ void Core::keyPressed(qint32 idClient, qint32 key)
     switch(key)
     {
     case Qt::Key_Right:
-        DEBUG("Core::keyPressed : Client" << idClient << " KeyRight", true);
+        DEBUG("Core::keyPressed : Client" << idClient << " KeyRight", false);
         dynamic_cast<Ship*>(_entitiesMap[idClient].data())->rotateShipRight();
 
         break;
 
     case Qt::Key_Left:
-        DEBUG("Core::keyPressed Client" << idClient << " KeyLeft", true);
+        DEBUG("Core::keyPressed Client" << idClient << " KeyLeft", false);
         dynamic_cast<Ship*>(_entitiesMap[idClient].data())->rotateShipLeft();
 
         break;
 
     case Qt::Key_Up:
-        DEBUG("Core::keyPressed : Client" << idClient << " KeyUp", true);
+        DEBUG("Core::keyPressed : Client" << idClient << " KeyUp", false);
         DEBUG("Ship::BMoved" <<  dynamic_cast<Ship*>(_entitiesMap[idClient].data())->xy().x(),false);
         dynamic_cast<Ship*>(_entitiesMap[idClient].data())->moveShipForward();
 
@@ -202,13 +202,13 @@ void Core::keyPressed(qint32 idClient, qint32 key)
         break;
 
     case Qt::Key_Down:
-        DEBUG("Core::keyPressed : Client" << idClient << " KeyDown", true);
+        DEBUG("Core::keyPressed : Client" << idClient << " KeyDown", false);
         dynamic_cast<Ship*>(_entitiesMap[idClient].data())->slowDownShip();
 
         break;
 
     default:
-        DEBUG("Core::keyPressed : Client" << idClient << " Unknown key:" << key, true);
+        DEBUG("Core::keyPressed : Client" << idClient << " Unknown key:" << key, false);
         break;
     }
 }
@@ -218,23 +218,23 @@ void Core::keyReleased(qint32 idClient, qint32 key)
     switch(key)
     {
     case Qt::Key_Right:
-        DEBUG("Core::keyReleased : Client" << idClient << " KeyRight", true);
+        DEBUG("Core::keyReleased : Client" << idClient << " KeyRight", false);
         break;
 
     case Qt::Key_Left:
-        DEBUG("Core::keyReleased Client" << idClient << " KeyLeft", true);
+        DEBUG("Core::keyReleased Client" << idClient << " KeyLeft", false);
         break;
 
     case Qt::Key_Up:
-        DEBUG("Core::keyReleased : Client" << idClient << " KeyUp", true);
+        DEBUG("Core::keyReleased : Client" << idClient << " KeyUp", false);
         break;
 
     case Qt::Key_Down:
-        DEBUG("Core::keyReleased : Client" << idClient << " KeyDown", true);
+        DEBUG("Core::keyReleased : Client" << idClient << " KeyDown", false);
         break;
 
     default:
-        DEBUG("Core::keyReleased : Client" << idClient << " Unknown key:" << key, true);
+        DEBUG("Core::keyReleased : Client" << idClient << " Unknown key:" << key, false);
         break;
     }
 

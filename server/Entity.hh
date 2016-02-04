@@ -10,6 +10,7 @@
 
 # include <sstream>
 
+# include "Minestorm.hh"
 using namespace std;
 
 class Entity : public QPolygon

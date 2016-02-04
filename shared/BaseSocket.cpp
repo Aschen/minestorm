@@ -50,7 +50,7 @@ void BaseSocket::readMessage()
     {
         if (bytesAvailable() < (qint32) sizeof(quint16))
         {
-            DEBUG("BaseSocket::readMessage() : Error : Malformed frame)", true);
+            DEBUG("BaseSocket::readMessage() : Error : Malformed frame)", false);
             return;
         }
 
@@ -79,7 +79,7 @@ void BaseSocket::sendMessage(qint32 socketFd, const QString &msg)
 {
     if (socketFd == _socketFd || socketFd == BROADCAST)
     {
-        DEBUG("BaseSocket::sendMessage() " << _socketFd << " : " << msg, true);
+        DEBUG("BaseSocket::sendMessage() " << _socketFd << " : " << msg, false);
         write(packMessage(msg));
     }
 }

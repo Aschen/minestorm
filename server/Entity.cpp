@@ -53,11 +53,13 @@ qint32 Entity::speed() const
 
 void Entity::speed(qint32 value)
 {
+
     _speed = value;
 }
 
 double Entity::angle() const
 {
+
     return _angle;
 }
 
