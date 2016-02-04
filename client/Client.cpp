@@ -34,7 +34,7 @@ void Client::start()
     if (!_socket.isValid())
     {
         _socket.connectToHost(_host, _port);
-        if (_socket.isValid())
+        if (!_socket.isValid())
             DEBUG("Client::start() : Unable to connect to" << _host << _port << " :" << _socket.errorString(), true);
         else
             DEBUG("Client::start() : Connected to " << _host << ":" << _port, true);

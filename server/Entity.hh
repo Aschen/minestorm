@@ -16,13 +16,11 @@ using namespace std;
 class Entity : public QPolygon
 {
 public:
-    static const char * const           TYPE_DISPLAY[];
     enum Type
     {
         MINE = 0,
         SHIP = 1,
-        SHOT = 2,
-        CARRE= 9 // Pour test
+        SHOT = 2
     };
 
 protected:
@@ -39,6 +37,7 @@ public:
     virtual ~Entity();
 
     void                    addPoint(const QPoint &point);
+    virtual QPoint          center() const = 0;
 
     Type                    type() const;
     qint32                  id() const;
@@ -46,14 +45,12 @@ public:
     void                    xy(const QPoint &value);
     qint32                  x() const;
     qint32                  y() const;
-    const QSize             &size() const;
-    void                    size(const QSize &value);
+    const QSize             &size() const; // rename it
+    void                    size(const QSize &value); // rename it
     qint32                  speed() const;
     void                    speed(qint32 value);
     double                  angle() const;
     void                    angle(double value);
-
-    const string            dump() const;
 };
 
 using EntityList = QList<QSharedPointer<Entity>>;

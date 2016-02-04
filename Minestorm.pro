@@ -21,7 +21,6 @@ SOURCES += server/Core.cpp \
     server/Mine.cpp\
     server/Ship.cpp \
     server/Entity.cpp \
-    server/Carre.cpp \
     server/Server.cpp \
     client/Client.cpp \
     server/Worker.cpp \
@@ -45,7 +44,6 @@ HEADERS  += server/Core.hh \
     server/Mine.hh \
     server/Ship.hh \
     server/Entity.hh \
-    server/Carre.hh \
     server/Server.hh \
     client/Client.hh \
     server/Worker.hh \

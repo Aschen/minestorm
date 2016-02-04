@@ -116,7 +116,13 @@ double Ship::getRadian()
     return ( this->angle() * ( PI / 180));
 }
 
+QPoint Ship::center() const
+{
+    qint32  x;
+    qint32  y;
 
-
-
-
+    x = ((*this)[0].x() + (*this)[1].x() + (*this)[2].x()) / 3;
+    y = ((*this)[0].y() + (*this)[1].y() + (*this)[2].y()) / 3;
+    DEBUG("Ship::center() : 3 points :" << x << y, false);
+    return QPoint(x, y);
+}

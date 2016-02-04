@@ -34,6 +34,10 @@ public:
     void            setRect(const QRect &rect);
     quint32         shipNumber() const;
     void            shipNumber(quint32 shipNumber);
+
+    // Entity interface
+public:
+    QPoint          center() const override;
 };
 
 #endif // SHIP_HH

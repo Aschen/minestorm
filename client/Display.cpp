@@ -16,15 +16,15 @@ Display::Display(const QSize &size, QObject *parent)
 
 void Display::draw(QPainter &painter, QRect &size)
 {
-    DEBUG("Display::draw() : " << _elements->size() << " objects to draw", false);
+    DEBUG("Display::draw() : " << _elements->size() << " elements to draw", false);
     painter.fillRect(size, QColor(255,255,255));
 
     if (_elements != nullptr)
     {
-        for (const Element &object : *_elements)
+        for (const Element &element : *_elements)
         {
-            DEBUG("Display::draw() : " << object.type(), false);
-            switch (object.type())
+            DEBUG("Display::draw() : " << element.type(), false);
+            switch (element.type())
             {
             case Element::MINE:
                 break;
@@ -32,7 +32,7 @@ void Display::draw(QPainter &painter, QRect &size)
             case Element::SHIP_2:
             case Element::SHIP_3:
             case Element::SHIP_4:
-                painter.drawImage(object.center(), _images.getImage(object.type()));
+                painter.drawImage(element.center(), _images.getImage(element.type()));
                 break;
             }
 
@@ -87,7 +87,7 @@ void Display::receiveObjects(const QSharedPointer<QVector<Element>> &elements)
 /* EVENTS */
 void Display::mousePressed(qint32 x, qint32 y)
 {
-    DEBUG("Display::mousePressed() : x = " << x << ", y = " << y, true);
+    DEBUG("Display::mousePressed() : x = " << x << ", y = " << y, false);
 
     MessageMouse    message(MessageBase::MOUSE_PRESSED, x, y);
 
@@ -97,7 +97,7 @@ void Display::mousePressed(qint32 x, qint32 y)
 
 void Display::keyPressed(qint32 key)
 {
-    DEBUG("Display::keyPressed() : key =" << key, true);
+    DEBUG("Display::keyPressed() : key =" << key, false);
 
     MessageKey    message(MessageBase::KEY_PRESSED, key);
 

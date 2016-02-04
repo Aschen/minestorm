@@ -13,7 +13,6 @@
 # include "Server.hh"
 # include "Entity.hh"
 # include "Ship.hh"
-# include "Carre.hh"
 # include "MessageFactory.hpp"
 
 

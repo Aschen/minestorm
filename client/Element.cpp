@@ -28,18 +28,18 @@ const QPolygon &Element::polygon() const
 
 QPoint Element::center() const
 {
-    qint32      x;
-    qint32      y;
-
-    if (_polygon.size() == 3)
+    switch (_type)
     {
-        DEBUG("Element::center() : 3 points", true);
-        x = (_polygon[0].x() + _polygon[1].x() + _polygon[2].x()) / 3;
-        y = (_polygon[0].y() + _polygon[1].y() + _polygon[2].y()) / 3;
-        return QPoint(x, y);
+    case SHIP_1:
+    case SHIP_2:
+    case SHIP_3:
+    case SHIP_4:
+        DEBUG("Element::center() : Ship center:" << _polygon[0].x() << _polygon[0].y(), true);
+        return QPoint(_polygon[0].x(), _polygon[0].y());
+        break;
+    case MINE:
+        break;
     }
-
-    return QPoint(200, 200);
+    DEBUG("Ne devrait pas arriver", true);
 }
-
 

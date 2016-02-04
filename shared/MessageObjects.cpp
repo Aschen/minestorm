@@ -36,24 +36,19 @@ MessageObjects::MessageObjects(const QString &msg)
     }
 }
 
-/* shipNumber x1 y1 x2 y2 x3 y3 */
+/* shipNumber center_x center_y */
 void MessageObjects::deserializeShip(QTextStream &stream)
 {
     quint32     shipNumber;
-    QPolygon    polygon(3);
+    QPolygon    polygon(1);
     qint32      x;
     qint32      y;
 
-    /* Read shipNumber */
-    stream >> shipNumber;
+    /* Read shipNumber center_x center_y */
+    stream >> shipNumber >> x >> y;
 
-    /* Read 3 points */
-    for (quint32 i = 0; i < 3; ++i)
-    {
-        // For each pair of coordinate, add point to the polygon
-        stream >> x >> y;
-        polygon[i] = QPoint(x, y);
-    }
+    /* Read center */
+    stream >> x >> y;
 
     _elements->push_back(Element((Element::Type) shipNumber, polygon));
 }
@@ -80,15 +75,8 @@ MessageObjects::MessageObjects(const EntityHash &entities)
         case Entity::SHIP:
             serializeShip(dynamic_cast<Ship&>(*entity));
             break;
-
-        case Entity::CARRE:
-            serializeCarre(dynamic_cast<Carre&>(*entity));
-            break;
-
         case Entity::MINE:
-
             break;
-
         default:
             DEBUG("MessageObjects::MessageObjects() : Unknown entity" << entity->type(), true);
             assert(false);
@@ -97,32 +85,15 @@ MessageObjects::MessageObjects(const EntityHash &entities)
     }
 }
 
-/* shipNumber x1 y1 x2 y2 x3 y3 */
+/* shipNumber center_x center_y */
 void MessageObjects::serializeShip(const Ship &ship)
 {
+    /* Write shipNumber */
     _messageString += QString::number(ship.shipNumber()) + " ";
 
-    for (const QPoint &point : ship)
-    {
-        _messageString += QString::number(point.x()) + " ";
-        _messageString += QString::number(point.y()) + " ";
-    }
-}
-
-void MessageObjects::serializeCarre(const Carre &carre)
-{
-    /* Write color carre */
-    _messageString += QString::number(carre.color()) + " ";
-
-    /* Write points count */
-    _messageString += QString::number(carre.count()) + " ";
-
-    /* Write coordinates for each point */
-    for (const QPoint &point : carre)
-    {
-        _messageString += QString::number(point.x()) + " ";
-        _messageString += QString::number(point.y()) + " ";
-    }
+    /* Write center */
+    _messageString += QString::number(ship.center().x()) + " ";
+    _messageString += QString::number(ship.center().y()) + " ";
 }
 
 MessageObjects::~MessageObjects()

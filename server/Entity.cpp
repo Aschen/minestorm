@@ -15,7 +15,6 @@ void Entity::addPoint(const QPoint &point)
     *this << point;
 }
 
-
 Entity::Type Entity::type() const
 {
     return _type;
@@ -77,23 +76,3 @@ void Entity::angle(double value)
 {
     _angle = value;
 }
-
-
-const std::string Entity::dump() const
-{
-    std::stringstream     ret;
-
-//    ret << TYPE_DISPLAY[_type] << " - " << _id << " : ";
-//    for (int i = 0; i < this->size(); ++i)
-//    {
-//        ret << static_cast<char>(i + 'A');
-//        ret << "(" << this->operator[](i).x() << "," <<this->operator[](i).y() << ") ";
-//    }
-
-    return ret.str();
-}
-
-const char * const Entity::TYPE_DISPLAY[] = {"MINE",
-                                             "SHIP",
-                                             "SHOT",
-                                             "CARRE"};
