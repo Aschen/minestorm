@@ -88,9 +88,13 @@ void Ship::moveShipForward()
 void Ship::rotateShipRight()
 {
     DEBUG("Ship::angle:" << _angle, true);
-    _angle++;
+    _angle += 90;
+    QTransform t;
+    t.rotate(_angle);
+    QPolygon newP = t.map(*this);
+    this->swap(newP);
+    this->createShipPolygon();
     DEBUG("Ship::angle:" << _angle, true);
-    this->angle(this->angle() + 1);
     this->createShipPolygon();
 }
 
@@ -101,10 +105,14 @@ void Ship::slowDownShip()
 
 void Ship::rotateShipLeft()
 {
-    DEBUG("Ship::angle:" << _angle, true);
-    _angle--;
+    DEBUG("Ship::angle:" << this->xy().x(), true);
+    _angle -= 90;
+    QTransform t;
+    t.rotate(_angle);
+    QPolygon newP = t.map(*this);
+    this->swap(newP);
     this->createShipPolygon();
-    DEBUG("Ship::angle:" << _angle, true);
+    DEBUG("Ship::angle:" << this->xy().x(), true);
 }
 
 double Ship::getRadian()

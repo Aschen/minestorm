@@ -48,7 +48,32 @@ void Core::step()
         DEBUG("Core::step() : Send " << objects.size() << " objects", false);
         MessageObjects      message(objects);
 
-        // dynamic_cast<Ship*>(_entitiesMap[].data())-> moveShipForward();
+       // dynamic_cast<Ship*>(_entitiesMap[].data())-> moveShipForward();
+
+        for(QSharedPointer<Entity> &entity : _entitiesMap)
+        {
+            switch(entity->type())
+            {
+                case Entity::SHIP:
+                {
+                    Ship *ship = dynamic_cast<Ship*>(entity.data());
+                    if(ship->speed() > 0)
+                    {
+                        ship->moveShipForward();
+                        ship->speed(ship->speed() - 1);
+                    }
+                    break;
+                }
+                case Entity::MINE:
+                {
+                    break;
+                }
+                default:
+                {
+                    break;
+                }
+            }
+        }
         _server.broadcast(message.messageString());
     }
 
