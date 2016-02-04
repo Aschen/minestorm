@@ -20,16 +20,13 @@ class Display : public QObject
     Q_OBJECT
 
 private:
-    QTimer              _timer;
     bool                _isRunning;
     const QSize         _size;
-    const int           _fps;
     QSharedPointer<Client>              _client;
     QSharedPointer<QVector<QPolygon>>   _objects;
-    QMutex              _objectsMutex;
 
 public:
-    Display(const QSize &size, qint32 fps = 25, QObject *parent = nullptr);
+    Display(const QSize &size, QObject *parent = nullptr);
 
     void                draw(QPainter &painter, QRect &size);
     void                startDisplay();
@@ -58,7 +55,6 @@ public slots:
     void                receiveObjects(const QSharedPointer<QVector<QPolygon>> &objects);
 
 private slots:
-    void                update();
     void                messageDispatcher(qint32 socketFd, const QString &msg);
 };
 

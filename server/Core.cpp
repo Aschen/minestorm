@@ -132,7 +132,7 @@ void Core::reset()
 {
     DEBUG("Core::reset()", 1);
     pause();
-    _entities.clear();
+    _entitiesMap.clear();
     step();
     _step = 1;
 }

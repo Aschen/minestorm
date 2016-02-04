@@ -13,7 +13,7 @@ private:
     QSharedPointer<Core>    _core;
 
 public:
-    CoreRunner(qint32 cps);
+    CoreRunner();
     ~CoreRunner();
 
 public slots:

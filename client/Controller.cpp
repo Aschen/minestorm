@@ -32,7 +32,7 @@ Controller::Controller(Display *display, QWidget *parent)
 void Controller::startNewGame()
 {
     return;
-    _coreRunner = QSharedPointer<CoreRunner>(new CoreRunner(20));
+    _coreRunner = QSharedPointer<CoreRunner>(new CoreRunner);
     _coreRunner->start();
     _display->startNewGame();
 }

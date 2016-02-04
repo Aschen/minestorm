@@ -30,7 +30,7 @@ private:
     EntityHash          _entitiesMap;
 
 public:
-    Core(qint32 cps);
+    Core(qint32 cps = CPS);
     ~Core();
 
     void                mousePressed(qint32 idClient, qint32 x, qint32 y);
