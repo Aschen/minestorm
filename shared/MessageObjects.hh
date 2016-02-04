@@ -27,6 +27,7 @@ public:
     const QSharedPointer<QVector<Element>>     &elements() const;
 
 private:
+    void                deserializeShip(QTextStream &stream);
     void                serializeShip(const Ship &ship);
     void                serializeCarre(const Carre &carre);
 
@@ -34,7 +35,7 @@ private:
 
 /*
  * Frame :
- *  |messageType | objectsCount | objectType | pointsCount | x | y ||
+ *  | messageType | elementsCount | elementsType | data |
  */
 
 /*

@@ -28,6 +28,7 @@ public:
 
     Type            type() const;
     const QPolygon  &polygon() const;
+    QPoint          center() const;
 };
 
 #endif // ELEMENT_HH

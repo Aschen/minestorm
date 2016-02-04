@@ -1,44 +1,64 @@
 #include "MessageObjects.hh"
 
+/* DESERIALIZE ***************************************************************/
 MessageObjects::MessageObjects(const QString &msg)
     : MessageBase(MessageBase::INFO_OBJECTS, msg),
-      _elements(nullptr)
+      _elements(new QVector<Element>(0))
 {
     QTextStream         stream(msg.toUtf8());
-    qint32              type;
+    qint32              messageType;
     quint32             objectsCount;
-    quint32             pointsCount;
     qint32              objectType;
-    quint32             shipNumber;
-    qint32              x;
-    qint32              y;
 
-    stream >> type;
-    assert(type == (qint32) MessageBase::INFO_OBJECTS);
+    /* Read  message type*/
+    stream >> messageType;
+    assert(messageType == (qint32) MessageBase::INFO_OBJECTS);
 
-    /* Stream: "" */
-    // Initialize vector size with objects count
+    /* Read objects count */
     stream >> objectsCount;
-    _elements = QSharedPointer<QVector<Element>>(new QVector<Element>(objectsCount));
 
     for (quint32 i = 0; i < objectsCount; ++i)
     {
-        // Initialize a element with pointsCount points
-        stream >> objectType >> shipNumber >> pointsCount;
+        /* Read object type */
+        stream >> objectType;
 
-        QPolygon    polygon(pointsCount);
-
-        for (quint32 j = 0; j < pointsCount; ++j)
+        switch (objectType)
         {
-            // For each pair of coordinate, add point to the polygon
-            stream >> x >> y;
-            polygon[j] = QPoint(x, y);
+        case Entity::SHIP:
+            deserializeShip(stream);
+            break;
+        case Entity::MINE:
+            break;
+        default:
+            DEBUG("MessageObjects::MessageObjects() : Unknown entity" << messageType, true);
+            break;
         }
-
-        _elements->insert(i, Element((Element::Type) shipNumber, polygon));
     }
 }
 
+/* shipNumber x1 y1 x2 y2 x3 y3 */
+void MessageObjects::deserializeShip(QTextStream &stream)
+{
+    quint32     shipNumber;
+    QPolygon    polygon(3);
+    qint32      x;
+    qint32      y;
+
+    /* Read shipNumber */
+    stream >> shipNumber;
+
+    /* Read 3 points */
+    for (quint32 i = 0; i < 3; ++i)
+    {
+        // For each pair of coordinate, add point to the polygon
+        stream >> x >> y;
+        polygon[i] = QPoint(x, y);
+    }
+
+    _elements->push_back(Element((Element::Type) shipNumber, polygon));
+}
+
+/* SERIALIZE *******************************************************************/
 MessageObjects::MessageObjects(const EntityHash &entities)
     : MessageBase(MessageBase::INFO_OBJECTS, ""),
       _elements(nullptr)
@@ -77,24 +97,11 @@ MessageObjects::MessageObjects(const EntityHash &entities)
     }
 }
 
-MessageObjects::~MessageObjects()
-{
-}
-
-const QSharedPointer<QVector<Element>> &MessageObjects::elements() const
-{
-    return _elements;
-}
-
+/* shipNumber x1 y1 x2 y2 x3 y3 */
 void MessageObjects::serializeShip(const Ship &ship)
 {
-    /* Write ship number */
     _messageString += QString::number(ship.shipNumber()) + " ";
 
-    /* Write points count */
-    _messageString += QString::number(ship.count()) + " ";
-
-    /* Write coordinates for each point */
     for (const QPoint &point : ship)
     {
         _messageString += QString::number(point.x()) + " ";
@@ -118,3 +125,11 @@ void MessageObjects::serializeCarre(const Carre &carre)
     }
 }
 
+MessageObjects::~MessageObjects()
+{
+}
+
+const QSharedPointer<QVector<Element>> &MessageObjects::elements() const
+{
+    return _elements;
+}

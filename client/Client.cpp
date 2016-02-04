@@ -33,12 +33,11 @@ void Client::start()
 
     if (!_socket.isValid())
     {
-        DEBUG("Client::start() : Connect to " << _host << ":" << _port, true);
         _socket.connectToHost(_host, _port);
-    }
-    else
-    {
-        DEBUG("Client::start() : Error, already connected", true);
+        if (_socket.isValid())
+            DEBUG("Client::start() : Unable to connect to" << _host << _port << " :" << _socket.errorString(), true);
+        else
+            DEBUG("Client::start() : Connected to " << _host << ":" << _port, true);
     }
 }
 
