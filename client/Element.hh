@@ -21,17 +21,18 @@ public:
 private:
     Type            _type;
     QPolygon        _polygon;
+    qreal           _angle;
 
 public:
-    Element(Type type, const QPolygon &polygon);
+    Element(Type type, const QPolygon &polygon, qreal angle);
     Element();
-    virtual ~Element();
+    ~Element();
 
-//    virtual void    draw(const QPainter &painter) const;
+    QPoint          center() const;
 
     Type            type() const;
     const QPolygon  &polygon() const;
-    QPoint          center() const;
+    qreal           angle() const;
 };
 
 #endif // ELEMENT_HH

@@ -6,9 +6,11 @@ Images::Images()
     loadImages();
 }
 
-const QImage &Images::getImage(Element::Type type)
+QImage Images::getImage(Element::Type type, qreal angle)
 {
-    return *(_images[type].data());
+    QTransform  t;
+
+    return _images[type]->transformed(t.rotate(angle));
 }
 
 // alien_blaster.bmp  space_duelist.bmp  star_warp.bmp  void_viper.bmp

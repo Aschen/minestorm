@@ -32,7 +32,7 @@ void Display::draw(QPainter &painter, QRect &size)
             case Element::SHIP_2:
             case Element::SHIP_3:
             case Element::SHIP_4:
-                painter.drawImage(element.center(), _images.getImage(element.type()));
+                painter.drawImage(element.center(), _images.getImage(element.type(), element.angle ()));
                 break;
             }
 

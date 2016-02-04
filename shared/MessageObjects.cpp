@@ -13,6 +13,7 @@ MessageObjects::MessageObjects(const QString &msg)
     /* Read  message type*/
     stream >> messageType;
     assert(messageType == (qint32) MessageBase::INFO_OBJECTS);
+    DEBUG("MessageObjects::MessageObjects() : Message:" << msg, true);
 
     /* Read objects count */
     stream >> objectsCount;
@@ -36,21 +37,23 @@ MessageObjects::MessageObjects(const QString &msg)
     }
 }
 
-/* shipNumber center_x center_y */
+/* shipNumber angle center_x center_y */
 void MessageObjects::deserializeShip(QTextStream &stream)
 {
     quint32     shipNumber;
     QPolygon    polygon(1);
+    qreal       angle;
     qint32      x;
     qint32      y;
 
-    /* Read shipNumber center_x center_y */
-    stream >> shipNumber >> x >> y;
+    /* Read shipNumber angle center_x center_y */
+    stream >> shipNumber >> angle >> x >> y;
 
     polygon[0] = QPoint(x, y);
 
-    DEBUG("MessageObjects::deserializeShip() : Ship n°" << shipNumber << " center:" << x << y, false);
-    _elements->push_back(Element((Element::Type) shipNumber, polygon));
+    DEBUG("MessageObjects::deserializeShip() : Ship n°" << shipNumber << " angle: " << angle << " center:" << x << y
+          , true);
+    _elements->push_back(Element((Element::Type) shipNumber, polygon, angle));
 }
 
 /* SERIALIZE *******************************************************************/
@@ -85,11 +88,14 @@ MessageObjects::MessageObjects(const EntityHash &entities)
     }
 }
 
-/* shipNumber center_x center_y */
+/* shipNumber angle center_x center_y */
 void MessageObjects::serializeShip(const Ship &ship)
 {
     /* Write shipNumber */
     _messageString += QString::number(ship.shipNumber()) + " ";
+
+    /* Write angle */
+    _messageString += QString::number(ship.angle()) + " ";
 
     /* Write center */
     _messageString += QString::number(ship.center().x()) + " ";

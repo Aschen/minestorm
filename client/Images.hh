@@ -6,6 +6,7 @@
 # include <QHash>
 # include <QVector>
 # include <QSharedPointer>
+# include <QTransform>
 
 # include "Minestorm.hh"
 # include "Element.hh"
@@ -21,7 +22,7 @@ private:
 public:
     Images();
 
-    const QImage       &getImage(Element::Type type);
+    QImage getImage(Element::Type type, qreal angle);
 
 private:
     void                loadImages();

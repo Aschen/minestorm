@@ -1,9 +1,10 @@
 #include "Element.hh"
 
 
-Element::Element(Type type, const QPolygon &polygon)
+Element::Element(Type type, const QPolygon &polygon, qreal angle)
     : _type(type),
-      _polygon(polygon)
+      _polygon(polygon),
+      _angle(angle)
 {
 }
 
@@ -23,6 +24,11 @@ Element::Type Element::type() const
 const QPolygon &Element::polygon() const
 {
     return _polygon;
+}
+
+qreal Element::angle() const
+{
+    return _angle;
 }
 
 QPoint Element::center() const
