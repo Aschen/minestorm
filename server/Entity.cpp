@@ -36,6 +36,16 @@ void Entity::xy(const QPoint &value)
     _xy = value;
 }
 
+qint32 Entity::x() const
+{
+    return _xy.x();
+}
+
+qint32 Entity::y() const
+{
+    return _xy.y();
+}
+
 const QSize &Entity::size() const
 {
     return _size;

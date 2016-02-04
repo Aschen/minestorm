@@ -1,25 +1,17 @@
 #include "Display.hh"
 #include "Ship.hh"
 
-Display::Display(const QSize &size, qint32 fps, QObject *parent)
+Display::Display(const QSize &size, QObject *parent)
     : QObject(parent),
       _isRunning(false),
       _size(size),
-      _fps(fps),
       _client(QSharedPointer<Client>(new Client)),
       _objects(nullptr)
 {
     DEBUG("Display::Display()", true);
-    _timer.setSingleShot(false);
-    /* Le signal timeout() est envoyé toutes les 40ms,
-    ** on le connecte à la fonction Display::update()
-    ** qui fait appel à GameBoard::paintEvent()
-    ** qui fait appel à Display::draw()
-    */
-    connect(&_timer, SIGNAL(timeout()), this, SLOT(update()));
 
-    connect(_client.data(),   SIGNAL(transfertMessage(qint32, QString)),
-            this,       SLOT(messageDispatcher(qint32,QString)));
+    connect(_client.data(), SIGNAL(transfertMessage(qint32, QString)),
+            this,           SLOT(messageDispatcher(qint32,QString)));
 }
 
 /* *** */
@@ -33,18 +25,15 @@ void Display::draw(QPainter &painter, QRect &size)
 
     if (_objects != nullptr)
     {
-        _objectsMutex.lock();
         for (auto object : *_objects)
         {
             painter.drawConvexPolygon(object);
         }
-        _objectsMutex.unlock();
     }
 }
 
 void Display::startDisplay()
 {
-    //_timer.start(1000 / _fps); // Répète le timer en fonction des fps
     _isRunning = true;
 }
 
@@ -73,6 +62,15 @@ void Display::messageDispatcher(qint32 socketFd, const QString &msg)
     }
 }
 
+void Display::receiveObjects(const QSharedPointer<QVector<QPolygon>> &objects)
+{
+    DEBUG("Display::receiveObjects() : " << objects->size() << " objects received", false);
+
+    _objects = objects;
+
+    if (_isRunning)
+        emit changed();
+}
 
 /* EVENTS */
 void Display::mousePressed(qint32 x, qint32 y)
@@ -81,7 +79,8 @@ void Display::mousePressed(qint32 x, qint32 y)
 
     MessageMouse    message(MessageBase::MOUSE_PRESSED, x, y);
 
-    _client->sendMessage(message.messageString());
+    if (_isRunning)
+        _client->sendMessage(message.messageString());
 }
 
 void Display::keyPressed(qint32 key)
@@ -90,7 +89,8 @@ void Display::keyPressed(qint32 key)
 
     MessageKey    message(MessageBase::KEY_PRESSED, key);
 
-    _client->sendMessage(message.messageString());
+    if (_isRunning)
+        _client->sendMessage(message.messageString());
 }
 
 void Display::keyReleased(qint32 key)
@@ -99,7 +99,8 @@ void Display::keyReleased(qint32 key)
 
     MessageKey    message(MessageBase::KEY_RELEASED, key);
 
-    _client->sendMessage(message.messageString());
+    if (_isRunning)
+        _client->sendMessage(message.messageString());
 }
 
 void Display::startNewGame()
@@ -142,22 +143,4 @@ bool Display::isRunning() const
 const QVector<QPolygon> &Display::objects() const
 {
     return *_objects;
-}
-
-void Display::receiveObjects(const QSharedPointer<QVector<QPolygon>> &objects)
-{
-    DEBUG("Display::receiveObjects() : " << objects->size() << " objects received", false);
-//    _objectsMutex.lock();
-    _objects = objects;
-    emit changed();
-//    _objectsMutex.unlock();
-}
-
-void Display::update()
-{
-    if (_isRunning)
-    {
-        DEBUG("Display::Update()", false);
-        emit changed();
-    }
 }

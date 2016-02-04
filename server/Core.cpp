@@ -25,8 +25,6 @@ Core::Core(qint32 cps)
     nShip->xy(QPoint(0,SCREEN_SIZE / 2));
 
     _entitiesMap[42] = QSharedPointer<Entity>(nShip);
-
-
 }
 
 Core::~Core()
@@ -102,8 +100,7 @@ void Core::newPlayer(qint32 idClient)
     ship.size(QSize(42,42));
     ship.createShipPolygon();
 
-    _entities.push_back(QSharedPointer<Entity>(new Ship(ship)));
-    _entitiesMap[idClient] = _entities.last();
+    _entitiesMap[idClient] = QSharedPointer<Entity>(new Ship(ship));
 }
 
 void Core::startGame()
@@ -132,7 +129,7 @@ void Core::reset()
 {
     DEBUG("Core::reset()", 1);
     pause();
-    _entities.clear();
+    _entitiesMap.clear();
     step();
     _step = 1;
 }
@@ -146,19 +143,12 @@ void Core::initialize(qint32 idClient)
 {
     DEBUG("Display::initialize()", 0);
 
-////<<<<<<< HEAD
-//    Ship ship(idClient,QRect(size.width()/2-40/2,size.height()/2-40/2,40,40), 3, 0);
-//    QPolygon polygon = QPolygon(ship.rect(), true);
-////=======
     Ship ship(idClient);
     ship.xy(QPoint(SCREEN_SIZE / 2, SCREEN_SIZE /  2));
     ship.size(QSize(25,25));
     ship.createShipPolygon();
 
-//>>>>>>> da38e671911a97810df6a31e728546ee32c4d6e7
-
-    _entities.push_back(QSharedPointer<Entity>(new Ship(ship)));
-    _entitiesMap[idClient] = _entities.last();
+    _entitiesMap[idClient] = QSharedPointer<Entity>(new Ship(ship));
 }
 
 
@@ -168,10 +158,10 @@ void Core::mousePressed(qint32 idClient, qint32 x, qint32 y)
 
     // Quand on reçoit un signal dans le slot mousePressed(),
     // On créé un carre depuis les coordonnées x et y
-    Carre   carre(_step, QPoint(x, y), 42);
+//    Carre   carre(_step, QPoint(x, y), 42);
 
-    // On ajoute le carre créé à la liste des entités
-    _entities.push_back(QSharedPointer<Entity>(new Carre(carre)));
+//    // On ajoute le carre créé à la liste des entités
+//    _entitiesMap[_step] = QSharedPointer<Entity>(new Carre(carre));
 
 }
 

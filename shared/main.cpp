@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     if (arg == "srv")
     {
         QApplication    a(argc, argv);
-        Core            *core = new Core(20);
+        Core            *core = new Core;
 
         core->startGame();
 

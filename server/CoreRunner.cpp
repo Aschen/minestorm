@@ -1,7 +1,7 @@
 #include "CoreRunner.hh"
 
-CoreRunner::CoreRunner(qint32 cps)
-    : _core(QSharedPointer<Core>(new Core(cps)))
+CoreRunner::CoreRunner()
+    : _core(QSharedPointer<Core>(new Core))
 {
     DEBUG("CoreRunner::CoreRunner()", false);
 }
