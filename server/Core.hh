@@ -37,9 +37,6 @@ public:
     void                keyPressed(qint32 idClient, qint32 key);
     void                keyReleased(qint32 idClient, qint32 key);
     void                startGame();
-    void                pause();
-    void                reset();
-    void                test();
 
     void                initialize(qint32 idClient);
 

@@ -95,12 +95,7 @@ void Display::keyPressed(qint32 key)
 
 void Display::keyReleased(qint32 key)
 {
-    DEBUG("Display::keyReleased() : key =" << key, true);
-
-    MessageKey    message(MessageBase::KEY_RELEASED, key);
-
-    if (_isRunning)
-        _client->sendMessage(message.messageString());
+    DEBUG("Display::keyReleased() : key =" << key, false);
 }
 
 void Display::startNewGame()

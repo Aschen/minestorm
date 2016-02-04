@@ -19,7 +19,6 @@ private:
 
 public:
     MessageObjects(const QString &msg);
-    MessageObjects(const QVector<QPolygon> &objects);
     MessageObjects(const EntityHash &entities);
     ~MessageObjects();
 

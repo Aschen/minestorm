@@ -19,12 +19,6 @@ Core::Core(qint32 cps)
 
     connect(&_server,   SIGNAL(clientConnected(qint32)),
             this,       SLOT(newPlayer(qint32)));
-
-    Ship * nShip = new Ship(24);
-    nShip->size(QSize(40,40));
-    nShip->xy(QPoint(0,SCREEN_SIZE / 2));
-
-    _entitiesMap[42] = QSharedPointer<Entity>(nShip);
 }
 
 Core::~Core()
@@ -35,18 +29,11 @@ Core::~Core()
 void Core::step()
 {
     DEBUG("Core::step() : " << _step, false);
-    QVector<QPolygon>   objects;
 
-    // On créé un vecteur de QPolygon à partir de nos entitées
-    for (auto entity : _entitiesMap)
+    if (_entitiesMap.size() && _server.clientCount())
     {
-        objects.push_back(QPolygon(*entity));
-    }
-
-    if (objects.size() && _server.clientCount())
-    {
-        DEBUG("Core::step() : Send " << objects.size() << " objects", false);
-        MessageObjects      message(objects);
+        DEBUG("Core::step() : Send " << _entitiesMap.size() << " objects", false);
+        MessageObjects      message(_entitiesMap);
 
        // dynamic_cast<Ship*>(_entitiesMap[].data())-> moveShipForward();
 
@@ -136,37 +123,12 @@ void Core::startGame()
         _server.start();
         _timer.start(1000 / _cps); // Nombre de cycle de jeu par seconde
         _isRunning = true;
-        //initialize(12,1);
     }
-}
-
-void Core::pause()
-{
-    DEBUG("Core::pause()", 1);
-    if (_isRunning)
-    {
-        _timer.stop();
-        _isRunning = false;
-    }
-}
-
-void Core::reset()
-{
-    DEBUG("Core::reset()", 1);
-    pause();
-    _entitiesMap.clear();
-    step();
-    _step = 1;
-}
-
-void Core::test()
-{
-    DEBUG("Core::test() : ", 1);
 }
 
 void Core::initialize(qint32 idClient)
 {
-    DEBUG("Display::initialize()", 0);
+    DEBUG("Display::initialize() : Client" << idClient, 0);
 
     Ship ship(idClient);
     ship.xy(QPoint(SCREEN_SIZE / 2, SCREEN_SIZE /  2));
@@ -180,14 +142,6 @@ void Core::initialize(qint32 idClient)
 void Core::mousePressed(qint32 idClient, qint32 x, qint32 y)
 {
     qDebug() << "Core::mousePressed() : Client " << idClient << " x =" << x << ", y =" << y;
-
-    // Quand on reçoit un signal dans le slot mousePressed(),
-    // On créé un carre depuis les coordonnées x et y
-//    Carre   carre(_step, QPoint(x, y), 42);
-
-//    // On ajoute le carre créé à la liste des entités
-//    _entitiesMap[_step] = QSharedPointer<Entity>(new Carre(carre));
-
 }
 
 void Core::keyPressed(qint32 idClient, qint32 key)
@@ -230,27 +184,6 @@ void Core::keyPressed(qint32 idClient, qint32 key)
 
 void Core::keyReleased(qint32 idClient, qint32 key)
 {
-    switch(key)
-    {
-    case Qt::Key_Right:
-        DEBUG("Core::keyReleased : Client" << idClient << " KeyRight", false);
-        break;
-
-    case Qt::Key_Left:
-        DEBUG("Core::keyReleased Client" << idClient << " KeyLeft", false);
-        break;
-
-    case Qt::Key_Up:
-        DEBUG("Core::keyReleased : Client" << idClient << " KeyUp", false);
-        break;
-
-    case Qt::Key_Down:
-        DEBUG("Core::keyReleased : Client" << idClient << " KeyDown", false);
-        break;
-
-    default:
-        DEBUG("Core::keyReleased : Client" << idClient << " Unknown key:" << key, false);
-        break;
-    }
-
+    (void) idClient;
+    (void) key;
 }

@@ -80,7 +80,7 @@ void Ship::moveShipForward()
     );
 */
     this->createShipPolygon();
-    DEBUG("Ship::speed:" << _speed, true);
+    DEBUG("Ship::speed:" << _speed, false);
 
     DEBUG("Ship::Coord : Client" << this->xy().x() << ";" << this->xy().y(), false);
 }
