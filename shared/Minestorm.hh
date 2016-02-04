@@ -10,6 +10,7 @@
 
 # define SCREEN_SIZE    800
 # define CPS            50
+# define EVENT_PER_S    10
 
 #endif // MINESTORM_HH
 

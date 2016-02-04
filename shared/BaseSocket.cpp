@@ -77,7 +77,7 @@ void BaseSocket::readMessage()
 /* PUBLIC SLOT */
 void BaseSocket::sendMessage(qint32 socketFd, const QString &msg)
 {
-    if (socketFd == _socketFd || socketFd == BROADCAST)
+    if (isOpen() && (socketFd == _socketFd || socketFd == BROADCAST))
     {
         DEBUG("BaseSocket::sendMessage() " << _socketFd << " : " << msg, false);
         write(packMessage(msg));
