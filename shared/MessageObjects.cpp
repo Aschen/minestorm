@@ -47,9 +47,9 @@ void MessageObjects::deserializeShip(QTextStream &stream)
     /* Read shipNumber center_x center_y */
     stream >> shipNumber >> x >> y;
 
-    /* Read center */
-    stream >> x >> y;
+    polygon[0] = QPoint(x, y);
 
+    DEBUG("MessageObjects::deserializeShip() : Ship n°" << shipNumber << " center:" << x << y, false);
     _elements->push_back(Element((Element::Type) shipNumber, polygon));
 }
 

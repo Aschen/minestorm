@@ -9,7 +9,6 @@ Element::Element(Type type, const QPolygon &polygon)
 
 Element::Element()
 {
-
 }
 
 Element::~Element()
@@ -34,12 +33,10 @@ QPoint Element::center() const
     case SHIP_2:
     case SHIP_3:
     case SHIP_4:
-        DEBUG("Element::center() : Ship center:" << _polygon[0].x() << _polygon[0].y(), true);
         return QPoint(_polygon[0].x(), _polygon[0].y());
         break;
     case MINE:
         break;
     }
-    DEBUG("Ne devrait pas arriver", true);
 }
 

@@ -2,6 +2,7 @@
 # define ELEMENT_HH
 
 # include <QPolygon>
+# include <QPainter>
 
 # include "Minestorm.hh"
 
@@ -25,6 +26,8 @@ public:
     Element(Type type, const QPolygon &polygon);
     Element();
     virtual ~Element();
+
+//    virtual void    draw(const QPainter &painter) const;
 
     Type            type() const;
     const QPolygon  &polygon() const;
