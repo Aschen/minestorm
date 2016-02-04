@@ -36,6 +36,8 @@ void Server::incomingConnection(qintptr socketFd)
 {
     DEBUG("Server::incomingConnection() : New connection " << socketFd, true);
 
+    _clientCount++;
+
     // Create worker to handle the new connection
     Worker  *worker = new Worker(socketFd);
 
@@ -54,15 +56,14 @@ void Server::incomingConnection(qintptr socketFd)
     emit clientConnected(worker->socketFd());
 
     worker->start();
-    _clientCount++;
 }
 
 void Server::clientDisconnected(qint32 socketFd)
 {
     DEBUG("Server::clientDisconnected() : Client" << socketFd, true);
 
-    emit sigClientDisconnected(socketFd);
     _clientCount--;
+    emit sigClientDisconnected(socketFd);
 }
 
 void Server::broadcast(const QString &message)
@@ -72,7 +73,7 @@ void Server::broadcast(const QString &message)
     emit sendMessage(BaseSocket::BROADCAST, message);
 }
 
-qint32 Server::clientCount() const
+quint32 Server::clientCount() const
 {
     return _clientCount;
 }

@@ -27,7 +27,6 @@ private:
     QTimer              _timer;
     qint32              _step;
     Server              _server;
-    quint32             _playersCount;
     EntityHash          _entitiesMap;
 
 public:

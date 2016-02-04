@@ -17,7 +17,7 @@ class Server : public QTcpServer
 private:
     quint16                     _port;
     QHostAddress                _address;
-    qint32                      _clientCount;
+    quint32                      _clientCount;
     QTimer                      _timer;
 
 public:
@@ -27,7 +27,7 @@ public:
     void                        start();
     void                        broadcast(const QString &message);
 
-    qint32                      clientCount() const;
+    quint32                      clientCount() const;
 
     // QTcpServer override
     void                        incomingConnection(qintptr socketFd) Q_DECL_OVERRIDE;

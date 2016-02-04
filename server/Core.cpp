@@ -5,8 +5,7 @@ Core::Core(qint32 cps)
       _isRunning(false),
       _cps(cps),
       _step(1),
-      _server(SERVER_PORT),
-      _playersCount(1)
+      _server(SERVER_PORT)
 {
     DEBUG("Core::Core() : cps " << cps, true);
     _timer.setSingleShot(false);
@@ -108,17 +107,16 @@ void Core::messageDispatcher(qint32 idClient, const QString &msg)
 
 void Core::newPlayer(qint32 idClient)
 {
-    if (_playersCount <= MAX_PLAYERS)
+    if (_server.clientCount() <= MAX_PLAYERS)
     {
         DEBUG("Core::NewPlayer() : " << idClient, true);
         Ship ship(idClient);
         ship.xy(QPoint(SCREEN_SIZE / 2, SCREEN_SIZE / 2));
         ship.size(QSize(42,42));
         ship.createShipPolygon();
-        ship.shipNumber (_playersCount);
+        ship.shipNumber (_server.clientCount());
 
         _entitiesMap[idClient] = QSharedPointer<Entity>(new Ship(ship));
-        _playersCount++;
     }
     else
     {
@@ -131,7 +129,6 @@ void Core::playerLeft(qint32 idClient)
     DEBUG("Core::playerLeft() : " << idClient, true);
 
     _entitiesMap.erase(_entitiesMap.find(idClient));
-    _playersCount--;
 }
 
 void Core::startGame()
