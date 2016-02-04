@@ -2,6 +2,13 @@
 # define GAMEBOARD_HH
 
 # include <QWidget>
+# include <QTimer>
+# include <QPainter>
+# include <QColor>
+# include <QMouseEvent>
+
+# include "Minestorm.hh"
+# include "Display.hh"
 
 class Display;
 /**
@@ -12,7 +19,9 @@ class GameBoard : public QWidget
 {
     Q_OBJECT
 private:
-    Display *_display;
+    Display     *_display;
+    bool        _acceptEvent;
+    QTimer      _timer;
 
 public:
     explicit GameBoard(Display *display, QWidget *parent = 0);
@@ -22,10 +31,13 @@ signals:
 public slots:
 
 protected:
-    void paintEvent(QPaintEvent *);
-    void mousePressEvent(QMouseEvent * event);
-    void keyPressEvent(QKeyEvent * event);
-    void keyReleaseEvent(QKeyEvent * event);
+    void        paintEvent(QPaintEvent *);
+    void        mousePressEvent(QMouseEvent * event);
+    void        keyPressEvent(QKeyEvent * event);
+    void        keyReleaseEvent(QKeyEvent * event);
+
+private slots:
+    void        acceptEvent();
 };
 
 #endif // GAMEBOARD_HH
