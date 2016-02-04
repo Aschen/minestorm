@@ -7,14 +7,13 @@ Ship::Ship(qint32 id)
     _speed = 0;
 }
 
-Ship::Ship(qint32 id, QRect rect, quint32 vie, qint32 shipId)
+Ship::Ship(qint32 id, QRect rect, quint32 vie, qint32 shipNumber)
     : Entity(id, Entity::SHIP)
 {
     _speed = 0;
     _rect = rect;
     _vie = vie;
-    _img = QImage("images/shipAlpha.png");
-    _shipId = shipId;
+    _shipNumber = shipNumber;
 
 }
 void Ship::createShipPolygon()
@@ -46,20 +45,17 @@ void Ship::setRect(const QRect &rect)
 {
     _rect = rect;
 }
-QImage Ship::img() const
+
+quint32 Ship::shipNumber() const
 {
-    return _img;
+    return _shipNumber;
 }
 
-void Ship::setImage(const QImage &img)
+void Ship::shipNumber(quint32 shipNumber)
 {
-    _img = img;
+    _shipNumber = shipNumber;
 }
 
-qint32 Ship::shipId() const
-{
-    return _shipId;
-}
 
 void Ship::moveShipForward()
 {

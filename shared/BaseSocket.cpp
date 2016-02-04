@@ -79,7 +79,7 @@ void BaseSocket::sendMessage(qint32 socketFd, const QString &msg)
 {
     if (isOpen() && (socketFd == _socketFd || socketFd == BROADCAST))
     {
-        DEBUG("BaseSocket::sendMessage() " << _socketFd << " : " << msg, true);
+        DEBUG("BaseSocket::sendMessage() " << _socketFd << " : " << msg, false);
         write(packMessage(msg));
     }
 }
@@ -97,6 +97,6 @@ void BaseSocket::displayError(QAbstractSocket::SocketError socketError)
         default:
             break;
         }
-    DEBUG("BaseSocket::displayError() : " << errorString(), true);
+    DEBUG("BaseSocket::displayError() : " << errorString(), false);
    // emit disconnected();
 }

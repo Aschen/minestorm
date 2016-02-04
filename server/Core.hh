@@ -12,6 +12,7 @@
 # include "Minestorm.hh"
 # include "Server.hh"
 # include "Entity.hh"
+# include "Ship.hh"
 # include "Carre.hh"
 # include "MessageFactory.hpp"
 
@@ -26,11 +27,11 @@ private:
     QTimer              _timer;
     qint32              _step;
     Server              _server;
-    EntityList          _entities;
+    quint32             _playersCount;
     EntityHash          _entitiesMap;
 
 public:
-    Core(qint32 cps = CPS);
+    Core(qint32 cps = CYCLE_PER_S);
     ~Core();
 
     void                mousePressed(qint32 idClient, qint32 x, qint32 y);
@@ -44,6 +45,7 @@ private slots:
     void                step();
     void                messageDispatcher(qint32 idClient, const QString &msg);
     void                newPlayer(qint32 idClient);
+    void                playerLeft(qint32 idClient);
 };
 
 #endif // CORE_HH

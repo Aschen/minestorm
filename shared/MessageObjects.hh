@@ -11,26 +11,30 @@
 # include "MessageBase.hh"
 # include "Entity.hh"
 # include "Ship.hh"
+# include "Carre.hh"
+# include "Element.hh"
 
 class MessageObjects : public MessageBase
 {
 private:
-    QSharedPointer<QVector<QPolygon>>           _objects;
+    QSharedPointer<QVector<Element>>           _elements;
 
 public:
     MessageObjects(const QString &msg);
     MessageObjects(const EntityHash &entities);
     ~MessageObjects();
 
-    const QSharedPointer<QVector<QPolygon>>     &objects() const;
+    const QSharedPointer<QVector<Element>>     &elements() const;
 
 private:
     void                serializeShip(const Ship &ship);
+    void                serializeCarre(const Carre &carre);
+
 };
 
 /*
  * Frame :
- *  |messageType objectsCount imgId pointsCount x y imgId pointCount x y |
+ *  |messageType | objectsCount | objectType | objectId | pointsCount | x | y ||
  */
 
 /*

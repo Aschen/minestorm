@@ -36,6 +36,7 @@ signals:
     void                        sendMessage(qint32 socketFd, const QString &msg);
     void                        transfertMessage(qint32 socketFd, const QString &msg);
     void                        clientConnected(qint32 sockedFd);
+    void                        sigClientDisconnected(qint32 socketFd);
 
 public slots:
     void                        clientDisconnected(qint32 socketFd);

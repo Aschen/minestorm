@@ -6,7 +6,7 @@ Display::Display(const QSize &size, QObject *parent)
       _isRunning(false),
       _size(size),
       _client(QSharedPointer<Client>(new Client)),
-      _objects(nullptr)
+      _elements(nullptr)
 {
     DEBUG("Display::Display()", true);
 
@@ -14,20 +14,20 @@ Display::Display(const QSize &size, QObject *parent)
             this,           SLOT(messageDispatcher(qint32,QString)));
 }
 
-/* *** */
 void Display::draw(QPainter &painter, QRect &size)
 {
     (void) size;
-    DEBUG("Display::draw() : " << _objects->size() << " objects to draw", false);
+    DEBUG("Display::draw() : " << _elements->size() << " objects to draw", false);
     painter.fillRect(size, QColor(255,255,255));
-    painter.setPen(QColor(0, 0, 0));
-    painter.setBrush(QBrush(QColor(0, 0, 0)));
 
-    if (_objects != nullptr)
+    if (_elements != nullptr)
     {
-        for (auto object : *_objects)
+        for (const Element &object : *_elements)
         {
-            painter.drawConvexPolygon(object);
+            DEBUG("Display::draw() : " << object.id (), false);
+            painter.setPen(QColor(object.id() * object.id() % 255, 0, 0));
+            painter.setBrush(QBrush(QColor(object.id() * object.id() % 255, 0, 0)));
+            painter.drawConvexPolygon(object.polygon());
         }
     }
 }
@@ -50,8 +50,8 @@ void Display::messageDispatcher(qint32 socketFd, const QString &msg)
     {
         MessageObjects      message(msg);
 
-        DEBUG("Client::MessageDispatcher() : Receive " << message.objects()->size() << " objects", false);
-        receiveObjects(message.objects());
+        DEBUG("Client::MessageDispatcher() : Receive " << message.elements()->size() << " elements", false);
+        receiveObjects(message.elements());
         break;
     }
     default:
@@ -62,15 +62,16 @@ void Display::messageDispatcher(qint32 socketFd, const QString &msg)
     }
 }
 
-void Display::receiveObjects(const QSharedPointer<QVector<QPolygon>> &objects)
+void Display::receiveObjects(const QSharedPointer<QVector<Element>> &elements)
 {
-    DEBUG("Display::receiveObjects() : " << objects->size() << " objects received", false);
+    DEBUG("Display::receiveObjects() : " << elements->size() << " elements received", false);
 
-    _objects = objects;
+    _elements = elements;
 
     if (_isRunning)
         emit changed();
 }
+
 
 /* EVENTS */
 void Display::mousePressed(qint32 x, qint32 y)
@@ -135,7 +136,7 @@ bool Display::isRunning() const
     return _isRunning;
 }
 
-const QVector<QPolygon> &Display::objects() const
+const QVector<Element> &Display::elements() const
 {
-    return *_objects;
+    return *_elements;
 }

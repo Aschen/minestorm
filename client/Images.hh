@@ -3,28 +3,34 @@
 
 # include <QBitmap>
 # include <QHash>
+# include <QVector>
 # include <QSharedPointer>
 
-# include <Minestorm.hh>
+# include "Minestorm.hh"
+# include "Element.hh"
+# include "Entity.hh"
 
 class Images
 {
 private:
     enum Type
     {
+        MINE    = 0,
         SHIP_1  = 1,
         SHIP_2  = 2,
         SHIP_3  = 3,
-        SHIP_4  = 4,
-        MINE    = 5
+        SHIP_4  = 4
     };
 
 private:
-    QHash<qint32, QSharedPointer<QBitmap>>  _images;
-
+    QVector<QSharedPointer<QBitmap>>    _images;
 
 public:
     Images();
+
+private:
+    void            loadImages();
+
 };
 
 #endif // IMAGES_HH

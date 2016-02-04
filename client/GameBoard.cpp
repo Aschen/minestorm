@@ -48,6 +48,7 @@ void GameBoard::keyPressEvent(QKeyEvent * event)
 
 void GameBoard::keyReleaseEvent(QKeyEvent * event)
 {
+    (void) event;
 }
 
 void GameBoard::acceptEvent()

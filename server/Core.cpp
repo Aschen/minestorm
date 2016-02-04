@@ -1,12 +1,12 @@
 #include "Core.hh"
-#include "Ship.hh"
 
 Core::Core(qint32 cps)
     : QObject(),
       _isRunning(false),
       _cps(cps),
       _step(1),
-      _server(4242)
+      _server(SERVER_PORT),
+      _playersCount(1)
 {
     DEBUG("Core::Core() : cps " << cps, true);
     _timer.setSingleShot(false);
@@ -19,6 +19,8 @@ Core::Core(qint32 cps)
 
     connect(&_server,   SIGNAL(clientConnected(qint32)),
             this,       SLOT(newPlayer(qint32)));
+    connect(&_server,   SIGNAL(sigClientDisconnected(qint32)),
+            this,       SLOT(playerLeft(qint32)));
 }
 
 Core::~Core()
@@ -30,7 +32,7 @@ void Core::step()
 {
     DEBUG("Core::step() : " << _step, false);
 
-    if (_entitiesMap.size() && _server.clientCount())
+    if (!_entitiesMap.empty() && _server.clientCount())
     {
         DEBUG("Core::step() : Send " << _entitiesMap.size() << " objects", false);
         MessageObjects      message(_entitiesMap);
@@ -106,13 +108,30 @@ void Core::messageDispatcher(qint32 idClient, const QString &msg)
 
 void Core::newPlayer(qint32 idClient)
 {
-    DEBUG("Core::NewPlayer() : " << idClient, true);
-    Ship ship(idClient);
-    ship.xy(QPoint(SCREEN_SIZE / 2, SCREEN_SIZE / 2));
-    ship.size(QSize(42,42));
-    ship.createShipPolygon();
+    if (_playersCount <= MAX_PLAYERS)
+    {
+        DEBUG("Core::NewPlayer() : " << idClient, true);
+        Ship ship(idClient);
+        ship.xy(QPoint(SCREEN_SIZE / 2, SCREEN_SIZE / 2));
+        ship.size(QSize(42,42));
+        ship.createShipPolygon();
+        ship.shipNumber (_playersCount);
 
-    _entitiesMap[idClient] = QSharedPointer<Entity>(new Ship(ship));
+        _entitiesMap[idClient] = QSharedPointer<Entity>(new Ship(ship));
+        _playersCount++;
+    }
+    else
+    {
+        DEBUG("Display::initialize() : New spectator" << idClient, 0);
+    }
+}
+
+void Core::playerLeft(qint32 idClient)
+{
+    DEBUG("Core::playerLeft() : " << idClient, true);
+
+    _entitiesMap.erase(_entitiesMap.find(idClient));
+    _playersCount--;
 }
 
 void Core::startGame()
@@ -128,14 +147,6 @@ void Core::startGame()
 
 void Core::initialize(qint32 idClient)
 {
-    DEBUG("Display::initialize() : Client" << idClient, 0);
-
-    Ship ship(idClient);
-    ship.xy(QPoint(SCREEN_SIZE / 2, SCREEN_SIZE /  2));
-    ship.size(QSize(25,25));
-    ship.createShipPolygon();
-
-    _entitiesMap[idClient] = QSharedPointer<Entity>(new Ship(ship));
 }
 
 

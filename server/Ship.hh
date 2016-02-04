@@ -13,13 +13,12 @@ class Ship : public Entity
 private:
     quint32         _vie;
     QRect           _rect;
-    qint32          _shipId;
-    QImage          _img;
+    quint32         _shipNumber;
 
 public:
     //Constructeurs
     Ship(qint32 id);
-    Ship(qint32 id, QRect rect, quint32 vie, qint32 shipId);
+    Ship(qint32 id, QRect rect, quint32 vie, qint32 shipNumber);
 
     void            createShipPolygon();
     void            moveShipForward();
@@ -33,10 +32,8 @@ public:
     void            setVie(quint32 vie);
     QRect           rect() const;
     void            setRect(const QRect &rect);
-
-    QImage          img() const;
-    void            setImage(const QImage &img);
-    qint32          shipId() const;
+    quint32         shipNumber() const;
+    void            shipNumber(quint32 shipNumber);
 };
 
 #endif // SHIP_HH

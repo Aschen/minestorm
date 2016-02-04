@@ -60,6 +60,8 @@ void Server::incomingConnection(qintptr socketFd)
 void Server::clientDisconnected(qint32 socketFd)
 {
     DEBUG("Server::clientDisconnected() : Client" << socketFd, true);
+
+    emit sigClientDisconnected(socketFd);
     _clientCount--;
 }
 
