@@ -11,6 +11,6 @@
 # define SCREEN_SIZE    800
 # define CPS            50
 # define EVENT_PER_S    10
-
+# define SHIP_SIZE      24
 #endif // MINESTORM_HH
 

@@ -19,12 +19,6 @@ Core::Core(qint32 cps)
 
     connect(&_server,   SIGNAL(clientConnected(qint32)),
             this,       SLOT(newPlayer(qint32)));
-
-    Ship * nShip = new Ship(24);
-    nShip->size(QSize(40,40));
-    nShip->xy(QPoint(0,SCREEN_SIZE / 2));
-
-    _entitiesMap[42] = QSharedPointer<Entity>(nShip);
 }
 
 Core::~Core()
@@ -49,36 +43,15 @@ void Core::step()
         MessageObjects      message(objects);
 
        // dynamic_cast<Ship*>(_entitiesMap[].data())-> moveShipForward();
+        entitiesMovement();
 
-        for(QSharedPointer<Entity> &entity : _entitiesMap)
-        {
-            switch(entity->type())
-            {
-                case Entity::SHIP:
-                {
-                    Ship *ship = dynamic_cast<Ship*>(entity.data());
-                    if(ship->speed() > 0)
-                    {
-                        ship->moveShipForward();
-                        ship->speed(ship->speed() - 1);
-                    }
-                    break;
-                }
-                case Entity::MINE:
-                {
-                    break;
-                }
-                default:
-                {
-                    break;
-                }
-            }
-        }
         _server.broadcast(message.messageString());
     }
 
     ++_step;
 }
+
+
 
 void Core::messageDispatcher(qint32 idClient, const QString &msg)
 {
@@ -116,13 +89,15 @@ void Core::messageDispatcher(qint32 idClient, const QString &msg)
     }
     }
 }
-
+/**
+ * @brief Core::newPlayer : Instancie un nouveau vaisseau lors de la connexion d'un client
+ *                          Appelé par le signal clientConnected.
+ * @param idClient        : id de la socket client
+ */
 void Core::newPlayer(qint32 idClient)
 {
     DEBUG("Core::NewPlayer() : " << idClient, true);
-    Ship ship(idClient);
-    ship.xy(QPoint(SCREEN_SIZE / 2, SCREEN_SIZE / 2));
-    ship.size(QSize(42,42));
+    Ship ship(idClient, QPoint(SCREEN_SIZE / 2, SCREEN_SIZE / 2));
     ship.createShipPolygon();
 
     _entitiesMap[idClient] = QSharedPointer<Entity>(new Ship(ship));
@@ -164,16 +139,29 @@ void Core::test()
     DEBUG("Core::test() : ", 1);
 }
 
-void Core::initialize(qint32 idClient)
+
+void Core::entitiesMovement()
 {
-    DEBUG("Display::initialize()", 0);
-
-    Ship ship(idClient);
-    ship.xy(QPoint(SCREEN_SIZE / 2, SCREEN_SIZE /  2));
-    ship.size(QSize(25,25));
-    ship.createShipPolygon();
-
-    _entitiesMap[idClient] = QSharedPointer<Entity>(new Ship(ship));
+    for(QSharedPointer<Entity> &entity : _entitiesMap)
+    {
+        switch(entity->type())
+        {
+            case Entity::SHIP:
+            {
+                Ship *ship = dynamic_cast<Ship*>(entity.data());
+                ship->moveShipForward();
+                break;
+            }
+            case Entity::MINE:
+            {
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+    }
 }
 
 
@@ -208,17 +196,13 @@ void Core::keyPressed(qint32 idClient, qint32 key)
 
     case Qt::Key_Up:
         DEBUG("Core::keyPressed : Client" << idClient << " KeyUp", false);
-        DEBUG("Ship::BMoved" <<  dynamic_cast<Ship*>(_entitiesMap[idClient].data())->xy().x(),false);
-        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->moveShipForward();
 
-
-        DEBUG("Ship::AMoved" <<  dynamic_cast<Ship*>(_entitiesMap[idClient].data())->xy().x(),false);
-
+        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->incrementSpeed();
         break;
 
     case Qt::Key_Down:
         DEBUG("Core::keyPressed : Client" << idClient << " KeyDown", false);
-        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->slowDownShip();
+        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->decrementSpeed();
 
         break;
 

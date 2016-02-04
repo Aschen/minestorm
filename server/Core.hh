@@ -41,7 +41,9 @@ public:
     void                reset();
     void                test();
 
-    void                initialize(qint32 idClient);
+
+private:
+    void                entitiesMovement();
 
 private slots:
     void                step();

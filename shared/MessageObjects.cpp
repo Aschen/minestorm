@@ -103,7 +103,7 @@ const QSharedPointer<QVector<QPolygon>> &MessageObjects::objects() const
 void MessageObjects::serializeShip(const Ship &ship)
 {
     /* Write id ship */
-    _messageString += QString::number(ship.shipId()) + " ";
+    _messageString += QString::number(ship.id()) + " ";
 
     /* Write points count */
     _messageString += QString::number(ship.count()) + " ";

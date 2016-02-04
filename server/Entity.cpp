@@ -15,6 +15,42 @@ void Entity::addPoint(const QPoint &point)
     *this << point;
 }
 
+bool Entity::isMoving()
+{
+    return _speed > 0;
+}
+
+void Entity::incrementSpeed()
+{
+    if(_speed < 10)
+        ++_speed;
+}
+
+void Entity::decrementSpeed()
+{
+    if(_speed > 0)
+        --_speed;
+}
+
+void Entity::rightRotate()
+{
+    _angle -= 10;
+
+    QTransform t;
+    t.rotate(_angle);
+    QPolygon newPolygon = t.map(*this);
+    this->swap(newPolygon);
+}
+
+void Entity::leftRotate()
+{
+    _angle += 10;
+
+    QTransform t;
+    t.rotate(_angle);
+    QPolygon newPolygon = t.map(*this);
+    this->swap(newPolygon);
+}
 
 Entity::Type Entity::type() const
 {
@@ -41,9 +77,39 @@ qint32 Entity::x() const
     return _xy.x();
 }
 
+void Entity::x(qint32 value)
+{
+    DEBUG("X:" << x(), true);
+    if(value > SCREEN_SIZE - SHIP_SIZE)  {
+        value *= -1;
+        DEBUG("ENtity : X > SCREEN SIZE", true);
+    }
+    if(value < 0 + SHIP_SIZE) {
+        value *= -1;
+        DEBUG("ENtity : X < SCREEN SIZE", true);
+    }
+    _xy = QPoint(value, y());
+}
+
 qint32 Entity::y() const
 {
     return _xy.y();
+}
+
+void Entity::y(qint32 value)
+{
+
+    DEBUG("Y" << y(), true);
+    if(value > SCREEN_SIZE - SHIP_SIZE)  {
+        value *= -1;
+        DEBUG("ENtity : Y > SCREEN SIZE", true);
+    }
+    if(value < 0 + SHIP_SIZE) {
+        value *= -1;
+        DEBUG("ENtity : Y < SCREEN SIZE", true);
+    }
+
+    _xy = QPoint(x(), value);
 }
 
 const QSize &Entity::size() const
@@ -63,7 +129,6 @@ qint32 Entity::speed() const
 
 void Entity::speed(qint32 value)
 {
-
     _speed = value;
 }
 
