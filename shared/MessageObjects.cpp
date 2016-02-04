@@ -8,8 +8,8 @@ MessageObjects::MessageObjects(const QString &msg)
     qint32              type;
     quint32             objectsCount;
     quint32             pointsCount;
-    qint32              id;
     qint32              objectType;
+    quint32             shipNumber;
     qint32              x;
     qint32              y;
 
@@ -24,7 +24,7 @@ MessageObjects::MessageObjects(const QString &msg)
     for (quint32 i = 0; i < objectsCount; ++i)
     {
         // Initialize a element with pointsCount points
-        stream >> objectType >> id >> pointsCount;
+        stream >> objectType >> shipNumber >> pointsCount;
 
         QPolygon    polygon(pointsCount);
 
@@ -35,7 +35,7 @@ MessageObjects::MessageObjects(const QString &msg)
             polygon[j] = QPoint(x, y);
         }
 
-        _elements->operator[](i) = Element(id, polygon);
+        _elements->insert(i, Element((Element::Type) shipNumber, polygon));
     }
 }
 
@@ -88,8 +88,8 @@ const QSharedPointer<QVector<Element>> &MessageObjects::elements() const
 
 void MessageObjects::serializeShip(const Ship &ship)
 {
-    /* Write id ship */
-    _messageString += QString::number(ship.id()) + " ";
+    /* Write ship number */
+    _messageString += QString::number(ship.shipNumber()) + " ";
 
     /* Write points count */
     _messageString += QString::number(ship.count()) + " ";

@@ -7,16 +7,26 @@
 
 class Element
 {
+public:
+    enum Type
+    {
+        MINE    = 0,
+        SHIP_1  = 1,
+        SHIP_2  = 2,
+        SHIP_3  = 3,
+        SHIP_4  = 4
+    };
+
 private:
-    qint32          _id;
+    Type            _type;
     QPolygon        _polygon;
 
 public:
-    Element(qint32 id, const QPolygon &polygon);
+    Element(Type type, const QPolygon &polygon);
     Element();
     virtual ~Element();
 
-    qint32          id() const;
+    Type            type() const;
     const QPolygon  &polygon() const;
 };
 

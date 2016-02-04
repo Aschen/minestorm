@@ -1,19 +1,23 @@
 #include "Images.hh"
 
 Images::Images()
+    : _images(5)
 {
     loadImages();
+}
+
+const QImage &Images::getImage(Element::Type type)
+{
+    return *(_images[type].data());
 }
 
 // alien_blaster.bmp  space_duelist.bmp  star_warp.bmp  void_viper.bmp
 void Images::loadImages()
 {
-    _images[MINE] = QSharedPointer<QBitmap>(new QBitmap("images/mine.bmp"));
-    _images[SHIP_1] = QSharedPointer<QBitmap>(new QBitmap("images/alien_blaster.bmp"));
-    _images[SHIP_2] = QSharedPointer<QBitmap>(new QBitmap("images/space_duelist.bmp"));
-    _images[SHIP_3] = QSharedPointer<QBitmap>(new QBitmap("images/star_warp.bmp"));
-    _images[SHIP_4] = QSharedPointer<QBitmap>(new QBitmap("images/void_viper.bmp"));
-
-
+    _images[Element::MINE] = QSharedPointer<QImage>(new QImage("images/mine.bmp"));
+    _images[Element::SHIP_1] = QSharedPointer<QImage>(new QImage("images/alien_blaster.bmp"));
+    _images[Element::SHIP_2] = QSharedPointer<QImage>(new QImage("images/space_duelist.bmp"));
+    _images[Element::SHIP_3] = QSharedPointer<QImage>(new QImage("images/star_warp.bmp"));
+    _images[Element::SHIP_4] = QSharedPointer<QImage>(new QImage("images/void_viper.bmp"));
 }
 

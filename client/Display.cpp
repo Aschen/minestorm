@@ -16,7 +16,6 @@ Display::Display(const QSize &size, QObject *parent)
 
 void Display::draw(QPainter &painter, QRect &size)
 {
-    (void) size;
     DEBUG("Display::draw() : " << _elements->size() << " objects to draw", false);
     painter.fillRect(size, QColor(255,255,255));
 
@@ -24,10 +23,22 @@ void Display::draw(QPainter &painter, QRect &size)
     {
         for (const Element &object : *_elements)
         {
-            DEBUG("Display::draw() : " << object.id (), false);
-            painter.setPen(QColor(object.id() * object.id() % 255, 0, 0));
-            painter.setBrush(QBrush(QColor(object.id() * object.id() % 255, 0, 0)));
-            painter.drawConvexPolygon(object.polygon());
+            DEBUG("Display::draw() : " << object.type(), false);
+            switch (object.type())
+            {
+            case Element::MINE:
+                break;
+            case Element::SHIP_1:
+            case Element::SHIP_2:
+            case Element::SHIP_3:
+            case Element::SHIP_4:
+                painter.drawImage(object.polygon()[0], _images.getImage(object.type()));
+                break;
+            }
+
+//            painter.setPen(QColor(object.type() * 20 % 255, 0, 0));
+//            painter.setBrush(QBrush(QColor(object.type() * 20 % 255, 0, 0)));
+//            painter.drawConvexPolygon(object.polygon());
         }
     }
 }

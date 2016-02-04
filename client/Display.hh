@@ -15,6 +15,7 @@
 # include "MessageFactory.hpp"
 # include "Client.hh"
 # include "Element.hh"
+# include "Images.hh"
 
 class Display : public QObject
 {
@@ -25,6 +26,7 @@ private:
     const QSize         _size;
     QSharedPointer<Client>              _client;
     QSharedPointer<QVector<Element>>    _elements;
+    Images              _images;
 
 public:
     Display(const QSize &size, QObject *parent = nullptr);

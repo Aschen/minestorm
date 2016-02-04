@@ -34,7 +34,7 @@ private:
 
 /*
  * Frame :
- *  |messageType | objectsCount | objectType | objectId | pointsCount | x | y ||
+ *  |messageType | objectsCount | objectType | pointsCount | x | y ||
  */
 
 /*
