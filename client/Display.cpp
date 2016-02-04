@@ -79,7 +79,8 @@ void Display::mousePressed(qint32 x, qint32 y)
 
     MessageMouse    message(MessageBase::MOUSE_PRESSED, x, y);
 
-    _client->sendMessage(message.messageString());
+    if (_isRunning)
+        _client->sendMessage(message.messageString());
 }
 
 void Display::keyPressed(qint32 key)
@@ -88,7 +89,8 @@ void Display::keyPressed(qint32 key)
 
     MessageKey    message(MessageBase::KEY_PRESSED, key);
 
-    _client->sendMessage(message.messageString());
+    if (_isRunning)
+        _client->sendMessage(message.messageString());
 }
 
 void Display::keyReleased(qint32 key)
@@ -97,7 +99,8 @@ void Display::keyReleased(qint32 key)
 
     MessageKey    message(MessageBase::KEY_RELEASED, key);
 
-    _client->sendMessage(message.messageString());
+    if (_isRunning)
+        _client->sendMessage(message.messageString());
 }
 
 void Display::startNewGame()

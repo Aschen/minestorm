@@ -43,6 +43,8 @@ public:
     qint32                  id() const;
     const QPoint            &xy() const;
     void                    xy(const QPoint &value);
+    qint32                  x() const;
+    qint32                  y() const;
     const QSize             &size() const;
     void                    size(const QSize &value);
     qint32                  speed() const;

@@ -6,7 +6,7 @@
 #include "GameBoard.hh"
 #include "Display.hh"
 
-GameBoard::GameBoard(Display *display,QWidget *parent)
+GameBoard::GameBoard(Display *display, QWidget *parent)
     : QWidget(parent),
       _display(display)
 {
