@@ -126,12 +126,6 @@ void Core::newPlayer(qint32 idClient)
     ship.createShipPolygon();
     _entitiesMap[idClient] = QSharedPointer<Entity>(new Ship(ship));
 
-    Ship ship1(22);
-    ship1.xy(QPoint(0, 0));
-    ship1.size(QSize(42,42));
-    ship1.createShipPolygon();
-    _entitiesMap[22] = QSharedPointer<Entity>(new Ship(ship1));
-
 }
 
 void Core::startGame()

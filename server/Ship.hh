@@ -27,6 +27,7 @@ public:
     void            rotateShipRight();
     void            slowDownShip();
     double          getRadian();
+    void            changeLife(qint32 change);
 
     //Getter & Setter
     quint32         vie() const;

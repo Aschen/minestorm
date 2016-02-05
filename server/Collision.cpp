@@ -23,6 +23,7 @@ void Collision::detectCollision(EntityHash &entitiesMap)
                     if(collide == true && ship->id() != entity2->id())
                     {
                         _entitiesToDelete.push_back(entity->id());
+                        ship->changeLife(-1);
                     }
                     DEBUG("Collision::InCollision:" << collide, true);
                 }

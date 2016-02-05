@@ -120,6 +120,11 @@ double Ship::getRadian()
     return ( this->angle() * ( PI / 180));
 }
 
+void Ship::changeLife(qint32 change)
+{
+    _vie += change;
+}
+
 
 
 
