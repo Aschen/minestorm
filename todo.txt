@@ -3,3 +3,4 @@
 (Parent is QNativeSocketEngine(0x7f62040031c0), parent's thread is Worker(0x2162ae0), current thread is QThread(0x2068f10)" à voir
 - Fonction Server::registerCallback("receiveMessage", object, callback())
 - Elements is copied in for( : ), why ?!
+- Create child Element class

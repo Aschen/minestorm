@@ -68,6 +68,7 @@ void Collision::detectShipCollision(Ship &ship, EntityHash &entitiesMap)
                     {
                         break;
                     }
+                    DEBUG("Collision::InCollision:" << collide, false);
                 }
                 break;
             }

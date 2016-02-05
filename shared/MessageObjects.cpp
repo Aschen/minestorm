@@ -28,6 +28,9 @@ MessageObjects::MessageObjects(const QString &msg)
         case Entity::SHIP:
             deserializeShip(stream);
             break;
+        case Entity::SHOT:
+            deserializeShot(stream);
+            break;
         case Entity::MINE:
             break;
         default:
@@ -62,6 +65,23 @@ void MessageObjects::deserializeShip(QTextStream &stream)
     _elements->push_back(Element((Element::Type) shipNumber, polygon, angle, QPoint(center_x, center_y)));
 }
 
+/* x1 y1 x2 y2 */
+void MessageObjects::deserializeShot(QTextStream &stream)
+{
+    QPolygon    polygon(2);
+    qint32      x;
+    qint32      y;
+
+    /* Read 2 points */
+    for (quint32 i = 0; i < 2; ++i)
+    {
+        stream >> x >> y;
+        polygon[i] = QPoint(x, y);
+    }
+    DEBUG("MessageObjects::deserializeShot()", false);
+    _elements->push_back(Element(Element::SHOT, polygon));
+}
+
 /* SERIALIZE *******************************************************************/
 MessageObjects::MessageObjects(const EntityHash &entities)
     : MessageBase(MessageBase::OBJECTS, ""),
@@ -83,6 +103,9 @@ MessageObjects::MessageObjects(const EntityHash &entities)
         {
         case Entity::SHIP:
             serializeShip(dynamic_cast<Ship&>(*entity));
+            break;
+        case Entity::SHOT:
+            serializeShot(dynamic_cast<Projectile&>(*entity));
             break;
         case Entity::MINE:
             break;
@@ -107,11 +130,22 @@ void MessageObjects::serializeShip(const Ship &ship)
     _messageString += QString::number(ship.center().x()) + " ";
     _messageString += QString::number(ship.center().y()) + " ";
 
-    /* Write points */
+    /* Write 3 points */
     for (quint32 i = 0; i < 3; ++i)
     {
         _messageString += QString::number(ship[i].x()) + " ";
         _messageString += QString::number(ship[i].y()) + " ";
+    }
+}
+
+/* x1 y1 x2 y2 */
+void MessageObjects::serializeShot(const Projectile &shot)
+{
+    /* Write 2 points */
+    for (quint32 i = 0; i < 2; ++i)
+    {
+        _messageString += QString::number(shot[i].x()) + " ";
+        _messageString += QString::number(shot[i].y()) + " ";
     }
 }
 
