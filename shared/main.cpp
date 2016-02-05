@@ -6,6 +6,9 @@
 #include "Display.hh"
 #include "Core.hh"
 
+#include "Ship.hh"
+#include "Projectile.hh"
+
 #include "Server.hh"
 #include "Client.hh"
 
