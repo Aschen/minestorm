@@ -67,7 +67,7 @@ void BaseSocket::readMessage()
     QString         message;
 
     in >> message;
-    DEBUG("BaseSocket::readMessage() : Full message readed : " << message, false);
+    DEBUG("BaseSocket::readMessage() : Full message readed : " << message, true);
     emit receiveMessage(_socketFd, message);
 
     // Prepare to read whole new message

@@ -9,6 +9,12 @@ Element::Element(Type type, const QPolygon &polygon, qreal angle, const QPoint &
       _imageCenter(_center.x() - 16, _center.y() - 16)
 {
 }
+Element::Element(Type type, const QPolygon &polygon)
+    : _type(type),
+      _polygon(polygon),
+      _angle(0.0)
+{
+}
 
 Element::Element()
 {

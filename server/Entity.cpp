@@ -37,6 +37,7 @@ void Entity::decrementSpeed()
 void Entity::rightRotate()
 {
     _angle += 10;
+
     QTransform t;
     QPoint center(((*this)[0].x() + (*this)[1].x() + (*this)[2].x()) / 3,
                 ((*this)[0].y() + (*this)[1].y() + (*this)[2].y()) / 3);
@@ -50,6 +51,7 @@ void Entity::rightRotate()
 void Entity::leftRotate()
 {
     _angle -= 10;
+
     QTransform t;
     QPoint center(((*this)[0].x() + (*this)[1].x() + (*this)[2].x()) / 3,
                 ((*this)[0].y() + (*this)[1].y() + (*this)[2].y()) / 3);
@@ -76,7 +78,7 @@ void Entity::makeEntityMove()
             this->translate(SCREEN_SIZE, _speed * sin(getRadian()));
         */
         this->translate(_speed * cos(getRadian()), _speed * sin(getRadian()));
-        DEBUG("Entity::Coord : " << x() << ";" << y(), true);
+        DEBUG("Entity::Coord : " << x() << ";" << y(), false);
     }
 
 }
@@ -137,7 +139,6 @@ void Entity::y(qint32 value)
 {
 
     DEBUG("Y" << y(), false);
-
     if(value - SHIP_SIZE > SCREEN_SIZE )
     {
         value =  0;

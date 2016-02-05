@@ -9,6 +9,11 @@ Ship::Ship(qint32 id, const QPoint &position, qint32 shipNumber)
     _size   = QSize(SHIP_SIZE, SHIP_SIZE);
     _xy     = position;
     _speed  = 0;
+    _angle  = 0;
+
+    this->addPoint(QPoint(position.x() + size().height(), position.y() + size().width()));
+    this->addPoint(QPoint(position.x() + size().height(), position.y()));
+    this->addPoint(QPoint(position.x() + size().height() /2, position.y() + size().width() / 2));
 }
 
 void Ship::createShipPolygon()
@@ -55,6 +60,11 @@ void Ship::rotateShipLeft()
     DEBUG("Left::angle:" << _angle, true);
 }
 
+double Ship::getRadian()
+{
+    return ( this->angle() * ( PI / 180));
+}
+
 QPoint Ship::center() const
 {
     qint32  x;
@@ -66,7 +76,13 @@ QPoint Ship::center() const
     return QPoint(x, y);
 }
 
-void Ship::changeLife(qint32 change)
+bool Ship::changeLife(qint32 change)
 {
+    bool aliveOrNot = true;
     _vie += change;
+    if(_vie == 0)
+    {
+        aliveOrNot = false;
+    }
+    return aliveOrNot;
 }
