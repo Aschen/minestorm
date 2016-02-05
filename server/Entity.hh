@@ -1,6 +1,8 @@
 #ifndef ENTITY_HH
 # define ENTITY_HH
 
+# define PI 3.141592654
+
 # include <QPoint>
 # include <QPolygon>
 # include <QVector>
@@ -45,6 +47,8 @@ public:
     void                    decrementSpeed();
     void                    rightRotate();
     void                    leftRotate();
+    void                    makeEntityMove();
+    double                  getRadian();
 
     Type                    type() const;
     qint32                  id() const;
