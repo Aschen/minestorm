@@ -11,6 +11,7 @@
 # include "MessageBase.hh"
 # include "Entity.hh"
 # include "Ship.hh"
+# include "Projectile.hh"
 # include "Element.hh"
 
 class MessageObjects : public MessageBase
@@ -27,7 +28,9 @@ public:
 
 private:
     void                deserializeShip(QTextStream &stream);
+    void                deserializeShot(QTextStream &stream);
     void                serializeShip(const Ship &ship);
+    void                serializeShot(const Projectile &shot);
 };
 
 /*

@@ -41,6 +41,11 @@ void Display::draw(QPainter &painter, QRect &size)
                 painter.drawPoint(element.center());
                 painter.drawImage(element.imageCenter(), _images.getImage(element.type(), element.angle()));
                 break;
+            case Element::SHOT:
+                painter.setPen(QColor(255, 0, 51)); // RED
+                painter.setBrush(QBrush(Qt::NoBrush));
+                painter.drawConvexPolygon(element.polygon());
+                break;
             }
 
 //            painter.drawConvexPolygon(object.polygon());

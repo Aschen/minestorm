@@ -25,7 +25,7 @@ void Collision::detectCollision(EntityHash &entitiesMap)
                         _entitiesToDelete.push_back(entity->id());
                         ship->changeLife(-1);
                     }
-                    DEBUG("Collision::InCollision:" << collide, true);
+                    DEBUG("Collision::InCollision:" << collide, false);
                 }
             }
             break;

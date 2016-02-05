@@ -17,7 +17,8 @@ public:
         SHIP_3  = 3,
         SHIP_4  = 4,
         MINE_M  = 5,
-        MINE_L  = 6
+        MINE_L  = 6,
+        SHOT    = 7
     };
 
 private:
@@ -29,6 +30,7 @@ private:
 
 public:
     Element(Type type, const QPolygon &polygon, qreal angle, const QPoint &center);
+    Element(Type type, const QPolygon &polygon);
     Element();
     ~Element();
 
