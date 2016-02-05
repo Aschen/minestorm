@@ -35,7 +35,8 @@ SOURCES += server/Core.cpp \
     client/Element.cpp \
     client/Images.cpp \
     shared/MessageInfo.cpp \
-    server/Collision.cpp
+    server/Collision.cpp \
+    server/Projectile.cpp
 
 HEADERS  += server/Core.hh \
     client/Controller.hh \
@@ -60,7 +61,8 @@ HEADERS  += server/Core.hh \
     client/Element.hh \
     client/Images.hh \
     shared/MessageInfo.hh \
-    server/Collision.hh
+    server/Collision.hh \
+    server/Projectile.hh
 
 FORMS    +=
 

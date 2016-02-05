@@ -11,15 +11,14 @@
 
 # include "Minestorm.hh"
 # include "Server.hh"
-# include "Entity.hh"
 # include "Ship.hh"
+# include "Projectile.hh"
 # include "MessageMouse.hh"
 # include "MessageInfo.hh"
 # include "MessageKey.hh"
 # include "MessageObjects.hh"
 # include "MessageFactory.hpp"
 # include "Collision.hh"
-
 
 class Core : public QObject
 {    
