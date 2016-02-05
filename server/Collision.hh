@@ -15,6 +15,7 @@ private:
 public:
     Collision(EntityHash &entitiesMap);
     void                detectCollision(EntityHash &entitiesMap);
+    void                detectShipCollision(Ship &ship, EntityHash &entitiesMap);
     void                removeEntities(EntityHash &entitiesMap);
 };
 

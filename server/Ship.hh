@@ -23,7 +23,7 @@ public:
     void            rotateShipLeft();
     void            rotateShipRight();
     double          getRadian();
-    void            changeLife(qint32 change);
+    bool            changeLife(qint32 change);
 
     //Getter & Setter
     quint32         vie() const;
