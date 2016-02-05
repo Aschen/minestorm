@@ -109,6 +109,8 @@ MessageObjects::MessageObjects(const EntityHash &entities)
             break;
         case Entity::MINE:
             break;
+        case Entity::SHOT:
+            break;
         default:
             DEBUG("MessageObjects::MessageObjects() : Unknown entity" << entity->type(), true);
             assert(false);

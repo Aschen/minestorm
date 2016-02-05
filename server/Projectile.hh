@@ -16,10 +16,9 @@ public:
     void setId(const qint32 &id);
 
     Ship &ship() const;
-    void setShip(Ship const &ship);
 
-    QLine line() const;
-    void setLine(const QLine &line);
+    QPolygon body() const;
+    void setBody(const QPolygon &body);
 
     //Methods
     void                init();
@@ -27,7 +26,6 @@ public:
 private:
     qint32              _id;
     Ship&               _ship;
-    QLine               _line;
 
     // Entity interface
 public:
