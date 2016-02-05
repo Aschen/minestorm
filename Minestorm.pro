@@ -33,7 +33,8 @@ SOURCES += server/Core.cpp \
     shared/MessageObjects.cpp \
     server/CoreRunner.cpp \
     shared/MessageKey.cpp \
-    client/Element.cpp
+    client/Element.cpp \
+    server/Collision.cpp
 
 HEADERS  += server/Core.hh \
     client/Controller.hh \
@@ -56,7 +57,8 @@ HEADERS  += server/Core.hh \
     shared/MessageFactory.hpp \
     server/CoreRunner.hh \
     shared/MessageKey.hh \
-    client/Element.hh
+    client/Element.hh \
+    server/Collision.hh
 
 FORMS    +=
 

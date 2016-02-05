@@ -8,8 +8,8 @@
   if (y) { qDebug() << x; } \
 } while (0)
 
-# define SCREEN_SIZE    800
-# define CPS            50
+# define SCREEN_SIZE    600
+# define CPS            25
 # define EVENT_PER_S    10
 
 #endif // MINESTORM_HH

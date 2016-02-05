@@ -14,6 +14,7 @@
 # include "Entity.hh"
 # include "Carre.hh"
 # include "MessageFactory.hpp"
+# include "Collision.hh"
 
 
 class Core : public QObject

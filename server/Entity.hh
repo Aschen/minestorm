@@ -24,6 +24,11 @@ public:
         SHOT = 2,
         CARRE= 9 // Pour test
     };
+    enum Etat
+    {
+        DEAD = 0,
+        ALIVE = 1
+    };
 
 protected:
     const Type              _type;
@@ -32,6 +37,7 @@ protected:
     QSize                   _size;
     qint32                  _speed;
     double                  _angle;
+    Etat                    _etat;
 
 
 public:

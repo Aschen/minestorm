@@ -49,7 +49,7 @@ void Core::step()
         MessageObjects      message(objects);
 
        // dynamic_cast<Ship*>(_entitiesMap[].data())-> moveShipForward();
-
+        Collision c(_entitiesMap);
         for(QSharedPointer<Entity> &entity : _entitiesMap)
         {
             switch(entity->type())
@@ -124,8 +124,14 @@ void Core::newPlayer(qint32 idClient)
     ship.xy(QPoint(SCREEN_SIZE / 2, SCREEN_SIZE / 2));
     ship.size(QSize(42,42));
     ship.createShipPolygon();
-
     _entitiesMap[idClient] = QSharedPointer<Entity>(new Ship(ship));
+
+    Ship ship1(22);
+    ship1.xy(QPoint(0, 0));
+    ship1.size(QSize(42,42));
+    ship1.createShipPolygon();
+    _entitiesMap[22] = QSharedPointer<Entity>(new Ship(ship1));
+
 }
 
 void Core::startGame()
@@ -136,7 +142,6 @@ void Core::startGame()
         _server.start();
         _timer.start(1000 / _cps); // Nombre de cycle de jeu par seconde
         _isRunning = true;
-        //initialize(12,1);
     }
 }
 
