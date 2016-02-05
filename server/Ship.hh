@@ -1,7 +1,6 @@
 #ifndef SHIP_HH
 # define SHIP_HH
 
-# define PI 3.141592654
 
 # include <QRect>
 # include "QImage"
@@ -19,7 +18,6 @@ public:
     Ship(qint32 id, const QPoint &position, qint32 shipNumber);
 
     void            createShipPolygon();
-    void            moveShipForward();
     void            rotateShipLeft();
     void            rotateShipRight();
     double          getRadian();

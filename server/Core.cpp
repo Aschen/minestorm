@@ -131,23 +131,7 @@ void Core::entitiesMovement()
 {
     for(QSharedPointer<Entity> &entity : _entitiesMap)
     {
-        switch(entity->type())
-        {
-            case Entity::SHIP:
-            {
-                Ship *ship = dynamic_cast<Ship*>(entity.data());
-                ship->moveShipForward();
-                break;
-            }
-            case Entity::MINE:
-            {
-                break;
-            }
-            default:
-            {
-                break;
-            }
-        }
+        entity.data()->makeEntityMove();
     }
 }
 
