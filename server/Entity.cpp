@@ -80,14 +80,14 @@ qint32 Entity::x() const
 
 void Entity::x(qint32 value)
 {
-    DEBUG("X:" << x(), true);
+    DEBUG("X:" << x(), false);
     if(value > SCREEN_SIZE - SHIP_SIZE)  {
         value *= -1;
-        DEBUG("ENtity : X > SCREEN SIZE", true);
+        DEBUG("ENtity : X > SCREEN SIZE", false);
     }
     if(value < 0 + SHIP_SIZE) {
         value *= -1;
-        DEBUG("ENtity : X < SCREEN SIZE", true);
+        DEBUG("ENtity : X < SCREEN SIZE", false);
     }
     _xy = QPoint(value, y());
 }
@@ -100,14 +100,14 @@ qint32 Entity::y() const
 void Entity::y(qint32 value)
 {
 
-    DEBUG("Y" << y(), true);
+    DEBUG("Y" << y(), false);
     if(value > SCREEN_SIZE - SHIP_SIZE)  {
         value *= -1;
-        DEBUG("ENtity : Y > SCREEN SIZE", true);
+        DEBUG("ENtity : Y > SCREEN SIZE", false);
     }
     if(value < 0 + SHIP_SIZE) {
         value *= -1;
-        DEBUG("ENtity : Y < SCREEN SIZE", true);
+        DEBUG("ENtity : Y < SCREEN SIZE", false);
     }
 
     _xy = QPoint(x(), value);
