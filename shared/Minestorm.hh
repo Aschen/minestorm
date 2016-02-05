@@ -8,7 +8,7 @@
   if (y) { qDebug() << x; } \
 } while (0)
 
-# define SCREEN_SIZE    800
+# define SCREEN_SIZE    600
 # define CYCLE_PER_S    50
 # define EVENT_PER_S    10
 # define MAX_PLAYERS    4

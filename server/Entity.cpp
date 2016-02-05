@@ -35,7 +35,7 @@ void Entity::decrementSpeed()
 
 void Entity::rightRotate()
 {
-    _angle -= 10;
+    _angle -= 2;
 
     QTransform t;
     t.rotate(_angle);
@@ -45,7 +45,7 @@ void Entity::rightRotate()
 
 void Entity::leftRotate()
 {
-    _angle += 10;
+    _angle += 2;
 
     QTransform t;
     t.rotate(_angle);

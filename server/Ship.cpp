@@ -57,18 +57,18 @@ void Ship::moveShipForward()
 
 void Ship::rotateShipRight()
 {
-    DEBUG("Ship::angle:" << _angle, true);
+    DEBUG("Ship::angle:" << _angle, false);
     rightRotate();
     this->createShipPolygon();
-    DEBUG("Ship::angle:" << _angle, true);
+    DEBUG("Ship::angle:" << _angle, false);
 }
 
 void Ship::rotateShipLeft()
 {
-    DEBUG("Ship::anglex:" << this->x(), true);
+    DEBUG("Ship::anglex:" << this->x(), false);
     leftRotate();
     this->createShipPolygon();
-    DEBUG("Ship::anglex:" << this->x(), true);
+    DEBUG("Ship::anglex:" << this->x(), false);
 }
 
 double Ship::getRadian()
@@ -87,7 +87,13 @@ QPoint Ship::center() const
     return QPoint(x, y);
 }
 
-void Ship::changeLife(qint32 change)
+bool Ship::changeLife(qint32 change)
 {
+    bool aliveOrNot = true;
     _vie += change;
+    if(_vie == 0)
+    {
+        aliveOrNot = false;
+    }
+    return aliveOrNot;
 }
