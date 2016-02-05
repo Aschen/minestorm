@@ -187,9 +187,9 @@ void Core::keyPressed(qint32 idClient, qint32 key)
 
     case Qt::Key_Space:
     {
-        DEBUG("Core::keyPressed : Client " << idClient << " KeySpace", false);
+        DEBUG("Core::keyPressed : Client " << idClient << " KeySpace", true);
         int id = rand();
-        _entitiesMap.insert(id, QSharedPointer<Entity>(new Projectile(id, *dynamic_cast<Ship*>(_entitiesMap[idClient].data()))));
+        _entitiesMap[id] = QSharedPointer<Entity>(new Projectile(id, *dynamic_cast<Ship*>(_entitiesMap[idClient].data())));
         break;
     }
 
