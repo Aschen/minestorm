@@ -1,21 +1,20 @@
 #include "Projectile.hh"
 
-Projectile::Projectile(qint32 id, Ship& ship, QPoint position, double angle)
+Projectile::Projectile(qint32 id, Ship& ship)
     : Entity(id, Entity::SHOT), _ship(ship)
 {
     this->setId(id);
-    this->setPosition(position);
-    this->setAngle(angle);
 
     init();
 }
 
 void Projectile::init()
 {
-    QPoint a = position();
-    QPoint b = QPoint(_position.x() + 6 * cos(_ship.getRadian()),
-                      _position.y() + 6 * sin(_ship.getRadian())
+    QPoint a = _ship.xy();
+    QPoint b = QPoint(_ship.x() + 6 * cos(_ship.getRadian()),
+                      _ship.y() + 6 * sin(_ship.getRadian())
                       );
+
     this->_line = QLine(a, b);
 
     //DEBUG("x = " << b.x(), true);
@@ -52,27 +51,6 @@ void Projectile::setShip(Ship const &ship)
 {
     //_ship = ship;
 }
-
-double Projectile::angle() const
-{
-    return _angle;
-}
-
-void Projectile::setAngle(double angle)
-{
-    _angle = angle;
-}
-
-QPoint Projectile::position() const
-{
-    return _position;
-}
-
-void Projectile::setPosition(const QPoint &position)
-{
-    _position = position;
-}
-
 
 
 

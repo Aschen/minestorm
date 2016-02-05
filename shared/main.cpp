@@ -16,9 +16,6 @@ void        runTests();
 
 int main(int argc, char *argv[])
 {
-    Ship ship(1);
-    QPoint p(50, 50);
-    Projectile  proj(1, ship, p, 35.00f);
     QString     arg(argv[1]);
 
     if (arg == "srv")

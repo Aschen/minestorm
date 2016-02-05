@@ -1,5 +1,6 @@
 #include "Core.hh"
 #include "Ship.hh"
+#include "Projectile.hh"
 
 Core::Core(qint32 cps)
     : QObject(),
@@ -221,6 +222,14 @@ void Core::keyPressed(qint32 idClient, qint32 key)
         dynamic_cast<Ship*>(_entitiesMap[idClient].data())->slowDownShip();
 
         break;
+
+    case Qt::Key_Space:
+    {
+        DEBUG("Core::keyPressed : Client " << idClient << " KeySpace", false);
+        int id = rand();
+        _entitiesMap.insert(id, QSharedPointer<Entity>(new Projectile(id, *dynamic_cast<Ship*>(_entitiesMap[idClient].data()))));
+        break;
+    }
 
     default:
         DEBUG("Core::keyPressed : Client" << idClient << " Unknown key:" << key, false);

@@ -9,7 +9,7 @@ class Projectile : public Entity
 {
 public:
     //Constructors
-    Projectile(qint32, Ship&, QPoint, double);
+    Projectile(qint32, Ship&);
 
     //Getters & Setters
     qint32 id() const;
@@ -17,12 +17,6 @@ public:
 
     Ship &ship() const;
     void setShip(Ship const &ship);
-
-    QPoint position() const;
-    void setPosition(const QPoint &position);
-
-    double angle() const;
-    void setAngle(double angle);
 
     QLine line() const;
     void setLine(const QLine &line);
@@ -33,8 +27,6 @@ public:
 private:
     qint32              _id;
     Ship&               _ship;
-    QPoint              _position;
-    double              _angle;
     QLine               _line;
 };
 
