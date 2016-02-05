@@ -4,7 +4,8 @@ Client::Client(const QString &host, quint16 port, QObject *parent)
     : QObject(parent),
       _host(host),
       _port(port),
-      _socket(BaseSocket::BROADCAST)
+      _socket(BaseSocket::BROADCAST),
+      _type(PLAYER)
 {
     DEBUG("Client::Client()", false);
 
@@ -16,7 +17,8 @@ Client::Client(QObject *parent)
     : QObject(parent),
       _host(""),
       _port(4242),
-      _socket(BaseSocket::BROADCAST)
+      _socket(BaseSocket::BROADCAST),
+      _type(PLAYER)
 {
     connect(&_socket,   SIGNAL(receiveMessage(qint32, QString)),
             this,       SLOT(receiveMessage(qint32, QString)));
@@ -34,10 +36,14 @@ void Client::start()
     if (!_socket.isValid())
     {
         _socket.connectToHost(_host, _port);
-        if (!_socket.isValid())
+        if (!_socket.isValid() || !_socket.isOpen())
+        {
             DEBUG("Client::start() : Unable to connect to" << _host << _port << " :" << _socket.errorString(), true);
+        }
         else
+        {
             DEBUG("Client::start() : Connected to " << _host << ":" << _port, true);
+        }
     }
 }
 
@@ -62,9 +68,15 @@ void Client::stop()
     }
 }
 
-void Client::sendMessage(const QString &msg)
+void Client::sendMessage( const QString &msg)
 {
-    _socket.sendMessage(BaseSocket::BROADCAST, msg);
+    if (_type == PLAYER)
+        _socket.sendMessage(BaseSocket::BROADCAST, msg);
+}
+
+void Client::type(Client::Type type)
+{
+    _type = type;
 }
 
 const BaseSocket *Client::socket() const

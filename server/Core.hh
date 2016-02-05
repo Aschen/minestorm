@@ -13,7 +13,10 @@
 # include "Server.hh"
 # include "Entity.hh"
 # include "Ship.hh"
-# include "MessageFactory.hpp"
+# include "MessageMouse.hh"
+# include "MessageInfo.hh"
+# include "MessageKey.hh"
+# include "MessageObjects.hh"
 
 
 class Core : public QObject

@@ -2,7 +2,7 @@
 
 /* DESERIALIZE ***************************************************************/
 MessageObjects::MessageObjects(const QString &msg)
-    : MessageBase(MessageBase::INFO_OBJECTS, msg),
+    : MessageBase(MessageBase::OBJECTS, msg),
       _elements(new QVector<Element>(0))
 {
     QTextStream         stream(msg.toUtf8());
@@ -12,8 +12,8 @@ MessageObjects::MessageObjects(const QString &msg)
 
     /* Read  message type*/
     stream >> messageType;
-    assert(messageType == (qint32) MessageBase::INFO_OBJECTS);
-    DEBUG("MessageObjects::MessageObjects() : Message:" << msg, true);
+    assert(messageType == (qint32) MessageBase::OBJECTS);
+    DEBUG("MessageObjects::MessageObjects() : Message:" << msg, false);
 
     /* Read objects count */
     stream >> objectsCount;
@@ -37,28 +37,34 @@ MessageObjects::MessageObjects(const QString &msg)
     }
 }
 
-/* shipNumber angle center_x center_y */
+/* shipNumber angle center_x center_y x1 y1 x2 y2 x3 y3*/
 void MessageObjects::deserializeShip(QTextStream &stream)
 {
     quint32     shipNumber;
-    QPolygon    polygon(1);
+    QPolygon    polygon(3);
     qreal       angle;
+    qint32      center_x;
+    qint32      center_y;
     qint32      x;
     qint32      y;
 
     /* Read shipNumber angle center_x center_y */
-    stream >> shipNumber >> angle >> x >> y;
+    stream >> shipNumber >> angle >> center_x >> center_y;
 
-    polygon[0] = QPoint(x, y);
-
+    /* Read 3 points */
+    for (quint32 i = 0; i < 3; ++i)
+    {
+        stream >> x >> y;
+        polygon[i] = QPoint(x, y);
+    }
     DEBUG("MessageObjects::deserializeShip() : Ship n°" << shipNumber << " angle: " << angle << " center:" << x << y
-          , true);
-    _elements->push_back(Element((Element::Type) shipNumber, polygon, angle));
+          , false);
+    _elements->push_back(Element((Element::Type) shipNumber, polygon, angle, QPoint(center_x, center_y)));
 }
 
 /* SERIALIZE *******************************************************************/
 MessageObjects::MessageObjects(const EntityHash &entities)
-    : MessageBase(MessageBase::INFO_OBJECTS, ""),
+    : MessageBase(MessageBase::OBJECTS, ""),
       _elements(nullptr)
 {
     /* Write message type */
@@ -88,7 +94,7 @@ MessageObjects::MessageObjects(const EntityHash &entities)
     }
 }
 
-/* shipNumber angle center_x center_y */
+/* shipNumber angle center_x center_y x1 y1 x2 y2 x3 y3*/
 void MessageObjects::serializeShip(const Ship &ship)
 {
     /* Write shipNumber */
@@ -100,6 +106,13 @@ void MessageObjects::serializeShip(const Ship &ship)
     /* Write center */
     _messageString += QString::number(ship.center().x()) + " ";
     _messageString += QString::number(ship.center().y()) + " ";
+
+    /* Write points */
+    for (quint32 i = 0; i < 3; ++i)
+    {
+        _messageString += QString::number(ship[i].x()) + " ";
+        _messageString += QString::number(ship[i].y()) + " ";
+    }
 }
 
 MessageObjects::~MessageObjects()

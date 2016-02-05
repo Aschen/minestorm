@@ -15,10 +15,19 @@ class Client : public QObject
 {
     Q_OBJECT
 
+public:
+    enum Type
+    {
+        PLAYER      = 1,
+        SPECTATOR   = 2
+    };
+
+
 private:
     QString             _host;
     quint16             _port;
     BaseSocket          _socket;
+    Type                _type;
 
 public:
     Client(const QString &host, quint16 port, QObject *parent = nullptr);
@@ -31,6 +40,7 @@ public:
 
     void                sendMessage(const QString &msg);
 
+    void                type(Client::Type type);
     const BaseSocket    *socket() const;
     void                hostname(const QString &host);
     void                port(quint16 port);

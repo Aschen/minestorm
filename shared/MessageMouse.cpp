@@ -51,8 +51,7 @@ void MessageMouse::createPoint(QTextStream &stream)
     qint32          x;
     quint32         y;
 
-    assert(_type == MessageBase::MOUSE_PRESSED
-           || _type == MessageBase::MOUSE_RELEASED);
+    assert(_type == MessageBase::MOUSE_PRESSED);
 
     stream >> x >> y;
     _point = QPoint(x, y);

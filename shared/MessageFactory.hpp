@@ -25,7 +25,6 @@ public:
         switch (msgType)
         {
         case MessageBase::MOUSE_PRESSED:
-        case MessageBase::MOUSE_RELEASED:
             message = new MessageMouse(msgType, stream);
             break;
 

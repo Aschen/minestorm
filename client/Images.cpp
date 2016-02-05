@@ -1,22 +1,31 @@
 #include "Images.hh"
 
 Images::Images()
-    : _images(5)
+    : _images(7)
 {
     loadImages();
 }
 
 QImage Images::getImage(Element::Type type, qreal angle)
 {
-    QTransform  t;
+    if (angle != 0)
+    {
+        QTransform  t;
 
-    return _images[type]->transformed(t.rotate(angle));
+        return _images[type]->transformed(t.rotate(angle));
+    }
+    else
+    {
+        return *(_images[type].data());
+    }
 }
 
 // alien_blaster.bmp  space_duelist.bmp  star_warp.bmp  void_viper.bmp
 void Images::loadImages()
 {
-    _images[Element::MINE] = QSharedPointer<QImage>(new QImage("images/mine.png"));
+    _images[Element::MINE_S] = QSharedPointer<QImage>(new QImage("images/mine_small.png"));
+    _images[Element::MINE_M] = QSharedPointer<QImage>(new QImage("images/mine_medium.png"));
+    _images[Element::MINE_L] = QSharedPointer<QImage>(new QImage("images/mine_large.png"));
     _images[Element::SHIP_1] = QSharedPointer<QImage>(new QImage("images/alien_blaster.png"));
     _images[Element::SHIP_2] = QSharedPointer<QImage>(new QImage("images/space_duelist.png"));
     _images[Element::SHIP_3] = QSharedPointer<QImage>(new QImage("images/star_warp.png"));

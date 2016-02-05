@@ -22,7 +22,7 @@ private:
 public:
     Images();
 
-    QImage getImage(Element::Type type, qreal angle);
+    QImage getImage(Element::Type type, qreal angle = 0);
 
 private:
     void                loadImages();

@@ -79,22 +79,13 @@ void Core::messageDispatcher(qint32 idClient, const QString &msg)
     case MessageBase::MOUSE_PRESSED:
     {
         MessageMouse        message(msg);
-
         mousePressed(idClient, message.x(), message.y());
         break;
     }
     case MessageBase::KEY_PRESSED:
     {
         MessageKey          message(msg);
-
         keyPressed(idClient, message.keyCode());
-        break;
-    }
-    case MessageBase::KEY_RELEASED:
-    {
-        MessageKey          message(msg);
-
-        keyReleased(idClient, message.keyCode());
         break;
     }
     default:
@@ -120,7 +111,10 @@ void Core::newPlayer(qint32 idClient)
     }
     else
     {
-        DEBUG("Display::initialize() : New spectator" << idClient, 0);
+        DEBUG("Core::initialize() : New spectator" << idClient, true);
+        MessageInfo     message(MessageBase::INFO_SPECTATOR);
+
+        _server.unicast(idClient, message.messageString());
     }
 }
 

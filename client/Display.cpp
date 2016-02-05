@@ -26,18 +26,22 @@ void Display::draw(QPainter &painter, QRect &size)
             DEBUG("Display::draw() : " << element.type(), false);
             switch (element.type())
             {
-            case Element::MINE:
+            case Element::MINE_S:
+            case Element::MINE_L:
+            case Element::MINE_M:
+                painter.drawImage(element.center(), _images.getImage(element.type()));
                 break;
             case Element::SHIP_1:
             case Element::SHIP_2:
             case Element::SHIP_3:
             case Element::SHIP_4:
-                painter.drawImage(element.center(), _images.getImage(element.type(), element.angle ()));
+                painter.setPen(QColor(0, 0, 0));
+                painter.setBrush(QBrush(QColor(0, 0, 0)));
+                painter.drawConvexPolygon(element.polygon());
+                painter.drawImage(element.center(), _images.getImage(element.type(), element.angle()));
                 break;
             }
 
-//            painter.setPen(QColor(object.type() * 20 % 255, 0, 0));
-//            painter.setBrush(QBrush(QColor(object.type() * 20 % 255, 0, 0)));
 //            painter.drawConvexPolygon(object.polygon());
         }
     }
@@ -57,12 +61,18 @@ void Display::messageDispatcher(qint32 socketFd, const QString &msg)
 
     switch (msgType)
     {
-    case MessageBase::INFO_OBJECTS:
+    case MessageBase::OBJECTS:
     {
         MessageObjects      message(msg);
 
         DEBUG("Client::MessageDispatcher() : Receive " << message.elements()->size() << " elements", false);
         receiveObjects(message.elements());
+        break;
+    }
+    case MessageBase::INFO_SPECTATOR:
+    {
+        DEBUG("Client::MessageDispatcher() : Spectator mode", true);
+        _client->type(Client::SPECTATOR);
         break;
     }
     default:

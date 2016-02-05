@@ -26,6 +26,7 @@ public:
 
     void                        start();
     void                        broadcast(const QString &message);
+    void                        unicast(qint32 idClient, const QString &message);
 
     quint32                      clientCount() const;
 

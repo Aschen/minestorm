@@ -73,6 +73,13 @@ void Server::broadcast(const QString &message)
     emit sendMessage(BaseSocket::BROADCAST, message);
 }
 
+void Server::unicast(qint32 idClient, const QString &message)
+{
+    DEBUG("Server::unicast() : Client" << idClient, true);
+
+    emit sendMessage(idClient, message);
+}
+
 quint32 Server::clientCount() const
 {
     return _clientCount;
