@@ -36,8 +36,9 @@ void Display::draw(QPainter &painter, QRect &size)
             case Element::SHIP_3:
             case Element::SHIP_4:
                 painter.setPen(QColor(0, 0, 0));
-                painter.setBrush(QBrush(QColor(0, 0, 0)));
+                painter.setBrush(QBrush(Qt::NoBrush));
                 painter.drawConvexPolygon(element.polygon());
+                painter.drawPoint(element.center());
                 painter.drawImage(element.center(), _images.getImage(element.type(), element.angle()));
                 break;
             }
