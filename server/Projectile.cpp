@@ -17,7 +17,7 @@ void Projectile::init()
     this->addPoint(a);
     this->addPoint(b);
 
-    DEBUG("A(" << a.x() << "," << a.y() << ") - B(" << b.x() << "," << b.y() << ")", true);
+    DEBUG("A(" << a.x() << "," << a.y() << ") - B(" << b.x() << "," << b.y() << ")", false);
 }
 
 qint32 Projectile::id() const
