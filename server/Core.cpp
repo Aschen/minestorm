@@ -40,6 +40,8 @@ void Core::step()
        // dynamic_cast<Ship*>(_entitiesMap[].data())-> moveShipForward();
         entitiesMovement();
 
+        Collision c(_entitiesMap);
+
         _server.broadcast(message.messageString());
     }
 

@@ -4,6 +4,7 @@ Entity::Entity(qint32 id, Type type)
     : _type(type),
       _id(id)
 {
+    _etat = ALIVE;
 }
 
 Entity::~Entity()

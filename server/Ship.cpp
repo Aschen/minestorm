@@ -86,3 +86,8 @@ QPoint Ship::center() const
     DEBUG("Ship::center() : 3 points :" << x << y, false);
     return QPoint(x, y);
 }
+
+void Ship::changeLife(qint32 change)
+{
+    _vie += change;
+}

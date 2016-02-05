@@ -34,7 +34,8 @@ SOURCES += server/Core.cpp \
     shared/MessageKey.cpp \
     client/Element.cpp \
     client/Images.cpp \
-    shared/MessageInfo.cpp
+    shared/MessageInfo.cpp \
+    server/Collision.cpp
 
 HEADERS  += server/Core.hh \
     client/Controller.hh \
@@ -58,7 +59,8 @@ HEADERS  += server/Core.hh \
     shared/MessageKey.hh \
     client/Element.hh \
     client/Images.hh \
-    shared/MessageInfo.hh
+    shared/MessageInfo.hh \
+    server/Collision.hh
 
 FORMS    +=
 
