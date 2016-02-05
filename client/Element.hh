@@ -25,6 +25,7 @@ private:
     QPolygon        _polygon;
     qreal           _angle;
     QPoint          _center;
+    QPoint          _imageCenter;
 
 public:
     Element(Type type, const QPolygon &polygon, qreal angle, const QPoint &center);
@@ -32,6 +33,7 @@ public:
     ~Element();
 
     const QPoint    &center() const;
+    const QPoint    &imageCenter() const;
 
     Type            type() const;
     const QPolygon  &polygon() const;

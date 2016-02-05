@@ -13,6 +13,7 @@
 # define EVENT_PER_S    10
 # define MAX_PLAYERS    4
 # define SERVER_PORT    4242
+# define SHIP_SIZE      24
 
 #endif // MINESTORM_HH
 

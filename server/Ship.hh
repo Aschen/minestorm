@@ -12,19 +12,16 @@ class Ship : public Entity
 {
 private:
     quint32         _vie;
-    QRect           _rect;
     quint32         _shipNumber;
 
 public:
     //Constructeurs
-    Ship(qint32 id);
-    Ship(qint32 id, QRect rect, quint32 vie, qint32 shipNumber);
+    Ship(qint32 id, const QPoint &position, qint32 shipNumber);
 
     void            createShipPolygon();
     void            moveShipForward();
     void            rotateShipLeft();
     void            rotateShipRight();
-    void            slowDownShip();
     double          getRadian();
 
     //Getter & Setter

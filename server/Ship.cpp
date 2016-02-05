@@ -1,28 +1,22 @@
 #include "Ship.hh"
 
 
-Ship::Ship(qint32 id)
-    : Entity(id, Entity::SHIP)
+Ship::Ship(qint32 id, const QPoint &position, qint32 shipNumber)
+    : Entity(id, Entity::SHIP),
+      _vie(3),
+      _shipNumber(shipNumber)
 {
-    _speed = 0;
+    _size   = QSize(SHIP_SIZE, SHIP_SIZE);
+    _xy     = position;
+    _speed  = 0;
 }
 
-Ship::Ship(qint32 id, QRect rect, quint32 vie, qint32 shipNumber)
-    : Entity(id, Entity::SHIP)
-{
-    _speed = 0;
-    _rect = rect;
-    _vie = vie;
-    _shipNumber = shipNumber;
-
-}
 void Ship::createShipPolygon()
 {
     this->clear();
-
-    this->addPoint(QPoint(this->xy().x() + this->size().height(), this->xy().y()));
-    this->addPoint(QPoint(this->xy().x() + this->size().height(), this->xy().y() + this->size().width()));
-    this->addPoint(QPoint(this->xy().x() + this->size().height() /2, this->xy().y() + this->size().width() / 2));
+    this->addPoint(QPoint(x() + size().height(), y()));
+    this->addPoint(QPoint(x() + size().height(), y() + size().width()));
+    this->addPoint(QPoint(x() + size().height() /2, y() + size().width() / 2));
 }
 
 //Getter & Setter
@@ -36,15 +30,6 @@ void Ship::setVie(quint32 vie)
 {
     _vie = vie;
 }
-QRect Ship::rect() const
-{
-    return _rect;
-}
-
-void Ship::setRect(const QRect &rect)
-{
-    _rect = rect;
-}
 
 quint32 Ship::shipNumber() const
 {
@@ -56,59 +41,34 @@ void Ship::shipNumber(quint32 shipNumber)
     _shipNumber = shipNumber;
 }
 
-
 void Ship::moveShipForward()
 {
     DEBUG("Ship::Coord : Client" << this->xy().x() << ";" << this->xy().y(), false);
-    if(_speed < 10)
-       _speed++;
 
-    this->xy(QPoint(
-                 this->xy().x() + _speed * cos(getRadian()),
-                 this->xy().y() + _speed * sin(getRadian())
-                 ));
-    /*
-    this->xy(
-            QPoint(
-                 this->xy().y() * sin( getRadian() - this->xy().x() * cos(getRadian())),
-                 this->xy().y() * cos( getRadian() + this->xy().x() * sin(getRadian()))
-            )
-    );
-*/
-    this->createShipPolygon();
+
+    x(x() + _speed * cos(getRadian()));
+    y(y() + _speed * sin(getRadian()));
+
+    createShipPolygon();
+
     DEBUG("Ship::speed:" << _speed, false);
-
     DEBUG("Ship::Coord : Client" << this->xy().x() << ";" << this->xy().y(), false);
 }
 
 void Ship::rotateShipRight()
 {
     DEBUG("Ship::angle:" << _angle, true);
-    _angle += 90;
-    QTransform t;
-    t.rotate(_angle);
-    QPolygon newP = t.map(*this);
-    this->swap(newP);
+    rightRotate();
     this->createShipPolygon();
     DEBUG("Ship::angle:" << _angle, true);
-    this->createShipPolygon();
-}
-
-void Ship::slowDownShip()
-{
-    _speed--;
 }
 
 void Ship::rotateShipLeft()
 {
-    DEBUG("Ship::angle:" << this->xy().x(), true);
-    _angle -= 90;
-    QTransform t;
-    t.rotate(_angle);
-    QPolygon newP = t.map(*this);
-    this->swap(newP);
+    DEBUG("Ship::anglex:" << this->x(), true);
+    leftRotate();
     this->createShipPolygon();
-    DEBUG("Ship::angle:" << this->xy().x(), true);
+    DEBUG("Ship::anglex:" << this->x(), true);
 }
 
 double Ship::getRadian()

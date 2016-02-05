@@ -29,6 +29,7 @@ private:
     QTimer              _timer;
     qint32              _step;
     Server              _server;
+    quint32             _playersCount;
     EntityHash          _entitiesMap;
 
 public:
@@ -40,7 +41,9 @@ public:
     void                keyReleased(qint32 idClient, qint32 key);
     void                startGame();
 
-    void                initialize(qint32 idClient);
+
+private:
+    void                entitiesMovement();
 
 private slots:
     void                step();

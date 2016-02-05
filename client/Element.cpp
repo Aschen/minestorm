@@ -5,7 +5,8 @@ Element::Element(Type type, const QPolygon &polygon, qreal angle, const QPoint &
     : _type(type),
       _polygon(polygon),
       _angle(angle),
-      _center(center)
+      _center(center),
+      _imageCenter(_center.x() - 16, _center.y() - 16)
 {
 }
 
@@ -35,5 +36,10 @@ qreal Element::angle() const
 const QPoint &Element::center() const
 {
     return _center;
+}
+
+const QPoint &Element::imageCenter() const
+{
+    return _imageCenter;
 }
 

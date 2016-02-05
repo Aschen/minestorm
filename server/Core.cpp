@@ -5,7 +5,8 @@ Core::Core(qint32 cps)
       _isRunning(false),
       _cps(cps),
       _step(1),
-      _server(SERVER_PORT)
+      _server(SERVER_PORT),
+      _playersCount(0)
 {
     DEBUG("Core::Core() : cps " << cps, true);
     _timer.setSingleShot(false);
@@ -37,36 +38,15 @@ void Core::step()
         MessageObjects      message(_entitiesMap);
 
        // dynamic_cast<Ship*>(_entitiesMap[].data())-> moveShipForward();
+        entitiesMovement();
 
-        for(QSharedPointer<Entity> &entity : _entitiesMap)
-        {
-            switch(entity->type())
-            {
-                case Entity::SHIP:
-                {
-                    Ship *ship = dynamic_cast<Ship*>(entity.data());
-                    if(ship->speed() > 0)
-                    {
-                        ship->moveShipForward();
-                        ship->speed(ship->speed() - 1);
-                    }
-                    break;
-                }
-                case Entity::MINE:
-                {
-                    break;
-                }
-                default:
-                {
-                    break;
-                }
-            }
-        }
         _server.broadcast(message.messageString());
     }
 
     ++_step;
 }
+
+
 
 void Core::messageDispatcher(qint32 idClient, const QString &msg)
 {
@@ -95,19 +75,22 @@ void Core::messageDispatcher(qint32 idClient, const QString &msg)
     }
     }
 }
-
+/**
+ * @brief Core::newPlayer : Instancie un nouveau vaisseau lors de la connexion d'un client
+ *                          Appelé par le signal clientConnected.
+ * @param idClient        : id de la socket client
+ */
 void Core::newPlayer(qint32 idClient)
 {
     if (_server.clientCount() <= MAX_PLAYERS)
     {
         DEBUG("Core::NewPlayer() : " << idClient, true);
-        Ship ship(idClient);
-        ship.xy(QPoint(SCREEN_SIZE / 2, SCREEN_SIZE / 2));
-        ship.size(QSize(42,42));
-        ship.createShipPolygon();
-        ship.shipNumber (_server.clientCount());
 
-        _entitiesMap[idClient] = QSharedPointer<Entity>(new Ship(ship));
+        _playersCount++;
+
+        _entitiesMap[idClient] = QSharedPointer<Entity>(
+                    new Ship(idClient, QPoint(SCREEN_SIZE / 2, SCREEN_SIZE / 2), _playersCount)
+                    );
     }
     else
     {
@@ -122,7 +105,13 @@ void Core::playerLeft(qint32 idClient)
 {
     DEBUG("Core::playerLeft() : " << idClient, true);
 
-    _entitiesMap.erase(_entitiesMap.find(idClient));
+    auto it = _entitiesMap.find(idClient);
+
+    if (it != _entitiesMap.end())
+    {
+        _playersCount--;
+        _entitiesMap.remove(idClient);
+    }
 }
 
 void Core::startGame()
@@ -136,8 +125,28 @@ void Core::startGame()
     }
 }
 
-void Core::initialize(qint32 idClient)
+void Core::entitiesMovement()
 {
+    for(QSharedPointer<Entity> &entity : _entitiesMap)
+    {
+        switch(entity->type())
+        {
+            case Entity::SHIP:
+            {
+                Ship *ship = dynamic_cast<Ship*>(entity.data());
+                ship->moveShipForward();
+                break;
+            }
+            case Entity::MINE:
+            {
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+    }
 }
 
 
@@ -164,17 +173,13 @@ void Core::keyPressed(qint32 idClient, qint32 key)
 
     case Qt::Key_Up:
         DEBUG("Core::keyPressed : Client" << idClient << " KeyUp", false);
-        DEBUG("Ship::BMoved" <<  dynamic_cast<Ship*>(_entitiesMap[idClient].data())->xy().x(),false);
-        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->moveShipForward();
 
-
-        DEBUG("Ship::AMoved" <<  dynamic_cast<Ship*>(_entitiesMap[idClient].data())->xy().x(),false);
-
+        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->incrementSpeed();
         break;
 
     case Qt::Key_Down:
         DEBUG("Core::keyPressed : Client" << idClient << " KeyDown", false);
-        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->slowDownShip();
+        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->decrementSpeed();
 
         break;
 
