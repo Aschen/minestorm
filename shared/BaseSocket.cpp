@@ -67,7 +67,7 @@ void BaseSocket::readMessage()
     QString         message;
 
     in >> message;
-    DEBUG("BaseSocket::readMessage() : Full message readed : " << message, true);
+    DEBUG("BaseSocket::readMessage() : Full message readed : " << message, false);
     emit receiveMessage(_socketFd, message);
 
     // Prepare to read whole new message
@@ -80,7 +80,7 @@ void BaseSocket::sendMessage(qint32 socketFd, const QString &msg)
     DEBUG("BaseSocket::sendMessage() :" << _socketFd << socketFd, false);
     if (isOpen() && (socketFd == _socketFd || socketFd == BROADCAST))
     {
-        DEBUG("BaseSocket::sendMessage() " << _socketFd << " : " << msg, true);
+        DEBUG("BaseSocket::sendMessage() " << _socketFd << " : " << msg, false);
         write(packMessage(msg));
     }
 }

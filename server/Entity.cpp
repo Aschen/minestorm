@@ -48,24 +48,18 @@ void Entity::rotate(qint32 angle)
     for (QPointF &p : *this)
     {
         DEBUG("Entity::rotate() x:" << p.x() << " y:" << p.y(), true);
-        //        DEBUG("Entity::rotate() x':" << cos(theta) * (p.x() - cx) - sin(theta) * (p.y() - cy) + cx <<
-        //              " y':" << sin(theta) * (p.x() - cx) + cos(angle) * (p.y() - cy) + cy, true);
         x = cos(theta) * (p.x() - cx) - sin(theta) * (p.y() - cy) + cx;
-        y = sin(theta) * (p.x() - cx) + cos(angle) * (p.y() - cy) + cy;
+        y = sin(theta) * (p.x() - cx) + cos(theta) * (p.y() - cy) + cy;
         p.setX(x);
         p.setY(y);
         DEBUG("Entity::rotate() x':" << p.x() << " y':" << p.y(), true);
     }
-//    POINT rotate_point(float cx, float cy, float angle, POINT p){
-
-//         return POINT(cos(angle) * (p.x - cx) - sin(angle) * (p.y - cy) + cx,
-//                      sin(angle) * (p.x - cx) + cos(angle) * (p.y - cy) + cy);
-//    }
 }
 
 bool Entity::makeEntityMove()
 {
-    if(_speed > 0) {
+    if(_speed > 0)
+    {
         /*
         if(this->x() > SCREEN_SIZE )
             this->translate(0, _speed * sin(gestRadian()));

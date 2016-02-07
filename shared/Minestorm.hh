@@ -10,7 +10,7 @@
 
 # define SCREEN_SIZE    600
 # define CYCLE_PER_S    50
-# define EVENT_PER_S    10
+# define EVENT_PER_S    30
 # define MAX_PLAYERS    4
 # define SERVER_PORT    4242
 # define SHIP_SIZE      24
