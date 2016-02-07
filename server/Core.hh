@@ -2,6 +2,7 @@
 # define CORE_HH
 
 # include <QObject>
+# include <QTime>
 # include <QTimer>
 # include <QPoint>
 # include <QVector>
@@ -12,6 +13,7 @@
 # include "Minestorm.hh"
 # include "Server.hh"
 # include "Ship.hh"
+# include "Mine.hh"
 # include "Projectile.hh"
 # include "MessageMouse.hh"
 # include "MessageInfo.hh"
@@ -45,6 +47,7 @@ public:
 
 
 private:
+    void                entitiesInitialization();
     void                entitiesMovement();
 
 private slots:

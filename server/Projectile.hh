@@ -5,6 +5,8 @@
 #include "Entity.hh"
 #include "Ship.hh"
 
+using namespace std;
+
 class Projectile : public Entity
 {
 public:

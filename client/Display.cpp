@@ -23,11 +23,15 @@ void Display::draw(QPainter &painter, QRect &size)
     {
         for (const Element &element : *_elements)
         {
-            DEBUG("Display::draw() : " << element.type(), false);
+            DEBUG("Display:draw() : element.type() = " << element.type(), false);
             switch (element.type())
             {
             case Element::MINE_S:
+                painter.drawImage(element.center(), _images.getImage(element.type()));
+                break;
             case Element::MINE_L:
+                painter.drawImage(element.center(), _images.getImage(element.type()));
+                break;
             case Element::MINE_M:
                 painter.drawImage(element.center(), _images.getImage(element.type()));
                 break;

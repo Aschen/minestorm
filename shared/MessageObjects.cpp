@@ -32,6 +32,7 @@ MessageObjects::MessageObjects(const QString &msg)
             deserializeShot(stream);
             break;
         case Entity::MINE:
+            deserializeMine(stream);
             break;
         default:
             DEBUG("MessageObjects::MessageObjects() : Unknown entity" << messageType, true);
@@ -82,6 +83,23 @@ void MessageObjects::deserializeShot(QTextStream &stream)
     _elements->push_back(Element(Element::SHOT, polygon));
 }
 
+/* type angle center_x center_y */
+void MessageObjects::deserializeMine(QTextStream &stream)
+{
+    QPolygon    polygon(1);
+    QPoint      center;
+    qint32      type;
+    qreal       angle;
+    qint32      center_x;
+    qint32      center_y;
+
+    stream >> type >> angle >> center_x >> center_y;
+    center = QPoint(center_x, center_y);
+    polygon[0] = center;
+    DEBUG("MessageObjects::deserializeMine() : type: " << type << " angle: " << angle << " center:" << center_x << center_y, false);
+    _elements->push_back(Element((Element::Type) type, polygon, angle, center));
+}
+
 /* SERIALIZE *******************************************************************/
 MessageObjects::MessageObjects(const EntityHash &entities)
     : MessageBase(MessageBase::OBJECTS, ""),
@@ -108,9 +126,10 @@ MessageObjects::MessageObjects(const EntityHash &entities)
             serializeShot(dynamic_cast<Projectile&>(*entity));
             break;
         case Entity::MINE:
+            serializeMine(dynamic_cast<Mine&>(*entity));
             break;
         default:
-            DEBUG("MessageObjects::MessageObjects() : Unknown entity" << entity->type(), true);
+            DEBUG("MessageObjects::MessageObjects() : Unknown entity" << entity->type(), false);
             assert(false);
             break;
         }
@@ -147,6 +166,22 @@ void MessageObjects::serializeShot(const Projectile &shot)
         _messageString += QString::number(shot[i].x()) + " ";
         _messageString += QString::number(shot[i].y()) + " ";
     }
+}
+
+/* type angle center_x center_y */
+void MessageObjects::serializeMine(const Mine &mine)
+{
+    /* Write type */
+    _messageString += QString::number(mine.type()) + " ";
+
+    /* Write angle */
+    _messageString += QString::number(mine.angle()) + " ";
+
+    /* Write center_x */
+    _messageString += QString::number(mine.center().x()) + " ";
+
+    /* Write center_y */
+    _messageString += QString::number(mine.center().y()) + " ";
 }
 
 MessageObjects::~MessageObjects()
