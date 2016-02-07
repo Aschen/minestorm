@@ -141,43 +141,42 @@ void Core::startGame()
 void Core::entitiesInitialization()
 {
     DEBUG("Core::entitiesInit() - entitiesMaps.size() = " << _entitiesMap.size(), true);
-    int r, x, y;
+    int i, x, y;
 
+    i = 0;
     //Small Mines
-    for (int i = 0; i < 5; i++)
+    while (i < 5)
     {
-        r = rand();
-        x = rand() % SCREEN_SIZE - 10;
-        y = rand() % SCREEN_SIZE - 10;
+        x = rand() % (SCREEN_SIZE - 20) + 10;
+        y = rand() % (SCREEN_SIZE - 20) + 10;
         QTime time = QTime::currentTime();
         time = time.addSecs(rand() % 15 + 1);
         DEBUG("Mine(" << x << "," << y << ")", false);
 
-        this->_entitiesMap[r + i] = QSharedPointer<Entity>(new Mine(r + i, Mine::TypeMine::Small, *new QPoint(x, y), time));
+        this->_entitiesMap[MAX_CLIENTS + i] = QSharedPointer<Entity>(new Mine(MAX_CLIENTS + i, Mine::TypeMine::Small, *new QPoint(x, y), time));
+        i++;
     }
 
-    for (int i = 0; i < 5; i++)
+    while (i < 10)
     {
-        r = rand();
         x = rand() % SCREEN_SIZE - 10;
         y = rand() % SCREEN_SIZE - 10;
         QTime time = QTime::currentTime();
         time = time.addSecs(rand() % 15 + 1);
         DEBUG("Mine(" << x << "," << y << ")", false);
-
-        //this->_entitiesMap[r + i] = QSharedPointer<Entity>(new Mine(r + i, Mine::TypeMine::Big, *new QPoint(x, y), time));
+        this->_entitiesMap[MAX_CLIENTS + i] = QSharedPointer<Entity>(new Mine(MAX_CLIENTS + i, Mine::TypeMine::Big, *new QPoint(x, y), time));
+        i++;
     }
 
-    for (int i = 0; i < 20; i++)
+    while (i < 30)
     {
-        r = rand();
         x = rand() % SCREEN_SIZE - 10;
         y = rand() % SCREEN_SIZE - 10;
         QTime time = QTime::currentTime();
         time = time.addSecs(rand() % 15 + 1);
         DEBUG("Mine(" << x << "," << y << ")", false);
-
-        //this->_entitiesMap[r + i] = QSharedPointer<Entity>(new Mine(r + i, Mine::TypeMine::Medium, *new QPoint(x, y), time));
+        this->_entitiesMap[MAX_CLIENTS + i] = QSharedPointer<Entity>(new Mine(MAX_CLIENTS + i, Mine::TypeMine::Medium, *new QPoint(x, y), time));
+        i++;
     }
 
     DEBUG("entitiesMaps.size() = " << _entitiesMap.size(), true);

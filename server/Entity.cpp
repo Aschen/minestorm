@@ -1,6 +1,16 @@
 #include "Entity.hh"
 
 
+
+Etat Entity::etat() const
+{
+    return _etat;
+}
+
+void Entity::setEtat(const Etat &etat)
+{
+    _etat = etat;
+}
 Entity::Entity(qint32 id, Type type)
     : _type(type),
       _id(id)

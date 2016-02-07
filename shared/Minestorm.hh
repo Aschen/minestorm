@@ -9,6 +9,7 @@
 } while (0)
 
 # define SCREEN_SIZE    600
+# define MAX_CLIENTS    50
 # define CYCLE_PER_S    50
 # define EVENT_PER_S    30
 # define MAX_PLAYERS    4
