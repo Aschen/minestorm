@@ -12,7 +12,7 @@ Entity::~Entity()
 {
 }
 
-void Entity::addPoint(const QPoint &point)
+void Entity::addPoint(const QPointF &point)
 {
     *this << point;
 }
@@ -24,7 +24,7 @@ bool Entity::isMoving()
 
 void Entity::incrementSpeed()
 {
-    DEBUG("Entity::speed+++: "<< _speed, true);
+    DEBUG("Entity::speed++: "<< _speed, true);
     if(_speed < 10)
         ++_speed;
 }
@@ -37,17 +37,30 @@ void Entity::decrementSpeed()
 
 void Entity::rotate(qint32 angle)
 {
-    _angle += angle;
-    QPoint entityCenter = center();
-    double angleRad = getRadian(angle);
-    qint32 x,y;
-    for(QPoint &p : *this)
+    _angle = (_angle + angle) % 360;
+
+    qreal      cx = center().x();
+    qreal      cy = center().y();
+    qreal      x;
+    qreal      y;
+    qreal      theta = getRadian(angle);
+
+    for (QPointF &p : *this)
     {
-        x = (cos(angleRad) * (p.x() - entityCenter.x()) - sin(angleRad) * (p.y() - entityCenter.y()) + entityCenter.x());
-        y = (sin(angleRad) * (p.x() - entityCenter.x()) + cos(angleRad) * (p.y() - entityCenter.y()) + entityCenter.y());
+        DEBUG("Entity::rotate() x:" << p.x() << " y:" << p.y(), true);
+        //        DEBUG("Entity::rotate() x':" << cos(theta) * (p.x() - cx) - sin(theta) * (p.y() - cy) + cx <<
+        //              " y':" << sin(theta) * (p.x() - cx) + cos(angle) * (p.y() - cy) + cy, true);
+        x = cos(theta) * (p.x() - cx) - sin(theta) * (p.y() - cy) + cx;
+        y = sin(theta) * (p.x() - cx) + cos(angle) * (p.y() - cy) + cy;
         p.setX(x);
         p.setY(y);
+        DEBUG("Entity::rotate() x':" << p.x() << " y':" << p.y(), true);
     }
+//    POINT rotate_point(float cx, float cy, float angle, POINT p){
+
+//         return POINT(cos(angle) * (p.x - cx) - sin(angle) * (p.y - cy) + cx,
+//                      sin(angle) * (p.x - cx) + cos(angle) * (p.y - cy) + cy);
+//    }
 }
 
 bool Entity::makeEntityMove()

@@ -17,8 +17,8 @@ public:
 
     Ship        &ship() const;
 
-    QPolygon    body() const;
-    void        setBody(const QPolygon &body);
+    QPolygonF   body() const;
+    void        setBody(const QPolygonF &body);
 
     //Methods
     void        init();
@@ -29,7 +29,7 @@ private:
 
     // Entity interface
 public:
-    QPoint      center() const override;
+    QPointF      center() const override;
 
     // Entity interface
 public:

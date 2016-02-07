@@ -127,14 +127,14 @@ void MessageObjects::serializeShip(const Ship &ship)
     _messageString += QString::number(ship.angle()) + " ";
 
     /* Write center */
-    _messageString += QString::number(ship.center().x()) + " ";
-    _messageString += QString::number(ship.center().y()) + " ";
+    _messageString += QString::number((qint32) ship.center().x()) + " ";
+    _messageString += QString::number((qint32) ship.center().y()) + " ";
 
     /* Write 4 points */
     for (quint32 i = 0; i < 4; ++i)
     {
-        _messageString += QString::number(ship[i].x()) + " ";
-        _messageString += QString::number(ship[i].y()) + " ";
+        _messageString += QString::number((qint32) ship[i].x()) + " ";
+        _messageString += QString::number((qint32) ship[i].y()) + " ";
     }
 }
 

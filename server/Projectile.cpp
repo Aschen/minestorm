@@ -12,9 +12,9 @@ Projectile::Projectile(qint32 id, Ship& ship)
 
 void Projectile::init()
 {
-    QPoint a = _ship.center();
-    QPoint b = QPoint(a.x() + 6 * cos(_ship.getRadian()),
-                      a.y() + 6 * sin(_ship.getRadian()));
+    QPointF a = _ship.center();
+    QPointF b = QPointF(a.x() + 6 * cos(_ship.getRadian(0)),
+                      a.y() + 6 * sin(_ship.getRadian(0)));
 
     this->addPoint(a);
     this->addPoint(b);
@@ -37,15 +37,15 @@ Ship &Projectile::ship() const
     return _ship;
 }
 
-QPoint Projectile::center() const
+QPointF Projectile::center() const
 {
-    qint32  x;
-    qint32  y;
+    qreal  x;
+    qreal  y;
 
     x = ((*this)[0].x() + (*this)[1].x()) / 2;
     y = ((*this)[0].y() + (*this)[1].y()) / 2;
     DEBUG("Projectile::center() : 2 points :" << x << y, false);
-    return QPoint(x, y);
+    return QPointF(x, y);
 }
 
 bool Projectile::makeEntityMove()

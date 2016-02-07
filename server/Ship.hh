@@ -15,11 +15,10 @@ private:
 
 public:
     //Constructeurs
-    Ship(qint32 id, const QPoint &position, qint32 shipNumber);
+    Ship(qint32 id, const QPointF &position, qint32 shipNumber);
 
     void            rotateShipLeft();
     void            rotateShipRight();
-    double          getRadian();
     bool            changeLife(qint32 change);
 
     //Getter & Setter
@@ -32,7 +31,7 @@ public:
 
     // Entity interface
 public:
-    QPoint          center() const override;
+    QPointF          center() const override;
 };
 
 #endif // SHIP_HH

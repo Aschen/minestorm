@@ -4,7 +4,7 @@
 # define PI M_PI
 
 # include <QPoint>
-# include <QPolygon>
+# include <QPolygonF>
 # include <QVector>
 # include <QList>
 # include <QHash>
@@ -18,7 +18,7 @@
 
 using namespace std;
 
-class Entity : public QPolygon
+class Entity : public QPolygonF
 {
 public:
     enum Type
@@ -46,8 +46,8 @@ public:
     Entity(qint32 id, Type type);
     virtual ~Entity();
 
-    void                    addPoint(const QPoint &point);
-    virtual QPoint          center() const = 0;
+    void                    addPoint(const QPointF &point);
+    virtual QPointF          center() const = 0;
 
     bool                    isMoving();
     void                    incrementSpeed();

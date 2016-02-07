@@ -31,7 +31,7 @@ void Collision::detectShipCollision(Ship &ship, EntityHash &entitiesMap)
     //Pour toutes les entités on regarde si il y a collision avec le vaisseau
     for(QSharedPointer<Entity> &entity : entitiesMap)
     {
-        for(QPoint &point: *entity)
+        for(QPointF &point: *entity)
         {
             bool collide = ship.containsPoint(point, Qt::OddEvenFill);
             if(collide == true && ship.id() != entity->id())
