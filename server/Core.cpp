@@ -156,13 +156,13 @@ void Core::keyPressed(qint32 idClient, qint32 key)
     {
     case Qt::Key_Right:
         DEBUG("Core::keyPressed : Client" << idClient << " KeyRight", false);
-        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->rotateShipRight();
+        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->rotate(10);
 
         break;
 
     case Qt::Key_Left:
         DEBUG("Core::keyPressed Client" << idClient << " KeyLeft", false);
-        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->rotateShipLeft();
+        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->rotate(-10);
 
         break;
 

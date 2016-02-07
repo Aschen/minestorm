@@ -1,6 +1,8 @@
 #ifndef ENTITY_HH
 # define ENTITY_HH
 
+# define PI M_PI
+
 # include <QPoint>
 # include <QPolygon>
 # include <QVector>
@@ -34,7 +36,6 @@ public:
 protected:
     const Type              _type;
     const qint32            _id;
-    QPoint                  _xy;
     QSize                   _size;
     qint32                  _speed;
     qint32                  _angle;
@@ -51,21 +52,15 @@ public:
     bool                    isMoving();
     void                    incrementSpeed();
     void                    decrementSpeed();
-    void                    rightRotate();
-    void                    leftRotate();
-    void                    makeEntityMove();
-    double                  getRadian();
+    void                    rotate(qint32 angle);
+    virtual bool            makeEntityMove();
+    double                  getRadian(qint32 angle);
+
 
     Type                    type() const;
     qint32                  id() const;
-    const QPoint            &xy() const;
-    void                    xy(const QPoint &value);
-    qint32                  x() const;
-    void                    x(qint32 value);
-    qint32                  y() const;
     const QSize             &size() const; // rename it
     void                    size(const QSize &value); // rename it
-    void                    y(qint32 value);
     qint32                  speed() const;
     void                    speed(qint32 value);
     qint32                  angle() const;

@@ -12,24 +12,28 @@ public:
     Projectile(qint32, Ship&);
 
     //Getters & Setters
-    qint32 id() const;
-    void setId(const qint32 &id);
+    qint32      id() const;
+    void        setId(const qint32 &id);
 
-    Ship &ship() const;
+    Ship        &ship() const;
 
-    QPolygon body() const;
-    void setBody(const QPolygon &body);
+    QPolygon    body() const;
+    void        setBody(const QPolygon &body);
 
     //Methods
-    void                init();
+    void        init();
 
 private:
-    qint32              _id;
-    Ship&               _ship;
+    qint32       _id;
+    Ship&       _ship;
 
     // Entity interface
 public:
-    QPoint center() const override;
+    QPoint      center() const override;
+
+    // Entity interface
+public:
+    bool        makeEntityMove() override;
 };
 
 #endif // PROJECTILE_HH
