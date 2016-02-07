@@ -37,7 +37,7 @@ protected:
     const Type              _type;
     const qint32            _id;
     QSize                   _size;
-    qint32                  _speed;
+    qreal                   _speed;
     qint32                  _angle;
     Etat                    _etat;
 
@@ -55,14 +55,15 @@ public:
     void                    rotate(qint32 angle);
     virtual bool            makeEntityMove();
     double                  getRadian(qint32 angle);
+    void                    setEtatDead();
 
 
     Type                    type() const;
     qint32                  id() const;
     const QSize             &size() const; // rename it
     void                    size(const QSize &value); // rename it
-    qint32                  speed() const;
-    void                    speed(qint32 value);
+    qreal                   speed() const;
+    void                    speed(qreal value);
     qint32                  angle() const;
     void                    angle(qint32 value);
     Etat                    etat() const;

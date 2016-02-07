@@ -23,7 +23,6 @@ quint32 Ship::vie() const
     return _vie;
 }
 
-
 void Ship::setVie(quint32 vie)
 {
     _vie = vie;
@@ -41,8 +40,8 @@ void Ship::shipNumber(quint32 shipNumber)
 
 QPointF Ship::center() const
 {
-    qreal  x;
-    qreal  y;
+    qint32  x;
+    qint32  y;
 
     x = ((*this)[0].x() + (*this)[1].x() + (*this)[2].x() + (*this)[3].x()) / 4;
     y = ((*this)[0].y() + (*this)[1].y() + (*this)[2].y() + (*this)[3].y()) / 4;

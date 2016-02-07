@@ -24,14 +24,16 @@ bool Entity::isMoving()
 void Entity::incrementSpeed()
 {
     DEBUG("Entity::speed++: "<< _speed, true);
-    if(_speed < 10)
-        ++_speed;
+    if(_speed < 6)
+        _speed += 3;
 }
 
 void Entity::decrementSpeed()
 {
     if(_speed > 0)
-        --_speed;
+        _speed -= 1;
+    else
+        _speed = 0;
 }
 
 void Entity::rotate(qint32 angle)
@@ -57,21 +59,43 @@ void Entity::rotate(qint32 angle)
 
 bool Entity::makeEntityMove()
 {
-    if(_speed > 0)
+    if (_speed > 0)
     {
-        /*
-        if(this->x() > SCREEN_SIZE )
-            this->translate(0, _speed * sin(gestRadian()));
-        if(this->y() > SCREEN_SIZE )
-            this->translate(_speed * cos(getRadian()), 0);
+        qreal dX, dY, centreX, centreY;
+        centreX = this->center().x();
+        centreY = this->center().y();
+        DEBUG("Entity::x:" << this->center().x() << " y:" << this->center().y(), false);
 
-        if(this->y() < 0)
-            this->translate(_speed * cos(getRadian()), SCREEN_SIZE);
+        if (centreX > SCREEN_SIZE)
+        {
+            dX = -SCREEN_SIZE;
+            dY = 0;
+        }
+        else if (centreY > SCREEN_SIZE)
+        {
+            dX = 0;
+            dY = -SCREEN_SIZE;
+        }
+        else if (centreY < 0)
+        {
+            dX = 0;
+            dY = SCREEN_SIZE;
+        }
+        else if (centreX < 0)
+        {
+            dX = SCREEN_SIZE;
+            dY = 0;
+        }
+        else {
+            dX = _speed * cos(getRadian(_angle));
+            dY = _speed * sin(getRadian(_angle));
+        }
 
-        if(this->x() < 0)
-            this->translate(SCREEN_SIZE, _speed * sin(getRadian()));
-        */
-        this->translate(_speed * cos(getRadian(_angle)), _speed * sin(getRadian(_angle)));
+        _speed > 0.15 ? _speed *= 0.96 : _speed = 0;
+
+
+        this->translate(dX, dY);
+        DEBUG("Entity::speed:" << _speed, true);
     }
     return true;
 }
@@ -101,12 +125,12 @@ void Entity::size(const QSize &value)
     _size = value;
 }
 
-qint32 Entity::speed() const
+qreal Entity::speed() const
 {
     return _speed;
 }
 
-void Entity::speed(qint32 value)
+void Entity::speed(qreal value)
 {
     _speed = value;
 }
@@ -127,7 +151,7 @@ Entity::Etat Entity::etat() const
     return _etat;
 }
 
-void Entity::setEtat(const Etat &etat)
+void Entity::setEtatDead()
 {
-    _etat = etat;
+    _etat = Etat::DEAD;
 }
