@@ -144,8 +144,8 @@ void MessageObjects::serializeShot(const Projectile &shot)
     /* Write 2 points */
     for (quint32 i = 0; i < 2; ++i)
     {
-        _messageString += QString::number(shot[i].x()) + " ";
-        _messageString += QString::number(shot[i].y()) + " ";
+        _messageString += QString::number((qint32)shot[i].x()) + " ";
+        _messageString += QString::number((qint32)shot[i].y()) + " ";
     }
 }
 
