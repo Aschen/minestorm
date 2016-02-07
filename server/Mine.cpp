@@ -9,6 +9,7 @@ Mine::Mine(qint32 id, TypeMine type, QPoint point, QTime birthDate) : Entity(id,
 
     this->_x = point.x();
     this->_y = point.y();
+    this->addPoint(point);
     this->_id = id;
 
     switch(type)
