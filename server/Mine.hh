@@ -39,7 +39,11 @@ public:
     TypeMine type() const;
     void setType(const TypeMine &type);
 
+    qint32 _x;
+    qint32 _y;
+
 private:
+    qint32          _id;
     TypeMine        _type;
     QTime           _birthDate;
     int             _size;
@@ -47,7 +51,7 @@ private:
     Qt::BrushStyle _brushStyle;
 
 public:
-    QPoint center() const override;
+    QPointF center() const override;
 };
 
 #endif // MINE_HH

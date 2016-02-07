@@ -165,7 +165,7 @@ void Core::entitiesInitialization()
         time = time.addSecs(rand() % 15 + 1);
         DEBUG("Mine(" << x << "," << y << ")", false);
 
-        this->_entitiesMap[r + i] = QSharedPointer<Entity>(new Mine(r + i, Mine::TypeMine::Big, *new QPoint(x, y), time));
+        //this->_entitiesMap[r + i] = QSharedPointer<Entity>(new Mine(r + i, Mine::TypeMine::Big, *new QPoint(x, y), time));
     }
 
     for (int i = 0; i < 20; i++)
@@ -177,7 +177,7 @@ void Core::entitiesInitialization()
         time = time.addSecs(rand() % 15 + 1);
         DEBUG("Mine(" << x << "," << y << ")", false);
 
-        this->_entitiesMap[r + i] = QSharedPointer<Entity>(new Mine(r + i, Mine::TypeMine::Medium, *new QPoint(x, y), time));
+        //this->_entitiesMap[r + i] = QSharedPointer<Entity>(new Mine(r + i, Mine::TypeMine::Medium, *new QPoint(x, y), time));
     }
 
     DEBUG("entitiesMaps.size() = " << _entitiesMap.size(), true);

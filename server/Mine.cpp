@@ -3,10 +3,13 @@
 Mine::Mine(qint32 id, TypeMine type, QPoint point, QTime birthDate) : Entity(id, Entity::MINE)
 {
     this->setType(type);
-    this->xy(point);
     this->angle(rand() % 360);
     this->setBirthDate(birthDate);
     this->setBrushStyle(Qt::SolidPattern);
+
+    this->_x = point.x();
+    this->_y = point.y();
+    this->_id = id;
 
     switch(type)
     {
@@ -75,13 +78,13 @@ void Mine::setType(const TypeMine &type)
 }
 
 
-QPoint Mine::center() const
+QPointF Mine::center() const
 {
     qint32  x;
     qint32  y;
 
-    x = xy().x();
-    y = xy().y();
+    x = _x;
+    y = _y;
     return QPoint(x, y);
 }
 

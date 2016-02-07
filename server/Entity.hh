@@ -65,6 +65,8 @@ public:
     void                    speed(qint32 value);
     qint32                  angle() const;
     void                    angle(qint32 value);
+    Etat                    etat() const;
+    void                    setEtat(const Etat &etat);
 };
 
 using EntityList = QList<QSharedPointer<Entity>>;
