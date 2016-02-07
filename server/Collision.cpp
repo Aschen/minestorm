@@ -39,21 +39,24 @@ void Collision::detectShipCollision(Ship &ship, EntityHash &entitiesMap)
     {
         if(ship.id() != entity->id() && entity->etat() == 1)
         {
+            DEBUG("Collision::detectShipCollision() nombre de point" << ship.length(), true);
             for(QPointF &point: *entity)
             {
+                DEBUG("Collision::detectShipCollision() collision2", true);
                 bool collide = ship.containsPoint(point, Qt::OddEvenFill);
                 if(collide)
                 {
+                    DEBUG("Collision::detectShipCollision()  Collision Vaisseau ", true);
                     //On enléve une vie au vaisseau dans tous les cas
                     if(!ship.changeLife(-1))
                     {
-                        ship.setEtat(0);
+                        ship.setEtat(Entity::DEAD);
                         _entitiesToDelete.push_back(ship.id());
                     }
                     //Si l'entité n'est pas un vaisseau on l'ajoute à la liste de supression
                     if(entity->type() != Entity::SHIP)
                     {
-                        entity->setEtat(0);
+                        entity->setEtat(Entity::DEAD);
                         _entitiesToDelete.push_back(entity->id());
                     }
                     break;
@@ -75,6 +78,8 @@ void Collision::detectMineCollision(Mine &mine, EntityHash &entitiesMap)
                 bool collide = mine.containsPoint(point, Qt::OddEvenFill);
                 if(collide == true)
                 {
+                    mine.setEtat(Entity::DEAD);
+                    entity->setEtat(Entity::DEAD);
                     _entitiesToDelete.push_back(mine.id());
                     _entitiesToDelete.push_back(entity->id());
                 }

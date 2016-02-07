@@ -1,16 +1,5 @@
 #include "Entity.hh"
 
-
-
-Etat Entity::etat() const
-{
-    return _etat;
-}
-
-void Entity::setEtat(const Etat &etat)
-{
-    _etat = etat;
-}
 Entity::Entity(qint32 id, Type type)
     : _type(type),
       _id(id)
@@ -57,12 +46,12 @@ void Entity::rotate(qint32 angle)
 
     for (QPointF &p : *this)
     {
-        DEBUG("Entity::rotate() x:" << p.x() << " y:" << p.y(), true);
+        DEBUG("Entity::rotate() x:" << p.x() << " y:" << p.y(), false);
         x = cos(theta) * (p.x() - cx) - sin(theta) * (p.y() - cy) + cx;
         y = sin(theta) * (p.x() - cx) + cos(theta) * (p.y() - cy) + cy;
         p.setX(x);
         p.setY(y);
-        DEBUG("Entity::rotate() x':" << p.x() << " y':" << p.y(), true);
+        DEBUG("Entity::rotate() x':" << p.x() << " y':" << p.y(), false);
     }
 }
 
@@ -131,4 +120,14 @@ qint32 Entity::angle() const
 void Entity::angle(qint32 value)
 {
     _angle = value;
+}
+
+Entity::Etat Entity::etat() const
+{
+    return _etat;
+}
+
+void Entity::setEtat(const Etat &etat)
+{
+    _etat = etat;
 }
