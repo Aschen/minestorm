@@ -17,7 +17,6 @@ public:
     //Constructeurs
     Ship(qint32 id, const QPoint &position, qint32 shipNumber);
 
-    void            createShipPolygon();
     void            rotateShipLeft();
     void            rotateShipRight();
     double          getRadian();

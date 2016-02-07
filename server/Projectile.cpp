@@ -6,7 +6,6 @@ Projectile::Projectile(qint32 id, Ship& ship)
     this->setId(id);
     this->speed(20);
     this->angle(_ship.angle());
-    this->xy(_ship.center());
 
     init();
 }
@@ -47,4 +46,13 @@ QPoint Projectile::center() const
     y = ((*this)[0].y() + (*this)[1].y()) / 2;
     DEBUG("Projectile::center() : 2 points :" << x << y, false);
     return QPoint(x, y);
+}
+
+bool Projectile::makeEntityMove()
+{/*
+    if(_etat == Entity::ALIVE)
+    {
+        this->translate(_speed * cos(getRadian()), _speed * sin(getRadian()));
+    }*/
+    return true;
 }

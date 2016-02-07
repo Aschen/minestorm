@@ -1,5 +1,6 @@
 #include "Entity.hh"
 
+
 Entity::Entity(qint32 id, Type type)
     : _type(type),
       _id(id)
@@ -34,40 +35,27 @@ void Entity::decrementSpeed()
         --_speed;
 }
 
-void Entity::rightRotate()
+void Entity::rotate(qint32 angle)
 {
-    _angle += 10;
-
-    QTransform t;
-    QPoint center(((*this)[0].x() + (*this)[1].x() + (*this)[2].x()) / 3,
-                ((*this)[0].y() + (*this)[1].y() + (*this)[2].y()) / 3);
-    t.translate(center.x(), center.y());
-    t.rotate(+10);
-    t.translate(center.x() * -1, center.y() * -1);
-    QPolygon newP = t.map(*this);
-    this->swap(newP);
+    _angle += angle;
+    QPoint entityCenter = center();
+    double angleRad = getRadian(angle);
+    qint32 x,y;
+    for(QPoint &p : *this)
+    {
+        x = (cos(angleRad) * (p.x() - entityCenter.x()) - sin(angleRad) * (p.y() - entityCenter.y()) + entityCenter.x());
+        y = (sin(angleRad) * (p.x() - entityCenter.x()) + cos(angleRad) * (p.y() - entityCenter.y()) + entityCenter.y());
+        p.setX(x);
+        p.setY(y);
+    }
 }
 
-void Entity::leftRotate()
-{
-    _angle -= 10;
-
-    QTransform t;
-    QPoint center(((*this)[0].x() + (*this)[1].x() + (*this)[2].x()) / 3,
-                ((*this)[0].y() + (*this)[1].y() + (*this)[2].y()) / 3);
-    t.translate(center.x(), center.y());
-    t.rotate(-10);
-    t.translate(center.x() * -1, center.y() * -1);
-    QPolygon newP = t.map(*this);
-    this->swap(newP);
-}
-
-void Entity::makeEntityMove()
+bool Entity::makeEntityMove()
 {
     if(_speed > 0) {
         /*
         if(this->x() > SCREEN_SIZE )
-            this->translate(0, _speed * sin(getRadian()));
+            this->translate(0, _speed * sin(gestRadian()));
         if(this->y() > SCREEN_SIZE )
             this->translate(_speed * cos(getRadian()), 0);
 
@@ -77,15 +65,14 @@ void Entity::makeEntityMove()
         if(this->x() < 0)
             this->translate(SCREEN_SIZE, _speed * sin(getRadian()));
         */
-        this->translate(_speed * cos(getRadian()), _speed * sin(getRadian()));
-        DEBUG("Entity::Coord : " << x() << ";" << y(), false);
+        this->translate(_speed * cos(getRadian(_angle)), _speed * sin(getRadian(_angle)));
     }
-
+    return true;
 }
 
-double Entity::getRadian()
+double Entity::getRadian(qint32 angle)
 {
-    return ( this->angle() * ( PI / 180));
+    return ( angle * ( PI / 180));
 }
 
 Entity::Type Entity::type() const
@@ -96,60 +83,6 @@ Entity::Type Entity::type() const
 qint32 Entity::id() const
 {
     return _id;
-}
-
-const QPoint &Entity::xy() const
-{
-    return _xy;
-}
-
-void Entity::xy(const QPoint &value)
-{
-    _xy = value;
-}
-
-qint32 Entity::x() const
-{
-    return _xy.x();
-}
-
-void Entity::x(qint32 value)
-{
-    DEBUG("X" << y(), false);
-    if(value> SCREEN_SIZE)
-    {
-        value = 0;
-        DEBUG("X > Screen size" << x(), false);
-    }
-    if(value < 0)
-    {
-        value = SCREEN_SIZE;
-
-        DEBUG("X < 0 : "<< x(), false);
-    }
-    _xy = QPoint(value, y());
-}
-
-qint32 Entity::y() const
-{
-    return _xy.y();
-}
-
-void Entity::y(qint32 value)
-{
-
-    DEBUG("Y" << y(), false);
-    if(value - SHIP_SIZE > SCREEN_SIZE )
-    {
-        value =  0;
-        DEBUG("Y > SCREEN SIZE"<< y(), false);
-    }
-    if(value  < 0)
-    {
-        value = SCREEN_SIZE;
-        DEBUG("Y < 0"<< y(), false);
-    }
-    _xy = QPoint(x(), value);
 }
 
 const QSize &Entity::size() const

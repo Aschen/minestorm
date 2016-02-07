@@ -43,9 +43,6 @@ void Collision::detectShipCollision(Ship &ship, EntityHash &entitiesMap)
                     case Entity::SHIP:
                     {
                         DEBUG("Collisison::detectShipCollision() collision avec un vaisseau", true);
-                        DEBUG("Collisison::detectShipCollision() x avant collision : " << ship.x(), true);
-                        ship.xy(QPoint(10,10)); // xy() NE VAUT PLUS RIEN
-                        DEBUG("Collisison::detectShipCollision() x apres collision" << ship.x(), true);
                         if(!ship.changeLife(-1))
                         {
                             _entitiesToDelete.push_back(ship.id());
