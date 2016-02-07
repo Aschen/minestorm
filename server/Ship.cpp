@@ -62,7 +62,7 @@ void Ship::rotateShipLeft()
 
 double Ship::getRadian()
 {
-    return ( this->angle() * ( PI / 180));
+    return ( this->angle() * ( M_PI / 180));
 }
 
 QPoint Ship::center() const
@@ -80,9 +80,10 @@ bool Ship::changeLife(qint32 change)
 {
     bool aliveOrNot = true;
     _vie += change;
-    if(_vie == 0)
+    if(_vie <= 0)
     {
         aliveOrNot = false;
     }
+    DEBUG("Ship::changeLife() : Ship has" << _vie << " life", true);
     return aliveOrNot;
 }

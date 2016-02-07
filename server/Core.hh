@@ -31,6 +31,7 @@ private:
     qint32              _step;
     Server              _server;
     quint32             _playersCount;
+    QVector<QPoint>     _playerSpawn;
     EntityHash          _entitiesMap;
 
 public:

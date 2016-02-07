@@ -6,9 +6,11 @@ Core::Core(qint32 cps)
       _cps(cps),
       _step(1),
       _server(SERVER_PORT),
-      _playersCount(0)
+      _playersCount(0),
+      _playerSpawn(MAX_PLAYERS + 1)
 {
     DEBUG("Core::Core() : cps " << cps, true);
+
     _timer.setSingleShot(false);
     connect(&_timer,    SIGNAL(timeout()),
             this,       SLOT(step()));
@@ -16,11 +18,18 @@ Core::Core(qint32 cps)
     // Connect communications functions
     connect(&_server,   SIGNAL(transfertMessage(qint32, const QString&)),
             this,       SLOT(messageDispatcher(qint32, const QString&)));
-
     connect(&_server,   SIGNAL(clientConnected(qint32)),
             this,       SLOT(newPlayer(qint32)));
     connect(&_server,   SIGNAL(sigClientDisconnected(qint32)),
             this,       SLOT(playerLeft(qint32)));
+
+    // Initialize players spawn
+    qint32      screenPart = SCREEN_SIZE / 4;
+
+    _playerSpawn[1] = QPoint(1 * screenPart, 1 * screenPart);
+    _playerSpawn[2] = QPoint(3 * screenPart, 1 * screenPart);
+    _playerSpawn[3] = QPoint(3 * screenPart, 3 * screenPart);
+    _playerSpawn[4] = QPoint(1 * screenPart, 3 * screenPart);
 }
 
 Core::~Core()
@@ -35,13 +44,13 @@ void Core::step()
     if (!_entitiesMap.empty() && _server.clientCount())
     {
         DEBUG("Core::step() : Send " << _entitiesMap.size() << " objects", false);
-        MessageObjects      message(_entitiesMap);
 
        // dynamic_cast<Ship*>(_entitiesMap[].data())-> moveShipForward();
         entitiesMovement();
 
         Collision c(_entitiesMap);
 
+        MessageObjects      message(_entitiesMap);
         _server.broadcast(message.messageString());
     }
 
@@ -91,7 +100,7 @@ void Core::newPlayer(qint32 idClient)
         _playersCount++;
 
         _entitiesMap[idClient] = QSharedPointer<Entity>(
-                    new Ship(idClient, QPoint(SCREEN_SIZE / 2, SCREEN_SIZE / 2), _playersCount)
+                    new Ship(idClient, _playerSpawn[_playersCount], _playersCount)
                     );
     }
     else
@@ -138,7 +147,7 @@ void Core::entitiesMovement()
 
 void Core::mousePressed(qint32 idClient, qint32 x, qint32 y)
 {
-    qDebug() << "Core::mousePressed() : Client " << idClient << " x =" << x << ", y =" << y;
+    DEBUG("Core::mousePressed() : Client " << idClient << " x =" << x << ", y =" << y, false);
 }
 
 void Core::keyPressed(qint32 idClient, qint32 key)

@@ -1,8 +1,6 @@
 #ifndef ENTITY_HH
 # define ENTITY_HH
 
-# define PI 3.141592654
-
 # include <QPoint>
 # include <QPolygon>
 # include <QVector>
@@ -12,8 +10,10 @@
 # include <QTransform>
 
 # include <sstream>
+# include <cmath>
 
 # include "Minestorm.hh"
+
 using namespace std;
 
 class Entity : public QPolygon
@@ -37,7 +37,7 @@ protected:
     QPoint                  _xy;
     QSize                   _size;
     qint32                  _speed;
-    double                  _angle;
+    qint32                  _angle;
     Etat                    _etat;
 
 
@@ -68,8 +68,8 @@ public:
     void                    y(qint32 value);
     qint32                  speed() const;
     void                    speed(qint32 value);
-    double                  angle() const;
-    void                    angle(double value);
+    qint32                  angle() const;
+    void                    angle(qint32 value);
 };
 
 using EntityList = QList<QSharedPointer<Entity>>;

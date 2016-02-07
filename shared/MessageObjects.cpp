@@ -40,11 +40,11 @@ MessageObjects::MessageObjects(const QString &msg)
     }
 }
 
-/* shipNumber angle center_x center_y x1 y1 x2 y2 x3 y3*/
+/* shipNumber angle center_x center_y x1 y1 x2 y2 x3 y3 x4 y4 */
 void MessageObjects::deserializeShip(QTextStream &stream)
 {
     quint32     shipNumber;
-    QPolygon    polygon(3);
+    QPolygon    polygon(4);
     qreal       angle;
     qint32      center_x;
     qint32      center_y;
@@ -54,8 +54,8 @@ void MessageObjects::deserializeShip(QTextStream &stream)
     /* Read shipNumber angle center_x center_y */
     stream >> shipNumber >> angle >> center_x >> center_y;
 
-    /* Read 3 points */
-    for (quint32 i = 0; i < 3; ++i)
+    /* Read 4 points */
+    for (quint32 i = 0; i < 4; ++i)
     {
         stream >> x >> y;
         polygon[i] = QPoint(x, y);
@@ -117,7 +117,7 @@ MessageObjects::MessageObjects(const EntityHash &entities)
     }
 }
 
-/* shipNumber angle center_x center_y x1 y1 x2 y2 x3 y3*/
+/* shipNumber angle center_x center_y x1 y1 x2 y2 x3 y3 x4 y4*/
 void MessageObjects::serializeShip(const Ship &ship)
 {
     /* Write shipNumber */
@@ -130,8 +130,8 @@ void MessageObjects::serializeShip(const Ship &ship)
     _messageString += QString::number(ship.center().x()) + " ";
     _messageString += QString::number(ship.center().y()) + " ";
 
-    /* Write 3 points */
-    for (quint32 i = 0; i < 3; ++i)
+    /* Write 4 points */
+    for (quint32 i = 0; i < 4; ++i)
     {
         _messageString += QString::number(ship[i].x()) + " ";
         _messageString += QString::number(ship[i].y()) + " ";

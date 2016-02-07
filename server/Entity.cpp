@@ -36,7 +36,7 @@ void Entity::decrementSpeed()
 
 void Entity::rightRotate()
 {
-    _angle += 10;
+    _angle = (_angle + 10) % 360;
 
     QTransform t;
     QPoint center(((*this)[0].x() + (*this)[1].x() + (*this)[2].x()) / 3,
@@ -50,7 +50,7 @@ void Entity::rightRotate()
 
 void Entity::leftRotate()
 {
-    _angle -= 10;
+    _angle = (_angle - 10) % 360;
 
     QTransform t;
     QPoint center(((*this)[0].x() + (*this)[1].x() + (*this)[2].x()) / 3,
@@ -85,7 +85,7 @@ void Entity::makeEntityMove()
 
 double Entity::getRadian()
 {
-    return ( this->angle() * ( PI / 180));
+    return ( this->angle() * ( M_PI / 180));
 }
 
 Entity::Type Entity::type() const
@@ -172,13 +172,13 @@ void Entity::speed(qint32 value)
     _speed = value;
 }
 
-double Entity::angle() const
+qint32 Entity::angle() const
 {
 
     return _angle;
 }
 
-void Entity::angle(double value)
+void Entity::angle(qint32 value)
 {
     _angle = value;
 }
