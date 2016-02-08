@@ -37,7 +37,7 @@ protected:
     const Type              _type;
     const qint32            _id;
     QSize                   _size;
-    qreal                   _speed;
+    qint32                  _speed;
     qint32                  _angle;
     Etat                    _etat;
 
@@ -47,7 +47,7 @@ public:
     virtual ~Entity();
 
     void                    addPoint(const QPointF &point);
-    virtual QPointF          center() const = 0;
+    virtual QPointF         center() const = 0;
 
     bool                    isMoving();
     void                    incrementSpeed();
@@ -56,14 +56,14 @@ public:
     virtual bool            makeEntityMove();
     double                  getRadian(qint32 angle);
     void                    setEtatDead();
-
+    bool                    isDead();
 
     Type                    type() const;
     qint32                  id() const;
     const QSize             &size() const; // rename it
     void                    size(const QSize &value); // rename it
-    qreal                   speed() const;
-    void                    speed(qreal value);
+    qint32                  speed() const;
+    void                    speed(qint32 value);
     qint32                  angle() const;
     void                    angle(qint32 value);
     Etat                    etat() const;

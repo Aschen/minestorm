@@ -35,6 +35,8 @@ private:
     quint32             _playersCount;
     QVector<QPoint>     _playerSpawn;
     EntityHash          _entitiesMap;
+    QVector<int>        _entitiesToDelete;
+
 
 public:
     Core(qint32 cps = CYCLE_PER_S);
@@ -49,6 +51,9 @@ public:
 private:
     void                entitiesInitialization();
     void                entitiesMovement();
+
+    void                removeEntitiesToDelete(EntityHash &entitiesMap);
+    void                addEntityToDeleteQueue(qint32 idEntity);
 
 private slots:
     void                step();

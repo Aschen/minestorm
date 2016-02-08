@@ -39,14 +39,14 @@ void Collision::detectShipCollision(Ship &ship, EntityHash &entitiesMap)
     {
         if(ship.id() != entity->id() && entity->etat() == 1)
         {
-            DEBUG("Collision::detectShipCollision() nombre de point" << ship.length(), true);
+            DEBUG("Collision::detectShipCollision() nombre de point" << ship.length(), false);
             for(QPointF &point: *entity)
             {
                 DEBUG("Collision::detectShipCollision() collision2", true);
                 bool collide = ship.containsPoint(point, Qt::OddEvenFill);
                 if(collide)
                 {
-                    DEBUG("Collision::detectShipCollision()  Collision Vaisseau ", true);
+                    DEBUG("Collision::detectShipCollision()  Collision Vaisseau ", false);
                     //On enléve une vie au vaisseau dans tous les cas
                     if(!ship.changeLife(-1))
                     {

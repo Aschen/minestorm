@@ -43,14 +43,14 @@ void Core::step()
 
     if (!_entitiesMap.empty() && _server.clientCount())
     {
-        DEBUG("Core::step() : Send " << _entitiesMap.size() << " objects", false);
+       DEBUG("Core::step() : Send " << _entitiesMap.size() << " objects", false);
 
-       // dynamic_cast<Ship*>(_entitiesMap[].data())-> moveShipForward();
-        entitiesMovement();
+       entitiesMovement();
 
-        Collision c(_entitiesMap);
+       Collision            c(_entitiesMap);
 
-        MessageObjects      message(_entitiesMap);
+       MessageObjects      message(_entitiesMap);
+
         _server.broadcast(message.messageString());
     }
 
@@ -157,7 +157,7 @@ void Core::entitiesInitialization()
         i++;
     }
 
-    while (i < 10)
+    while (i < 5)
     {
         x = rand() % SCREEN_SIZE - 10;
         y = rand() % SCREEN_SIZE - 10;
@@ -168,7 +168,7 @@ void Core::entitiesInitialization()
         i++;
     }
 
-    while (i < 30)
+    while (i < 10)
     {
         x = rand() % SCREEN_SIZE - 10;
         y = rand() % SCREEN_SIZE - 10;
@@ -184,10 +184,28 @@ void Core::entitiesInitialization()
 
 void Core::entitiesMovement()
 {
+
     for(QSharedPointer<Entity> &entity : _entitiesMap)
     {
         entity.data()->makeEntityMove();
+        //En cours : a ne faire que pour les tirs (et les mines ?)
+        if(entity->isDead())
+            addEntityToDeleteQueue(entity->id());
     }
+    removeEntitiesToDelete(_entitiesMap);
+}
+
+void Core::removeEntitiesToDelete(EntityHash &entitiesMap)
+{
+    for(int id: _entitiesToDelete)
+    {
+        entitiesMap.remove(id);
+    }
+}
+
+void Core::addEntityToDeleteQueue(qint32 idEntity)
+{
+    _entitiesToDelete.push_back(idEntity);
 }
 
 
