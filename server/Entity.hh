@@ -33,10 +33,6 @@ public:
         ALIVE = 1
     };
 
-private:
-    qint32                  _temporisation;
-
-
 protected:
     const Type              _type;
     const qint32            _id;

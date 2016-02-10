@@ -12,6 +12,7 @@ class Ship : public Entity
 private:
     quint32         _vie;
     quint32         _shipNumber;
+    qint32          _tempo;
 
 public:
     //Constructeurs
@@ -28,6 +29,7 @@ public:
     void            setRect(const QRect &rect);
     quint32         shipNumber() const;
     void            shipNumber(quint32 shipNumber);
+    bool            makeEntityMove() override;
 
     // Entity interface
 public:

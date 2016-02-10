@@ -9,7 +9,7 @@ Ship::Ship(qint32 id, const QPointF &position, qint32 shipNumber)
     _size   = QSize(SHIP_SIZE, SHIP_SIZE);
     _speed  = 0;
     _angle  = 0;
-
+    _tempo  = 0;
     this->addPoint(QPointF(position.x(), position.y()));
     this->addPoint(QPointF(position.x() + size().width(), position.y()));
     this->addPoint(QPointF(position.x() + size().height(), position.y() + size().width()));
@@ -60,4 +60,44 @@ bool Ship::changeLife(qint32 change)
     }
     DEBUG("Ship::changeLife() : Ship has" << _vie << " life", true);
     return aliveOrNot;
+}
+
+bool Ship::makeEntityMove()
+{
+    if (_speed > 0)
+    {
+        qreal centreX, centreY;
+        centreX = this->center().x();
+        centreY = this->center().y();
+        DEBUG("Ship::x:" << this->center().x() << " y:" << this->center().y(), false);
+
+        if (centreX > SCREEN_SIZE)
+        {
+            this->translate(-SCREEN_SIZE, 0);
+        }
+        else if (centreX < 0)
+        {
+            this->translate(SCREEN_SIZE, 0);
+        }
+        else if (centreY > SCREEN_SIZE)
+        {
+            this->translate(0, -SCREEN_SIZE);
+        }
+        else if (centreY < 0)
+        {
+            this->translate(0, SCREEN_SIZE);
+        }
+        else {
+            this->translate(_speed / 2 * cos(getRadian(_angle)),
+                            _speed / 2 * sin(getRadian(_angle)));
+
+            DEBUG("Ship::angle:" << this->center().x(), true);
+        }
+        DEBUG("Ship::speed:" << _speed, true);
+
+         if(_tempo % 10 == 0)
+             decrementSpeed(1);
+        _tempo = ( _tempo + 1 ) % 100;
+    }
+    return true;
 }

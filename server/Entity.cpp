@@ -97,11 +97,7 @@ bool Entity::makeEntityMove()
 
             DEBUG("Entity::angle:" << this->center().x(), true);
         }
-        if(_temporisation % 10 == 0)
-            decrementSpeed(1);
         DEBUG("Entity::speed:" << _speed, true);
-
-        _temporisation = ( _temporisation + 1 ) % 100;
     }
     return true;
 }
