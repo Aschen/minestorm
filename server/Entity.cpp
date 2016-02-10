@@ -25,16 +25,16 @@ void Entity::incrementSpeed()
 {
     DEBUG("Entity::speed++: "<< _speed, false);
 
-    if (_speed < 9)
-        _speed += 3;
+    if (_speed < 20)
+        _speed += 5;
     else
-        _speed = 9;
+        _speed = 20;
 }
 
-void Entity::decrementSpeed()
+void Entity::decrementSpeed(qint32 value)
 {
-    if (_speed > 3)
-        _speed -= 3;
+    if (_speed > value)
+        _speed -= value;
     else
         _speed = 0;
 }
@@ -86,11 +86,14 @@ bool Entity::makeEntityMove()
             this->translate(0, SCREEN_SIZE);
         }
         else {
-            this->translate(_speed * cos(getRadian(_angle)),
-                            _speed * sin(getRadian(_angle)));
+            this->translate(_speed / 2 * cos(getRadian(_angle)),
+                            _speed / 2 * sin(getRadian(_angle)));
         }
-
+        if(_temporisation % 10 == 0)
+            decrementSpeed(1);
         DEBUG("Entity::speed:" << _speed, true);
+
+        _temporisation = ( _temporisation + 1 ) % 100;
     }
     return true;
 }

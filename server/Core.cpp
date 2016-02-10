@@ -238,7 +238,7 @@ void Core::keyPressed(qint32 idClient, qint32 key)
 
     case Qt::Key_Down:
         DEBUG("Core::keyPressed : Client" << idClient << " KeyDown", false);
-        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->decrementSpeed();
+        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->decrementSpeed(5);
 
         break;
 

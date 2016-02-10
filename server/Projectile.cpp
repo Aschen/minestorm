@@ -4,7 +4,7 @@ Projectile::Projectile(qint32 id, Ship& ship)
     : Entity(id, Entity::SHOT), _ship(ship)
 {
     this->setId(id);
-    this->speed(20);
+    this->speed(40);
     this->angle(_ship.angle());
     init();
 

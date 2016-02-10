@@ -33,6 +33,10 @@ public:
         ALIVE = 1
     };
 
+private:
+    qint32                  _temporisation;
+
+
 protected:
     const Type              _type;
     const qint32            _id;
@@ -40,6 +44,7 @@ protected:
     qint32                  _speed;
     qint32                  _angle;
     Etat                    _etat;
+
 
 
 public:
@@ -51,7 +56,7 @@ public:
 
     bool                    isMoving();
     void                    incrementSpeed();
-    void                    decrementSpeed();
+    void                    decrementSpeed(qint32 value);
     void                    rotate(qint32 angle);
     virtual bool            makeEntityMove();
     double                  getRadian(qint32 angle);
