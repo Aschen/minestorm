@@ -1,15 +1,11 @@
 #include "Mine.hh"
 
-Mine::Mine(qint32 id, TypeMine type, QPoint point, QTime birthDate) : Entity(id, Entity::MINE)
+Mine::Mine(qint32 id, TypeMine type, QPointF point, QTime birthDate) : Entity(id, Entity::MINE)
 {
     this->setType(type);
     this->angle(rand() % 360);
     this->setBirthDate(birthDate);
     this->setBrushStyle(Qt::SolidPattern);
-
-    this->_x = point.x();
-    this->_y = point.y();
-    this->addPoint(point);
     this->_id = id;
 
     switch(type)
@@ -17,15 +13,28 @@ Mine::Mine(qint32 id, TypeMine type, QPoint point, QTime birthDate) : Entity(id,
         case Small:
             setSize(10);
             setColor(*new QColor(Qt::blue));
+            this->speed(3);
             break;
         case Medium:
             setSize(20);
             setColor(*new QColor(Qt::yellow));
+            this->speed(2);
             break;
         case Big:
             setSize(30);
             setColor(*new QColor(Qt::red));
+            this->speed(1);
     }
+
+    createPolygon(point);
+}
+
+void Mine::createPolygon(QPointF point)
+{
+    this->addPoint(point);
+    this->addPoint(point.x()+ this->size(), point.y());
+    this->addPoint(point.x()+ this->size(), point.y() + this->size());
+    this->addPoint(point.x(), point.y() + this->size());
 }
 
 int Mine::size() const
@@ -84,8 +93,8 @@ QPointF Mine::center() const
     qint32  x;
     qint32  y;
 
-    x = _x;
-    y = _y;
+    x = ((*this)[0].x() + (*this)[1].x() + (*this)[2].x() + (*this)[3].x()) / 4;
+    y = ((*this)[0].y() + (*this)[1].y() + (*this)[2].y() + (*this)[3].y()) / 4;
     return QPoint(x, y);
 }
 

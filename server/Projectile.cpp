@@ -8,7 +8,7 @@ Projectile::Projectile(qint32 id, Ship& ship)
     this->angle(_ship.angle());
     init();
 
-    DEBUG("Tir:angle:"<<_angle << ", speed" <<_speed <<", pos" << this->center().x() <<":"<<this->center().y(), true);
+    DEBUG("Tir:angle:"<<_angle << ", speed" <<_speed <<", pos" << this->center().x() <<":"<<this->center().y(), false);
 
 }
 
@@ -21,7 +21,7 @@ void Projectile::init()
     this->addPoint(a);
     this->addPoint(b);
 
-    DEBUG("A(" << a.x() << "," << a.y() << ") - B(" << b.x() << "," << b.y() << ")", true);
+    DEBUG("A(" << a.x() << "," << a.y() << ") - B(" << b.x() << "," << b.y() << ")", false);
 }
 
 qint32 Projectile::id() const
@@ -46,7 +46,7 @@ QPointF Projectile::center() const
 
     x = ((*this)[0].x() + (*this)[1].x()) / 2;
     y = ((*this)[0].y() + (*this)[1].y()) / 2;
-    DEBUG("Projectile::center() : 2 points :" << x << y, true);
+    DEBUG("Projectile::center() : 2 points :" << x << y, false);
     return QPointF(x, y);
 }
 

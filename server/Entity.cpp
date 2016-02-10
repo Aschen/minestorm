@@ -16,6 +16,12 @@ void Entity::addPoint(const QPointF &point)
     *this << point;
 }
 
+void Entity::addPoint(const qreal x, const qreal y)
+{
+    QPointF point(x,y);
+    *this << point;
+}
+
 bool Entity::isMoving()
 {
     return _speed > 0;
@@ -88,6 +94,8 @@ bool Entity::makeEntityMove()
         else {
             this->translate(_speed / 2 * cos(getRadian(_angle)),
                             _speed / 2 * sin(getRadian(_angle)));
+
+            DEBUG("Entity::angle:" << this->center().x(), true);
         }
         if(_temporisation % 10 == 0)
             decrementSpeed(1);
