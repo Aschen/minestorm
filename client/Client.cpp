@@ -16,10 +16,11 @@ Client::Client(const QString &host, quint16 port, QObject *parent)
 Client::Client(QObject *parent)
     : QObject(parent),
       _host(""),
-      _port(4242),
+      _port(SERVER_PORT),
       _socket(BaseSocket::BROADCAST),
       _type(PLAYER)
 {
+    DEBUG("Client::Client()", false);
     connect(&_socket,   SIGNAL(receiveMessage(qint32, QString)),
             this,       SLOT(receiveMessage(qint32, QString)));
 }

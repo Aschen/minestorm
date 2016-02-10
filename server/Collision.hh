@@ -11,14 +11,16 @@
 class Collision
 {
 private:
-    QVector<int>        _entitiesToDelete;
+    EntityHash          &_entitiesMap;
+    EntityVector        &_entitiesToDelete;
 
 public:
-    Collision(EntityHash &entitiesMap);
-    void                detectCollision(EntityHash &entitiesMap);
-    void                detectShipCollision(Ship &ship, EntityHash &entitiesMap);
-    void                detectMineCollision(Mine &mine, EntityHash &entitiesMap);
-    void                removeEntities(EntityHash &entitiesMap);
+    Collision(EntityHash &entitiesMap, EntityVector &entitiesToDelete);
+
+
+    void                detectCollision();
+    void                detectShipCollision(QSharedPointer<Entity> &shipEntity);
+    void                detectMineCollision(QSharedPointer<Entity> &mineEntity);
 };
 
 #endif // COLLISION_HH

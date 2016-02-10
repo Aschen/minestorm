@@ -34,8 +34,9 @@ private:
     Server              _server;
     quint32             _playersCount;
     QVector<QPoint>     _playerSpawn;
+    QList<qint32>       _playersInGame;
     EntityHash          _entitiesMap;
-    QVector<int>        _entitiesToDelete;
+    EntityVector        _entitiesToDelete;
 
 
 public:
@@ -50,10 +51,8 @@ public:
 
 private:
     void                entitiesInitialization();
-    void                entitiesMovement();
 
-    void                removeEntitiesToDelete(EntityHash &entitiesMap);
-    void                addEntityToDeleteQueue(qint32 idEntity);
+    void                removeEntitiesToDelete();
 
 private slots:
     void                step();

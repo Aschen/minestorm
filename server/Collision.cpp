@@ -1,27 +1,26 @@
 #include "Collision.hh"
 
-Collision::Collision(EntityHash &entitiesMap)
+Collision::Collision(EntityHash &entitiesMap, EntityVector &entitiesToDelete)
+    : _entitiesMap(entitiesMap),
+      _entitiesToDelete(entitiesToDelete)
 {
-    detectCollision(entitiesMap);
-    removeEntities(entitiesMap);
+    detectCollision();
 }
 
-void Collision::detectCollision(EntityHash &entitiesMap)
+void Collision::detectCollision()
 {
-    for(QSharedPointer<Entity> &entity : entitiesMap)
+    for(QSharedPointer<Entity> &entity : _entitiesMap)
     {
         switch(entity->type())
         {
             case Entity::SHIP:
             {
-                Ship *ship = dynamic_cast<Ship*>(entity.data());
-                detectShipCollision(*ship, entitiesMap);
+                detectShipCollision(entity);
                 break;
             }
             case Entity::MINE:
             {
-                Mine *mine = dynamic_cast<Mine*>(entity.data());
-                detectMineCollision(*mine, entitiesMap);
+                detectMineCollision(entity);
                 break;
             }
             default:
@@ -32,31 +31,33 @@ void Collision::detectCollision(EntityHash &entitiesMap)
     }
 }
 
-void Collision::detectShipCollision(Ship &ship, EntityHash &entitiesMap)
+void Collision::detectShipCollision(QSharedPointer<Entity> &shipEntity)
 {
+    Ship *ship = dynamic_cast<Ship*>(shipEntity.data());
+
     //Pour toutes les entités on regarde si il y a collision avec le vaisseau
-    for(QSharedPointer<Entity> &entity : entitiesMap)
+    for(QSharedPointer<Entity> &entity : _entitiesMap)
     {
-        if(ship.id() != entity->id() && entity->etat() == 1)
+        if(ship->id() != entity->id() && entity->etat() == Entity::ALIVE)
         {
             for(QPointF &point: *entity)
             {
-                bool collide = ship.containsPoint(point, Qt::OddEvenFill);
+                bool collide = ship->containsPoint(point, Qt::OddEvenFill);
                 DEBUG("Collision::detectShipCollision() collision vaisseau : " << collide, false);
                 if(collide)
                 {
                     DEBUG("Collision::detectShipCollision()  Collision Vaisseau ", false);
                     //On enléve une vie au vaisseau dans tous les cas
-                    if(!ship.changeLife(-1))
+                    if(!ship->changeLife(-1))
                     {
-                        ship.setEtatDead();
-                        _entitiesToDelete.push_back(ship.id());
+                        ship->setEtatDead();
+                        _entitiesToDelete.push_back(shipEntity);
                     }
                     //Si l'entité n'est pas un vaisseau on l'ajoute à la liste de supression
                     if(entity->type() != Entity::SHIP)
                     {
                         entity->setEtatDead();
-                        _entitiesToDelete.push_back(entity->id());
+                        _entitiesToDelete.push_back(entity);
                     }
                     break;
                 }
@@ -65,33 +66,26 @@ void Collision::detectShipCollision(Ship &ship, EntityHash &entitiesMap)
     }
 }
 
-void Collision::detectMineCollision(Mine &mine, EntityHash &entitiesMap)
+void Collision::detectMineCollision(QSharedPointer<Entity> &mineEntity)
 {
-    for(QSharedPointer<Entity> &entity : entitiesMap)
+    Mine *mine = dynamic_cast<Mine*>(mineEntity.data());
+
+    for(QSharedPointer<Entity> &entity : _entitiesMap)
     {
         //Si l'entité est un tir et qu'il y a collision on supprime les deux (tir & mine)
         if(entity->type() == Entity::SHOT && entity->etat() == 1)
         {
             for(QPointF &point: *entity)
             {
-                bool collide = mine.containsPoint(point, Qt::OddEvenFill);
+                bool collide = mine->containsPoint(point, Qt::OddEvenFill);
                 if(collide == true)
                 {
-                    mine.setEtatDead();
+                    mine->setEtatDead();
                     entity->setEtatDead();
-                    _entitiesToDelete.push_back(mine.id());
-                    _entitiesToDelete.push_back(entity->id());
+                    _entitiesToDelete.push_back(mineEntity);
+                    _entitiesToDelete.push_back(entity);
                 }
             }
         }
-    }
-}
-
-
-void Collision::removeEntities(EntityHash &entitiesMap)
-{
-    for(int id: _entitiesToDelete)
-    {
-        entitiesMap.remove(id);
     }
 }
