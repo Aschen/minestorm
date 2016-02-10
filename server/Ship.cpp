@@ -64,40 +64,9 @@ bool Ship::changeLife(qint32 change)
 
 bool Ship::makeEntityMove()
 {
-    if (_speed > 0)
-    {
-        qreal centreX, centreY;
-        centreX = this->center().x();
-        centreY = this->center().y();
-        DEBUG("Ship::x:" << this->center().x() << " y:" << this->center().y(), false);
-
-        if (centreX > SCREEN_SIZE)
-        {
-            this->translate(-SCREEN_SIZE, 0);
-        }
-        else if (centreX < 0)
-        {
-            this->translate(SCREEN_SIZE, 0);
-        }
-        else if (centreY > SCREEN_SIZE)
-        {
-            this->translate(0, -SCREEN_SIZE);
-        }
-        else if (centreY < 0)
-        {
-            this->translate(0, SCREEN_SIZE);
-        }
-        else {
-            this->translate(_speed / 2 * cos(getRadian(_angle)),
-                            _speed / 2 * sin(getRadian(_angle)));
-
-            DEBUG("Ship::angle:" << this->center().x(), true);
-        }
-        DEBUG("Ship::speed:" << _speed, true);
-
-         if(_tempo % 10 == 0)
-             decrementSpeed(1);
-        _tempo = ( _tempo + 1 ) % 100;
-    }
+    Entity::makeEntityMove();
+    if(_tempo % 10 == 0)
+         decrementSpeed(1);
+    _tempo = ( _tempo + 1 ) % 100;
     return true;
 }
