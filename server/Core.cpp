@@ -37,6 +37,17 @@ Core::~Core()
     DEBUG("Core::~Core()", false);
 }
 
+void Core::startGame()
+{
+    DEBUG("Core::startGame()", true);
+    if (_isRunning == false)
+    {
+        _server.start();
+        _timer.start(1000 / _cps); // Nombre de cycle de jeu par seconde
+        _isRunning = true;
+    }
+}
+
 void Core::step()
 {
     DEBUG("Core::step() : " << _step, false);
@@ -45,9 +56,18 @@ void Core::step()
     {
        DEBUG("Core::step() : Send " << _entitiesMap.size() << " objects", false);
 
-       entitiesMovement();
+       for(QSharedPointer<Entity> &entity : _entitiesMap)
+       {
+           entity->makeEntityMove();
 
-       Collision            c(_entitiesMap);
+           //En cours : a ne faire que pour les tirs (et les mines ?)
+           if(entity->isDead())
+               _entitiesToDelete.push_back(entity);
+       }
+       removeEntitiesToDelete();
+
+       Collision            c(_entitiesMap, _entitiesToDelete);
+       removeEntitiesToDelete();
 
        MessageObjects      message(_entitiesMap);
 
@@ -57,35 +77,20 @@ void Core::step()
     ++_step;
 }
 
-
-
-void Core::messageDispatcher(qint32 idClient, const QString &msg)
+void Core::removeEntitiesToDelete()
 {
-    DEBUG("Core::messageDispatcher() : client " << idClient << " : " << msg, false);
-
-    MessageBase::Type       msgType = MessageBase::getMessageType(msg);
-
-    switch (msgType)
+    for (QSharedPointer<Entity> &entity : _entitiesToDelete)
     {
-    case MessageBase::MOUSE_PRESSED:
-    {
-        MessageMouse        message(msg);
-        mousePressed(idClient, message.x(), message.y());
-        break;
-    }
-    case MessageBase::KEY_PRESSED:
-    {
-        MessageKey          message(msg);
-        keyPressed(idClient, message.keyCode());
-        break;
-    }
-    default:
-    {
-        DEBUG("Core::messageDispatcher() : Unknown message" << msg, true);
-        break;
-    }
+        // Move player to spectator if ship is dead
+        if (entity->type() == Entity::SHIP)
+        {
+            _playersInGame.removeOne(entity->id());
+        }
+        _entitiesMap.remove(entity->id());
     }
 }
+
+
 /**
  * @brief Core::newPlayer : Instancie un nouveau vaisseau lors de la connexion d'un client
  *                          Appelé par le signal clientConnected.
@@ -104,13 +109,13 @@ void Core::newPlayer(qint32 idClient)
         _entitiesMap[idClient] = QSharedPointer<Entity>(
                     new Ship(idClient, _playerSpawn[_playersCount], _playersCount)
                     );
+
+        // Add player to active players list
+        _playersInGame.push_back(idClient);
     }
     else
     {
         DEBUG("Core::initialize() : New spectator" << idClient, true);
-        MessageInfo     message(MessageBase::INFO_SPECTATOR);
-
-        _server.unicast(idClient, message.messageString());
     }
 }
 
@@ -124,17 +129,9 @@ void Core::playerLeft(qint32 idClient)
     {
         _playersCount--;
         _entitiesMap.remove(idClient);
-    }
-}
 
-void Core::startGame()
-{
-    DEBUG("Core::startGame()", true);
-    if (_isRunning == false)
-    {
-        _server.start();
-        _timer.start(1000 / _cps); // Nombre de cycle de jeu par seconde
-        _isRunning = true;
+        // Delete player from active players list
+        _playersInGame.removeOne(idClient);
     }
 }
 
@@ -182,32 +179,44 @@ void Core::entitiesInitialization()
     DEBUG("entitiesMaps.size() = " << _entitiesMap.size(), true);
 }
 
-void Core::entitiesMovement()
-{
+/**********\
+|* EVENTS *|
+\**********/
 
-    for(QSharedPointer<Entity> &entity : _entitiesMap)
+void Core::messageDispatcher(qint32 idClient, const QString &msg)
+{
+    DEBUG("Core::messageDispatcher() : client " << idClient << " : " << msg, false);
+
+    if (_playersInGame.contains(idClient))
     {
-        entity.data()->makeEntityMove();
-        //En cours : a ne faire que pour les tirs (et les mines ?)
-        if(entity->isDead())
-            addEntityToDeleteQueue(entity->id());
-    }
-    removeEntitiesToDelete(_entitiesMap);
-}
+        MessageBase::Type       msgType = MessageBase::getMessageType(msg);
 
-void Core::removeEntitiesToDelete(EntityHash &entitiesMap)
-{
-    for(int id: _entitiesToDelete)
+        switch (msgType)
+        {
+        case MessageBase::MOUSE_PRESSED:
+        {
+            MessageMouse        message(msg);
+            mousePressed(idClient, message.x(), message.y());
+            break;
+        }
+        case MessageBase::KEY_PRESSED:
+        {
+            MessageKey          message(msg);
+            keyPressed(idClient, message.keyCode());
+            break;
+        }
+        default:
+        {
+            DEBUG("Core::messageDispatcher() : Unknown message" << msg, true);
+            break;
+        }
+        }
+    }
+    else
     {
-        entitiesMap.remove(id);
+        DEBUG("Core::messageDispatcher() : client " << idClient << " is a spectator", true);
     }
 }
-
-void Core::addEntityToDeleteQueue(qint32 idEntity)
-{
-    _entitiesToDelete.push_back(idEntity);
-}
-
 
 void Core::mousePressed(qint32 idClient, qint32 x, qint32 y)
 {

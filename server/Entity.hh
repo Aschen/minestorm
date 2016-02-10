@@ -71,7 +71,7 @@ public:
     void                    setEtat(const Etat &etat);
 };
 
-using EntityList = QList<QSharedPointer<Entity>>;
+using EntityVector = QVector<QSharedPointer<Entity>>;
 using EntityHash = QHash<qint32, QSharedPointer<Entity>>;
 
 #endif // ENTITY_HH

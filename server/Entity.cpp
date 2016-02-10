@@ -95,10 +95,10 @@ bool Entity::makeEntityMove()
             this->translate(_speed * cos(getRadian(_angle)),
                             _speed * sin(getRadian(_angle)));
 
-            DEBUG("Entity::angle:" << this->center().x(), true);
+            DEBUG("Entity::angle:" << this->center().x(), false);
         }
 
-        DEBUG("Entity::speed:" << _speed, true);
+        DEBUG("Entity::speed:" << _speed, false);
     }
     return true;
 }

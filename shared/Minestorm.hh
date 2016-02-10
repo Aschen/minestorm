@@ -10,11 +10,11 @@
 
 # define SCREEN_SIZE    600
 # define MAX_CLIENTS    50
-# define CYCLE_PER_S    50
+# define CYCLE_PER_S    30
 # define EVENT_PER_S    15
 # define MAX_PLAYERS    4
 # define SERVER_PORT    4242
-# define SHIP_SIZE      24
+# define SHIP_SIZE      32
 
 #endif // MINESTORM_HH
 
