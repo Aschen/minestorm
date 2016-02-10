@@ -47,6 +47,7 @@ public:
     virtual ~Entity();
 
     void                    addPoint(const QPointF &point);
+    void                    addPoint(const qreal x, const qreal y);
     virtual QPointF         center() const = 0;
 
     bool                    isMoving();

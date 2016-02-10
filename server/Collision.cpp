@@ -39,11 +39,10 @@ void Collision::detectShipCollision(Ship &ship, EntityHash &entitiesMap)
     {
         if(ship.id() != entity->id() && entity->etat() == 1)
         {
-            DEBUG("Collision::detectShipCollision() nombre de point" << ship.length(), false);
             for(QPointF &point: *entity)
             {
-                DEBUG("Collision::detectShipCollision() collision2", true);
                 bool collide = ship.containsPoint(point, Qt::OddEvenFill);
+                DEBUG("Collision::detectShipCollision() collision vaisseau : " << collide, false);
                 if(collide)
                 {
                     DEBUG("Collision::detectShipCollision()  Collision Vaisseau ", false);

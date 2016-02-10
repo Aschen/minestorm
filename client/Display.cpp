@@ -27,11 +27,7 @@ void Display::draw(QPainter &painter, QRect &size)
             switch (element.type())
             {
             case Element::MINE_S:
-                painter.drawImage(element.center(), _images.getImage(element.type()));
-                break;
             case Element::MINE_L:
-                painter.drawImage(element.center(), _images.getImage(element.type()));
-                break;
             case Element::MINE_M:
                 painter.drawImage(element.center(), _images.getImage(element.type()));
                 break;
