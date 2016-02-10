@@ -13,17 +13,17 @@ Mine::Mine(qint32 id, TypeMine type, QPointF point, QTime birthDate) : Entity(id
         case Small:
             setSize(10);
             setColor(*new QColor(Qt::blue));
-            this->speed(8);
+            this->speed(3);
             break;
         case Medium:
             setSize(20);
             setColor(*new QColor(Qt::yellow));
-            this->speed(6);
+            this->speed(2);
             break;
         case Big:
             setSize(30);
             setColor(*new QColor(Qt::red));
-            this->speed(4);
+            this->speed(1);
     }
 
     createPolygon(point);
