@@ -5,6 +5,7 @@
 
 # include "Entity.hh"
 # include "Ship.hh"
+# include "Projectile.hh"
 # include "Mine.hh"
 # include "Minestorm.hh"
 

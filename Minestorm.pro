@@ -34,9 +34,9 @@ SOURCES += server/Core.cpp \
     shared/MessageKey.cpp \
     client/Element.cpp \
     client/Images.cpp \
-    shared/MessageInfo.cpp \
     server/Collision.cpp \
-    server/Projectile.cpp
+    server/Projectile.cpp \
+    shared/MessageScore.cpp
 
 HEADERS  += server/Core.hh \
     client/Controller.hh \
@@ -55,14 +55,13 @@ HEADERS  += server/Core.hh \
     shared/MessageBase.hh \
     shared/MessageMouse.hh \
     shared/MessageObjects.hh \
-    shared/MessageFactory.hpp \
     server/CoreRunner.hh \
     shared/MessageKey.hh \
     client/Element.hh \
     client/Images.hh \
-    shared/MessageInfo.hh \
     server/Collision.hh \
-    server/Projectile.hh
+    server/Projectile.hh \
+    shared/MessageScore.hh
 
 FORMS    +=
 

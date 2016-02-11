@@ -15,6 +15,7 @@
 # define MAX_PLAYERS    4
 # define SERVER_PORT    4242
 # define SHIP_SIZE      32
+# define SCORE_MINE     100
 
 #endif // MINESTORM_HH
 

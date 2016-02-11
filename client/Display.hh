@@ -12,7 +12,10 @@
 # include <QApplication>
 
 # include "Minestorm.hh"
-# include "MessageFactory.hpp"
+# include "MessageObjects.hh"
+# include "MessageScore.hh"
+# include "MessageMouse.hh"
+# include "MessageKey.hh"
 # include "Client.hh"
 # include "Element.hh"
 # include "Images.hh"
@@ -26,6 +29,7 @@ private:
     const QSize         _size;
     QSharedPointer<Client>              _client;
     QSharedPointer<QVector<Element>>    _elements;
+    QString             _score;
     Images              _images;
 
 public:
@@ -51,11 +55,12 @@ public:
     const QVector<Element> &elements() const;
 
 
+private:
+    void                receiveObjects(const QSharedPointer<QVector<Element>> &elements);
+    void                receiveScore(quint32 score);
+
 signals:
     void                changed();
-
-public slots:
-    void                receiveObjects(const QSharedPointer<QVector<Element>> &elements);
 
 private slots:
     void                messageDispatcher(qint32 socketFd, const QString &msg);

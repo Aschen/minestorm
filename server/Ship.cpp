@@ -4,16 +4,27 @@
 Ship::Ship(qint32 id, const QPointF &position, qint32 shipNumber)
     : Entity(id, Entity::SHIP),
       _vie(3),
-      _shipNumber(shipNumber)
+      _shipNumber(shipNumber),
+      _tempo(0),
+      _score(0),
+      _scoreChanged(false)
 {
     _size   = QSize(SHIP_SIZE, SHIP_SIZE);
     _speed  = 0;
     _angle  = 0;
-    _tempo  = 0;
     this->addPoint(QPointF(position.x(), position.y()));
     this->addPoint(QPointF(position.x() + size().width(), position.y()));
     this->addPoint(QPointF(position.x() + size().height(), position.y() + size().width()));
     this->addPoint(QPointF(position.x(), position.y() + size().height()));
+}
+
+void Ship::addScore(quint32 score)
+{
+    _score += score;
+    DEBUG("Ship::addScore() : add:" << score << " total:" << _score, true);
+
+    /* Tell the Core that score has changed */
+    _scoreChanged = true;
 }
 
 
@@ -36,6 +47,25 @@ quint32 Ship::shipNumber() const
 void Ship::shipNumber(quint32 shipNumber)
 {
     _shipNumber = shipNumber;
+}
+
+void Ship::score(quint32 score)
+{
+    _score = score;
+    _scoreChanged = true;
+}
+
+quint32 Ship::score() const
+{
+    return _score;
+}
+
+bool Ship::scoreChanged()
+{
+    bool    ret = _scoreChanged;
+
+    _scoreChanged = false;
+    return ret;
 }
 
 QPointF Ship::center() const

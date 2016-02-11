@@ -16,10 +16,9 @@
 # include "Mine.hh"
 # include "Projectile.hh"
 # include "MessageMouse.hh"
-# include "MessageInfo.hh"
 # include "MessageKey.hh"
 # include "MessageObjects.hh"
-# include "MessageFactory.hpp"
+# include "MessageScore.hh"
 # include "Collision.hh"
 
 class Core : public QObject
@@ -47,7 +46,8 @@ public:
     void                keyPressed(qint32 idClient, qint32 key);
     void                keyReleased(qint32 idClient, qint32 key);
     void                startGame();
-
+    // Call from Ship::addScore()
+    void                scoreChanged(qint32 idClient, quint32 score);
 
 private:
     void                entitiesInitialization();

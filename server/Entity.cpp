@@ -73,7 +73,7 @@ bool Entity::makeEntityMove()
         qreal centreX, centreY;
         centreX = this->center().x();
         centreY = this->center().y();
-        DEBUG("Entity::x:" << this->center().x() << " y:" << this->center().y(), false);
+        DEBUG("Entity::makeEntityMove() x:" << this->center().x() << " y:" << this->center().y(), false);
 
         if (centreX > SCREEN_SIZE)
         {
@@ -95,9 +95,9 @@ bool Entity::makeEntityMove()
             this->translate(_speed / 2 * cos(getRadian(_angle)),
                             _speed / 2 * sin(getRadian(_angle)));
 
-            DEBUG("Entity::angle:" << this->center().x(), false);
+            DEBUG("Entity::makeEntityMove() angle:" << this->center().x(), false);
         }
-        DEBUG("Entity::speed:" << _speed, true);
+        DEBUG("Entity::makeEntityMove() speed:" << _speed, false);
     }
     return true;
 }

@@ -15,7 +15,8 @@ public:
         MOUSE_PRESSED,
         KEY_PRESSED,
         OBJECTS,
-        INFO_SPECTATOR
+        SCORE,
+        INFO_LIVE
     };
 
 protected:

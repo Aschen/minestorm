@@ -6,8 +6,7 @@ Display::Display(const QSize &size, QObject *parent)
       _isRunning(false),
       _size(size),
       _client(QSharedPointer<Client>(new Client)),
-      _elements(nullptr)
-{
+      _elements(nullptr){
     DEBUG("Display::Display()", true);
 
     connect(_client.data(), SIGNAL(transfertMessage(qint32, QString)),
@@ -47,15 +46,19 @@ void Display::draw(QPainter &painter, QRect &size)
                 painter.drawConvexPolygon(element.polygon());
                 break;
             }
-
-//            painter.drawConvexPolygon(object.polygon());
         }
     }
+
+    /* Draw score */
+    painter.setPen(QColor(0, 0, 0));
+    painter.setBrush(QBrush(QColor(0, 0, 0)));
+    painter.drawText(QPoint(SCREEN_SIZE - 50, 10), _score);
 }
 
 void Display::startDisplay()
 {
     _isRunning = true;
+    _score(0);
 }
 
 void Display::messageDispatcher(qint32 socketFd, const QString &msg)
@@ -70,15 +73,13 @@ void Display::messageDispatcher(qint32 socketFd, const QString &msg)
     case MessageBase::OBJECTS:
     {
         MessageObjects      message(msg);
-
-        DEBUG("Client::MessageDispatcher() : Receive " << message.elements()->size() << " elements", false);
         receiveObjects(message.elements());
         break;
     }
-    case MessageBase::INFO_SPECTATOR:
+    case MessageBase::SCORE:
     {
-        DEBUG("Client::MessageDispatcher() : Spectator mode", true);
-        _client->type(Client::SPECTATOR);
+        MessageScore        message(msg);
+        receiveScore(message.score ());
         break;
     }
     default:
@@ -94,6 +95,16 @@ void Display::receiveObjects(const QSharedPointer<QVector<Element>> &elements)
     DEBUG("Display::receiveObjects() : " << elements->size() << " elements received", false);
 
     _elements = elements;
+
+    if (_isRunning)
+        emit changed();
+}
+
+void Display::receiveScore(quint32 score)
+{
+    DEBUG("Client::receiveScore() : Receive score " << score, true);
+
+    _score = QString::number(score);
 
     if (_isRunning)
         emit changed();

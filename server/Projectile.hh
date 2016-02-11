@@ -27,7 +27,7 @@ public:
 
 private:
     qint32       _id;
-    Ship&       _ship;
+    Ship&        _ship;
 
     // Entity interface
 public:

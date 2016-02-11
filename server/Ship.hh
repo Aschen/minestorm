@@ -13,6 +13,8 @@ private:
     quint32         _vie;
     quint32         _shipNumber;
     qint32          _tempo;
+    quint32         _score;
+    bool            _scoreChanged;
 
 public:
     //Constructeurs
@@ -20,6 +22,7 @@ public:
 
     void            rotateShipLeft();
     void            rotateShipRight();
+    void            addScore(quint32 score);
     bool            changeLife(qint32 change);
 
     //Getter & Setter
@@ -29,11 +32,14 @@ public:
     void            setRect(const QRect &rect);
     quint32         shipNumber() const;
     void            shipNumber(quint32 shipNumber);
-    bool            makeEntityMove() override;
+    void            score(quint32 score);
+    quint32         score() const;
+    bool            scoreChanged();
 
     // Entity interface
 public:
-    QPointF          center() const override;
+    bool            makeEntityMove() override;
+    QPointF         center() const override;
 };
 
 #endif // SHIP_HH

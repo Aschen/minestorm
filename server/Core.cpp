@@ -54,24 +54,38 @@ void Core::step()
 
     if (!_entitiesMap.empty() && _server.clientCount())
     {
-       DEBUG("Core::step() : Send " << _entitiesMap.size() << " objects", false);
+        DEBUG("Core::step() : Send " << _entitiesMap.size() << " objects", false);
 
-       for(QSharedPointer<Entity> &entity : _entitiesMap)
-       {
-           entity->makeEntityMove();
+        /* Movements */
+        for(QSharedPointer<Entity> &entity : _entitiesMap)
+        {
+            entity->makeEntityMove();
 
-           //En cours : a ne faire que pour les tirs (et les mines ?)
-           if(entity->isDead())
-               _entitiesToDelete.push_back(entity);
-       }
-       removeEntitiesToDelete();
+            //En cours : a ne faire que pour les tirs (et les mines ?)
+            if(entity->isDead())
+                _entitiesToDelete.push_back(entity);
+        }
+        removeEntitiesToDelete();
 
-       Collision            c(_entitiesMap, _entitiesToDelete);
-       removeEntitiesToDelete();
+        /* Collision */
+        Collision            c(_entitiesMap, _entitiesToDelete);
+        removeEntitiesToDelete();
 
-       MessageObjects      message(_entitiesMap);
-
+        /* Send objects list to clients */
+        MessageObjects      message(_entitiesMap);
         _server.broadcast(message.messageString());
+
+        /* Send score to clients */
+        for (qint32 idClient : _playersInGame)
+        {
+            Ship    *ship = dynamic_cast<Ship*>(_entitiesMap[idClient].data());
+
+            if (ship->scoreChanged())
+            {
+                MessageScore    msg(ship->score());
+                _server.unicast(idClient, msg.messageString ());
+            }
+        }
     }
 
     ++_step;
@@ -183,6 +197,14 @@ void Core::entitiesInitialization()
 |* EVENTS *|
 \**********/
 
+void Core::scoreChanged(qint32 idClient, quint32 score)
+{
+    DEBUG("Core::newScore() : client:" << idClient << " score:" << score, true);
+    MessageScore        msg(score);
+
+    _server.unicast(idClient, msg.messageString());
+}
+
 void Core::messageDispatcher(qint32 idClient, const QString &msg)
 {
     DEBUG("Core::messageDispatcher() : client " << idClient << " : " << msg, false);
@@ -253,7 +275,7 @@ void Core::keyPressed(qint32 idClient, qint32 key)
 
     case Qt::Key_Space:
     {
-        DEBUG("Core::keyPressed : Client " << idClient << " KeySpace", true);
+        DEBUG("Core::keyPressed : Client " << idClient << " KeySpace", false);
         int id = rand();
         _entitiesMap[id] = QSharedPointer<Entity>(new Projectile(id, *dynamic_cast<Ship*>(_entitiesMap[idClient].data())));
         break;
