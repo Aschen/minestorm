@@ -1,6 +1,7 @@
 #include "Display.hh"
 #include "Ship.hh"
 
+
 Display::Display(const QSize &size, QObject *parent)
     : QObject(parent),
       _isRunning(false),
@@ -17,8 +18,6 @@ Display::Display(const QSize &size, QObject *parent)
 void Display::draw(QPainter &painter, QRect &size)
 {
     DEBUG("Display::draw() : " << _elements->size() << " elements to draw", false);
-    painter.fillRect(size, QColor(255,255,255));
-
     if (_elements != nullptr)
     {
         for (const Element &element : *_elements)
@@ -35,11 +34,19 @@ void Display::draw(QPainter &painter, QRect &size)
             case Element::SHIP_2:
             case Element::SHIP_3:
             case Element::SHIP_4:
-                painter.setPen(QColor(0, 0, 0));
+                /*  IF SHIELD
+                 * if(element.shild) { ... }
+                */
+                painter.setBrush(QBrush("#98F5FF"));
+                painter.setPen(QColor("#98F5FF"));
+                painter.drawEllipse(element.center(), SHIP_SIZE / 2, SHIP_SIZE / 2);
+
+                painter.setPen(QColor("#AAAAAA"));
                 painter.setBrush(QBrush(Qt::NoBrush));
                 painter.drawConvexPolygon(element.polygon());
                 painter.drawPoint(element.center());
                 painter.drawImage(element.imageCenter(), _images.getImage(element.type(), element.angle()));
+
                 break;
             case Element::SHOT:
                 painter.setPen(QColor(255, 0, 51)); // RED

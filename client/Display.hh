@@ -24,9 +24,9 @@ class Display : public QObject
 private:
     bool                _isRunning;
     const QSize         _size;
+    Images              _images;
     QSharedPointer<Client>              _client;
     QSharedPointer<QVector<Element>>    _elements;
-    Images              _images;
 
 public:
     Display(const QSize &size, QObject *parent = nullptr);
