@@ -60,12 +60,17 @@ void Display::draw(QPainter &painter, QRect &size)
     painter.setPen(QColor(0, 0, 0));
     painter.setBrush(QBrush(QColor(0, 0, 0)));
     painter.drawText(QPoint(SCREEN_SIZE - 50, 10), _score);
+
+    /* Draw lives */
+    painter.setPen(QColor(0, 0, 0));
+    painter.setBrush(QBrush(QColor(0, 0, 0)));
+    painter.drawText(QPoint(SCREEN_SIZE - 50, 20), _lives);
+
 }
 
 void Display::startDisplay()
 {
     _isRunning = true;
-    _score = "0";
 }
 
 void Display::messageDispatcher(qint32 socketFd, const QString &msg)
@@ -86,7 +91,13 @@ void Display::messageDispatcher(qint32 socketFd, const QString &msg)
     case MessageBase::SCORE:
     {
         MessageScore        message(msg);
-        receiveScore(message.score ());
+        receiveScore(message.score());
+        break;
+    }
+    case MessageBase::LIVES:
+    {
+        MessageLives        message(msg);
+        receiveLives(message.lives());
         break;
     }
     default:
@@ -112,6 +123,16 @@ void Display::receiveScore(quint32 score)
     DEBUG("Client::receiveScore() : Receive score " << score, true);
 
     _score = QString::number(score);
+
+    if (_isRunning)
+        emit changed();
+}
+
+void Display::receiveLives(quint32 lives)
+{
+    DEBUG("Client::receiveLives() : Receive lives " << lives, true);
+
+    _lives = QString("Vies: ") + QString::number(lives);
 
     if (_isRunning)
         emit changed();

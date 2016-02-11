@@ -28,11 +28,6 @@ MessageScore::MessageScore(quint32 score)
     _messageString += QString::number(score) + " ";
 }
 
-MessageScore::~MessageScore()
-{
-
-}
-
 quint32 MessageScore::score() const
 {
     return _score;

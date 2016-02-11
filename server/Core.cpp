@@ -75,7 +75,7 @@ void Core::step()
         MessageObjects      message(_entitiesMap);
         _server.broadcast(message.messageString());
 
-        /* Send score to clients */
+        /* Send score and lives to clients */
         for (qint32 idClient : _playersInGame)
         {
             Ship    *ship = dynamic_cast<Ship*>(_entitiesMap[idClient].data());
@@ -84,6 +84,11 @@ void Core::step()
             {
                 MessageScore    msg(ship->score());
                 _server.unicast(idClient, msg.messageString ());
+            }
+            if (ship->livesChanged())
+            {
+                MessageLives    msg(ship->vie());
+                _server.unicast(idClient, msg.messageString());
             }
         }
     }

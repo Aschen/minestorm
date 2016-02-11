@@ -75,7 +75,7 @@ void Server::broadcast(const QString &message)
 
 void Server::unicast(qint32 idClient, const QString &message)
 {
-    DEBUG("Server::unicast() : Client" << idClient, false);
+    DEBUG("Server::unicast() : Client:" << idClient << " message:" << message, true);
 
     emit sendMessage(idClient, message);
 }

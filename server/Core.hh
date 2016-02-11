@@ -19,6 +19,7 @@
 # include "MessageKey.hh"
 # include "MessageObjects.hh"
 # include "MessageScore.hh"
+# include "MessageLives.hh"
 # include "Collision.hh"
 
 class Core : public QObject

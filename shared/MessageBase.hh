@@ -16,7 +16,7 @@ public:
         KEY_PRESSED,
         OBJECTS,
         SCORE,
-        INFO_LIVE
+        LIVES
     };
 
 protected:

@@ -16,7 +16,6 @@ public:
     MessageScore(const QString &msg);
     MessageScore(MessageBase::Type type, QTextStream &stream);
     MessageScore(quint32 score);
-    ~MessageScore();
 
     quint32         score() const;
 };

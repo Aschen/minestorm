@@ -7,7 +7,8 @@ Ship::Ship(qint32 id, const QPointF &position, qint32 shipNumber)
       _shipNumber(shipNumber),
       _tempo(0),
       _score(0),
-      _scoreChanged(false)
+      _scoreChanged(true),
+      _livesChanged(true)
 {
     _size   = QSize(SHIP_SIZE, SHIP_SIZE);
     _speed  = 0;
@@ -37,6 +38,7 @@ quint32 Ship::vie() const
 void Ship::setVie(quint32 vie)
 {
     _vie = vie;
+    _livesChanged = true;
 }
 
 quint32 Ship::shipNumber() const
@@ -68,6 +70,14 @@ bool Ship::scoreChanged()
     return ret;
 }
 
+bool Ship::livesChanged()
+{
+    bool    ret = _livesChanged;
+
+    _livesChanged = false;
+    return ret;
+}
+
 QPointF Ship::center() const
 {
     qint32  x;
@@ -89,6 +99,10 @@ bool Ship::changeLife(qint32 change)
         aliveOrNot = false;
     }
     DEBUG("Ship::changeLife() : Ship has" << _vie << " life", true);
+
+    /* Tell Core that lives has changed */
+    _livesChanged = true;
+
     return aliveOrNot;
 }
 

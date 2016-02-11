@@ -16,6 +16,7 @@
 # include "MessageScore.hh"
 # include "MessageMouse.hh"
 # include "MessageKey.hh"
+# include "MessageLives.hh"
 # include "Client.hh"
 # include "Element.hh"
 # include "Images.hh"
@@ -30,6 +31,7 @@ private:
     QSharedPointer<Client>              _client;
     QSharedPointer<QVector<Element>>    _elements;
     QString             _score;
+    QString             _lives;
     Images              _images;
 
 public:
@@ -58,6 +60,7 @@ public:
 private:
     void                receiveObjects(const QSharedPointer<QVector<Element>> &elements);
     void                receiveScore(quint32 score);
+    void                receiveLives(quint32 lives);
 
 signals:
     void                changed();
