@@ -10,6 +10,7 @@ GameBoard::GameBoard(Display *display, QWidget *parent)
     setMinimumSize(_display->size());
     setFocusPolicy(Qt::StrongFocus);
     setMouseTracking(true);
+    setObjectName("GameBoard");
 
     /*
      * On utilise un timer pour limiter le nombre d'events
