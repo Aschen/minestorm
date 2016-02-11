@@ -16,6 +16,7 @@ private:
     quint32         _score;
     bool            _scoreChanged;
     bool            _livesChanged;
+    bool            _shield;
 
 public:
     //Constructeurs
@@ -25,6 +26,8 @@ public:
     void            rotateShipRight();
     void            addScore(quint32 score);
     bool            changeLife(qint32 change);
+    void            grantShield();
+    bool            removeShield();
 
     //Getter & Setter
     quint32         vie() const;
@@ -39,6 +42,7 @@ public:
     void            lives(quint32 lives);
     quint32         lives() const;
     bool            livesChanged();
+    bool            haveShield();
 
     // Entity interface
 public:

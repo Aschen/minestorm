@@ -98,7 +98,21 @@ QPointF Mine::center() const
     return QPoint(x, y);
 }
 
-
+bool Mine::makeEntityMove()
+{
+    if (this->center().x() > SCREEN_SIZE
+    ||  this->center().x() < 0)
+    {
+        this->angle(this->angle() - 180);
+    }
+    if (this->center().y() > SCREEN_SIZE
+    ||  this->center().y() < 0)
+    {
+        this->angle(this->angle() - 180);
+    }
+    this->translate(_speed * cos(getRadian(_angle)), _speed * sin(getRadian(_angle)));
+    return true;
+}
 
 
 

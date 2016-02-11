@@ -47,8 +47,11 @@ void Collision::detectShipCollision(QSharedPointer<Entity> &shipEntity)
                 if(collide)
                 {
                     DEBUG("Collision::detectShipCollision()  Collision Vaisseau ", false);
-                    //On enléve une vie au vaisseau dans tous les cas
-                    if(!ship->changeLife(-1))
+
+                    //On enléve une vie au vaisseau si il n'a pas de shield
+                    if (ship->haveShield())
+                        ship->removeShield();
+                    else if (!ship->changeLife(-1))
                     {
                         ship->setEtatDead();
                         _entitiesToDelete.push_back(shipEntity);

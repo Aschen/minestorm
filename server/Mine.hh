@@ -36,6 +36,7 @@ public:
     //Methods
     void            createPolygon(QPointF point);
     QPointF         center() const override;
+    bool            makeEntityMove() override;
 
     //Getter & Setter
     int             size() const;

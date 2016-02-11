@@ -13,6 +13,7 @@ Ship::Ship(qint32 id, const QPointF &position, qint32 shipNumber)
     _size   = QSize(SHIP_SIZE, SHIP_SIZE);
     _speed  = 0;
     _angle  = 0;
+    grantShield();
     this->addPoint(QPointF(position.x(), position.y()));
     this->addPoint(QPointF(position.x() + size().width(), position.y()));
     this->addPoint(QPointF(position.x() + size().height(), position.y() + size().width()));
@@ -78,6 +79,23 @@ bool Ship::livesChanged()
     return ret;
 }
 
+bool Ship::haveShield()
+{
+    return _shield == true ;
+}
+
+void Ship::grantShield()
+{
+    _shield = true;
+}
+
+bool Ship::removeShield()
+{
+    DEBUG("Ship::Shield Lost", true);
+    _shield = false;
+    return _shield;
+}
+
 QPointF Ship::center() const
 {
     qint32  x;
@@ -105,7 +123,6 @@ bool Ship::changeLife(qint32 change)
 
     return aliveOrNot;
 }
-
 bool Ship::makeEntityMove()
 {
     Entity::makeEntityMove();
