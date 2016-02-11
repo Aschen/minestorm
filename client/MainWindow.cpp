@@ -18,6 +18,7 @@ MainWindow::MainWindow(Display *display, QWidget *parent)
 
     window->setLayout(layout);
     setCentralWidget(window);
+    setStyleSheet("background-image: url(images/background.jpg)  no-repeat center center fixed");
     show();
 }
 
