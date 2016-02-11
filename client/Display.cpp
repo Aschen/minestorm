@@ -57,13 +57,13 @@ void Display::draw(QPainter &painter, QRect &size)
     }
 
     /* Draw score */
-    painter.setPen(QColor(0, 0, 0));
-    painter.setBrush(QBrush(QColor(0, 0, 0)));
+    painter.setPen(QColor(255, 255, 255));
+    painter.setBrush(QBrush(QColor(255, 255, 255)));
     painter.drawText(QPoint(SCREEN_SIZE - 50, 10), _score);
 
     /* Draw lives */
-    painter.setPen(QColor(0, 0, 0));
-    painter.setBrush(QBrush(QColor(0, 0, 0)));
+    painter.setPen(QColor(255, 255, 255));
+    painter.setBrush(QBrush(QColor(255, 255, 255)));
     painter.drawText(QPoint(SCREEN_SIZE - 50, 20), _lives);
 
 }
