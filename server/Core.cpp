@@ -69,11 +69,6 @@ void Core::step()
 
         /* Collision */
         Collision            c(_entitiesMap, _entitiesToDelete);
-        removeEntitiesToDelete();
-
-        /* Send objects list to clients */
-        MessageObjects      message(_entitiesMap);
-        _server.broadcast(message.messageString());
 
         /* Send score and lives to clients */
         for (qint32 idClient : _playersInGame)
@@ -91,6 +86,12 @@ void Core::step()
                 _server.unicast(idClient, msg.messageString());
             }
         }
+        removeEntitiesToDelete();
+
+        /* Send objects list to clients */
+        MessageObjects      message(_entitiesMap);
+        _server.broadcast(message.messageString());
+
     }
 
     ++_step;
