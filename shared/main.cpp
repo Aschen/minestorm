@@ -12,8 +12,6 @@
 #include "Server.hh"
 #include "Client.hh"
 
-void        runTests();
-
 int main(int argc, char *argv[])
 {
     QString     arg(argv[1]);

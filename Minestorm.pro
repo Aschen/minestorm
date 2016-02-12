@@ -25,8 +25,6 @@ SOURCES += server/Core.cpp \
     client/Client.cpp \
     server/Worker.cpp \
     shared/BaseSocket.cpp \
-    test/TestMessage.cpp \
-    shared/test.cpp \
     shared/MessageBase.cpp \
     shared/MessageMouse.cpp \
     shared/MessageObjects.cpp \
@@ -52,7 +50,6 @@ HEADERS  += server/Core.hh \
     client/Client.hh \
     server/Worker.hh \
     shared/BaseSocket.hh \
-    test/TestMessage.hh \
     shared/MessageBase.hh \
     shared/MessageMouse.hh \
     shared/MessageObjects.hh \

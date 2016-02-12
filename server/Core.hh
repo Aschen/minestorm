@@ -34,6 +34,7 @@ private:
     Server              _server;
     quint32             _playersCount;
     QVector<QPoint>     _playerSpawn;
+    quint32             _uniqId;
     QList<qint32>       _playersInGame;
     EntityHash          _entitiesMap;
     EntityVector        _entitiesToDelete;
@@ -51,9 +52,9 @@ public:
     void                scoreChanged(qint32 idClient, quint32 score);
 
 private:
-    void                entitiesInitialization();
-
+    void                entitiesInitialization();    
     void                removeEntitiesToDelete();
+    quint32             getID();
 
 private slots:
     void                step();
