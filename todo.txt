@@ -1,3 +1,4 @@
 - Ajouter signal communication des erreur depuis BaseSocket l'exterieur
 - Fonction Server::registerCallback("receiveMessage", object, callback())
 - Create child Element class
+- Gérer multiples impulsions déplacements : liste de vecteur2D,int, fleche haut ajoute un vecteur déplacement dans la bonne direction et un compteur plein, chaque tour on translate par tous les vecteur en décrémentant le compteur int, on supprime les compteur à 0
