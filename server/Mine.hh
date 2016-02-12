@@ -1,57 +1,47 @@
 #ifndef MINE_HH
 #define MINE_HH
 
-# include <QColor>
 # include <QPoint>
-# include <QBrush>
-# include <QTime>
-# include <iostream>
 
 # include "Entity.hh"
+# include "MineTimer.hh"
 
 using namespace std;
 
 class Mine : public Entity
 {
-
 public:
+    /*   /!\ MUST MATCH Element::Type /!\   */
     enum TypeMine {
         Small = 0,
         Medium = 5,
-        Big = 6
+        Big = 6,
+        Small_On = 7,
+        Medium_On = 8,
+        Big_On = 9
     };
 
 private:
-    qint32          _id;
-    TypeMine        _type;
-    QTime           _birthDate;
-    int             _size;
-    QColor          _color;
-    Qt::BrushStyle _brushStyle;
+    TypeMine        _typeMine;
+    bool            _armed;
+    qint32          _size;
+    MineTimer       _timer;
 
 public:
     //Constructor
-    Mine(qint32 i, TypeMine type, QPointF point, QTime birthDate);
+    Mine(qint32 id, TypeMine typeMine, const QPointF &point);
+    virtual ~Mine();
 
-    //Methods
-    void            createPolygon(QPointF point);
+    void            activate();
+
+    //Entity Interface
     QPointF         center() const override;
 
     //Getter & Setter
-    int             size() const;
-    void            setSize(int size);
-
-    QColor          color() const;
-    void            setColor(QColor color);
-
-    Qt::BrushStyle  brushStyle() const;
-    void            setBrushStyle(const Qt::BrushStyle &brushStyle);
-
-    QTime           birthDate() const;
-    void            setBirthDate(const QTime &birthDate);
-
-    TypeMine        type() const;
-    void            setType(const TypeMine &type);
+    qint32          size() const;
+    void            setSize(qint32 size);
+    TypeMine        typeMine() const;
+    bool            armed() const;
 };
 
 #endif // MINE_HH

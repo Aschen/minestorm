@@ -16,12 +16,25 @@ Element::Element(Type type, const QPolygon &polygon)
 {
 }
 
+Element::Element(Element::Type type, const QPolygon &polygon, quint32 armed, const QPoint &center)
+    : _type(type),
+      _polygon(polygon),
+      _armed(armed),
+      _center(center)
+{
+}
+
 Element::Element()
 {
 }
 
 Element::~Element()
 {
+}
+
+void Element::draw(QPainter &painter)
+{
+
 }
 
 Element::Type Element::type() const
@@ -37,6 +50,11 @@ const QPolygon &Element::polygon() const
 qreal Element::angle() const
 {
     return _angle;
+}
+
+quint32 Element::armed() const
+{
+    return _armed;
 }
 
 const QPoint &Element::center() const
