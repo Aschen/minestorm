@@ -34,7 +34,7 @@ public:
     };
 
 protected:
-    const Type              _type;
+    Type                    _type;
     const qint32            _id;
     QSize                   _size;
     qint32                  _speed;
@@ -61,6 +61,7 @@ public:
     bool                    isDead();
 
     Type                    type() const;
+    void                    type(Entity::Type type);
     qint32                  id() const;
     const QSize             &size() const; // rename it
     void                    size(const QSize &value); // rename it

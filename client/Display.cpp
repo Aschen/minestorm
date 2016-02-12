@@ -27,6 +27,9 @@ void Display::draw(QPainter &painter, QRect &size)
             case Element::MINE_S:
             case Element::MINE_L:
             case Element::MINE_M:
+            case Element::MINE_S_ON:
+            case Element::MINE_L_ON:
+            case Element::MINE_M_ON:
                 painter.drawImage(element.center(), _images.getImage(element.type()));
                 break;
             case Element::SHIP_1:

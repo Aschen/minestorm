@@ -112,6 +112,11 @@ Entity::Type Entity::type() const
     return _type;
 }
 
+void Entity::type(Entity::Type type)
+{
+    _type = type;
+}
+
 qint32 Entity::id() const
 {
     return _id;

@@ -63,7 +63,10 @@ void MessageObjects::deserializeShip(QTextStream &stream)
     }
     DEBUG("MessageObjects::deserializeShip() : Ship n°" << shipNumber << " angle: " << angle << " center:" << x << y
           , false);
-    _elements->push_back(Element((Element::Type) shipNumber, polygon, angle, QPoint(center_x, center_y)));
+    _elements->push_back(Element((Element::Type) shipNumber,
+                         polygon,
+                         angle,
+                         QPoint(center_x, center_y)));
 }
 
 /* x1 y1 x2 y2 */
@@ -83,21 +86,21 @@ void MessageObjects::deserializeShot(QTextStream &stream)
     _elements->push_back(Element(Element::SHOT, polygon));
 }
 
-/* type angle center_x center_y */
+/* type armed center_x center_y */
 void MessageObjects::deserializeMine(QTextStream &stream)
 {
     QPolygon    polygon(1);
     QPoint      center;
     qint32      type;
-    qreal       angle;
+    quint32     armed;
     qint32      center_x;
     qint32      center_y;
 
-    stream >> type >> angle >> center_x >> center_y;
+    stream >> type >> armed >> center_x >> center_y;
     center = QPoint(center_x, center_y);
     polygon[0] = center;
-    DEBUG("MessageObjects::deserializeMine() : type: " << type << " angle: " << angle << " center:" << center_x << center_y, false);
-    _elements->push_back(Element((Element::Type) type, polygon, angle, center));
+    DEBUG("MessageObjects::deserializeMine() : type: " << type << " armed: " << armed << " center:" << center_x << center_y, false);
+    _elements->push_back(Element((Element::Type) type, polygon, armed, center));
 }
 
 /* SERIALIZE *******************************************************************/
@@ -168,14 +171,14 @@ void MessageObjects::serializeShot(const Projectile &shot)
     }
 }
 
-/* type angle center_x center_y */
+/* type armed center_x center_y */
 void MessageObjects::serializeMine(const Mine &mine)
 {
     /* Write type */
-    _messageString += QString::number(mine.type()) + " ";
+    _messageString += QString::number(mine.typeMine()) + " ";
 
-    /* Write angle */
-    _messageString += QString::number(mine.angle()) + " ";
+    /* Write armed */
+    _messageString += QString::number(mine.armed() ? 1 : 0) + " ";
 
     /* Write center_x */
     _messageString += QString::number(mine.center().x()) + " ";

@@ -7,7 +7,8 @@ Core::Core(qint32 cps)
       _step(1),
       _server(SERVER_PORT),
       _playersCount(0),
-      _playerSpawn(MAX_PLAYERS + 1)
+      _playerSpawn(MAX_PLAYERS + 1),
+      _uniqId(100)
 {
     DEBUG("Core::Core() : cps " << cps, true);
 
@@ -55,6 +56,7 @@ void Core::step()
     if (!_entitiesMap.empty() && _server.clientCount())
     {
         DEBUG("Core::step() : Send " << _entitiesMap.size() << " objects", false);
+        DEBUG("Core::step() : " << _entitiesMap.size() << " entities", false);
 
         /* Movements */
         for(QSharedPointer<Entity> &entity : _entitiesMap)
@@ -110,6 +112,11 @@ void Core::removeEntitiesToDelete()
     }
 }
 
+quint32 Core::getID()
+{
+    return ++_uniqId;
+}
+
 
 /**
  * @brief Core::newPlayer : Instancie un nouveau vaisseau lors de la connexion d'un client
@@ -158,42 +165,43 @@ void Core::playerLeft(qint32 idClient)
 void Core::entitiesInitialization()
 {
     DEBUG("Core::entitiesInit() - entitiesMaps.size() = " << _entitiesMap.size(), true);
-    int i, x, y;
+    qint32  x, y, id;
 
-    i = 0;
     //Small Mines
-    while (i < 5)
+    for (quint32 i = 0; i < 2; ++i)
     {
         x = rand() % (SCREEN_SIZE - 20) + 10;
         y = rand() % (SCREEN_SIZE - 20) + 10;
-        QTime time = QTime::currentTime();
-        time = time.addSecs(rand() % 15 + 1);
         DEBUG("Mine(" << x << "," << y << ")", false);
 
-        this->_entitiesMap[MAX_CLIENTS + i] = QSharedPointer<Entity>(new Mine(MAX_CLIENTS + i, Mine::TypeMine::Small, *new QPointF(x, y), time));
-        i++;
+        id = getID();
+        this->_entitiesMap[id] = QSharedPointer<Entity>(new Mine(id,
+                                                                 Mine::TypeMine::Small,
+                                                                 QPointF(x, y)));
     }
 
-    while (i < 5)
+    for (quint32 i = 0; i < 2; ++i)
     {
         x = rand() % SCREEN_SIZE - 10;
         y = rand() % SCREEN_SIZE - 10;
-        QTime time = QTime::currentTime();
-        time = time.addSecs(rand() % 15 + 1);
         DEBUG("Mine(" << x << "," << y << ")", false);
-        this->_entitiesMap[MAX_CLIENTS + i] = QSharedPointer<Entity>(new Mine(MAX_CLIENTS + i, Mine::TypeMine::Big, *new QPoint(x, y), time));
-        i++;
+
+        id = getID();
+        this->_entitiesMap[id] = QSharedPointer<Entity>(new Mine(id,
+                                                                 Mine::TypeMine::Big,
+                                                                 QPoint(x, y)));
     }
 
-    while (i < 10)
+    for (quint32 i = 0; i < 2; ++i)
     {
         x = rand() % SCREEN_SIZE - 10;
         y = rand() % SCREEN_SIZE - 10;
-        QTime time = QTime::currentTime();
-        time = time.addSecs(rand() % 15 + 1);
         DEBUG("Mine(" << x << "," << y << ")", false);
-        this->_entitiesMap[MAX_CLIENTS + i] = QSharedPointer<Entity>(new Mine(MAX_CLIENTS + i, Mine::TypeMine::Medium, *new QPoint(x, y), time));
-        i++;
+
+        id = getID();
+        this->_entitiesMap[id] = QSharedPointer<Entity>(new Mine(id,
+                                                                 Mine::TypeMine::Medium,
+                                                                 QPoint(x, y)));
     }
 
     DEBUG("entitiesMaps.size() = " << _entitiesMap.size(), true);
@@ -282,7 +290,7 @@ void Core::keyPressed(qint32 idClient, qint32 key)
     case Qt::Key_Space:
     {
         DEBUG("Core::keyPressed : Client " << idClient << " KeySpace", false);
-        int id = rand();
+        quint32     id = getID();
         _entitiesMap[id] = QSharedPointer<Entity>(new Projectile(id, *dynamic_cast<Ship*>(_entitiesMap[idClient].data())));
         break;
     }

@@ -25,8 +25,6 @@ SOURCES += server/Core.cpp \
     client/Client.cpp \
     server/Worker.cpp \
     shared/BaseSocket.cpp \
-    test/TestMessage.cpp \
-    shared/test.cpp \
     shared/MessageBase.cpp \
     shared/MessageMouse.cpp \
     shared/MessageObjects.cpp \
@@ -37,7 +35,8 @@ SOURCES += server/Core.cpp \
     server/Collision.cpp \
     server/Projectile.cpp \
     shared/MessageScore.cpp \
-    shared/MessageLives.cpp
+    shared/MessageLives.cpp \
+    server/MineTimer.cpp
 
 HEADERS  += server/Core.hh \
     client/Controller.hh \
@@ -52,7 +51,6 @@ HEADERS  += server/Core.hh \
     client/Client.hh \
     server/Worker.hh \
     shared/BaseSocket.hh \
-    test/TestMessage.hh \
     shared/MessageBase.hh \
     shared/MessageMouse.hh \
     shared/MessageObjects.hh \
@@ -63,7 +61,8 @@ HEADERS  += server/Core.hh \
     server/Collision.hh \
     server/Projectile.hh \
     shared/MessageScore.hh \
-    shared/MessageLives.hh
+    shared/MessageLives.hh \
+    server/MineTimer.hh
 
 FORMS    +=
 
