@@ -175,7 +175,7 @@ void Display::mousePressed(qint32 x, qint32 y)
 
 void Display::keyPressed(qint32 key)
 {
-    DEBUG("Display::keyPressed() : key =" << key, true);
+    DEBUG("Display::keyPressed() : key =" << key, false);
 
     MessageKey    message(MessageBase::KEY_PRESSED, key);
 
@@ -185,7 +185,7 @@ void Display::keyPressed(qint32 key)
 
 void Display::keyReleased(qint32 key)
 {
-    DEBUG("Display::keyReleased() : key =" << key, true);
+    DEBUG("Display::keyReleased() : key =" << key, false);
     MessageKey    message(MessageBase::KEY_RELEASE, key);
 
     if (_isRunning)

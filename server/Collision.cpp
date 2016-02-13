@@ -65,6 +65,7 @@ void Collision::detectShipCollision(QSharedPointer<Entity> &shipEntity)
         {
             if(checkCollision(*shipEntity.data(), *entity))
             {
+                DEBUG("Collision::detectShipCollision() collision vaisseau tir", false);
                 ship->changeLife(-1);
             }
         }
