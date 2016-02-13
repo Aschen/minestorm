@@ -35,7 +35,6 @@ public:
 
 protected:
     Type                    _type;
-    const qint32            _id;
     QSize                   _size;
     qint32                  _speed;
     qint32                  _angle;
@@ -44,7 +43,7 @@ protected:
 
 
 public:
-    Entity(qint32 id, Type type);
+    Entity(Type type);
     virtual ~Entity();
 
     void                    addPoint(const QPointF &point);
@@ -62,7 +61,6 @@ public:
 
     Type                    type() const;
     void                    type(Entity::Type type);
-    qint32                  id() const;
     const QSize             &size() const; // rename it
     void                    size(const QSize &value); // rename it
     qint32                  speed() const;

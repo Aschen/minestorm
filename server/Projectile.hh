@@ -3,19 +3,14 @@
 
 #include <QRect>
 #include "Entity.hh"
-#include "Ship.hh"
 
-using namespace std;
+class Ship;
 
 class Projectile : public Entity
 {
 public:
     //Constructors
-    Projectile(qint32, Ship&);
-
-    //Getters & Setters
-    qint32      id() const;
-    void        setId(const qint32 &id);
+    Projectile(Ship&);
 
     Ship        &ship() const;
 
@@ -26,7 +21,6 @@ public:
     void        init();
 
 private:
-    qint32       _id;
     Ship&        _ship;
 
     // Entity interface
@@ -39,3 +33,5 @@ public:
 };
 
 #endif // PROJECTILE_HH
+
+#include "Ship.hh"

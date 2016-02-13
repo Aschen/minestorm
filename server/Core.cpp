@@ -5,8 +5,7 @@ Core::Core(qint32 cps)
       _isPlaying(false),
       _cps(cps),
       _step(1),
-      _server(SERVER_PORT),
-      _uniqId(100)
+      _server(SERVER_PORT)
 {
     DEBUG("Core::Core() : cps " << cps, true);
 
@@ -132,19 +131,6 @@ void Core::step()
     ++_step;
 }
 
-void Core::removeEntitiesToDelete()
-{
-    for (QSharedPointer<Entity> &entity : _entitiesToDelete)
-    {
-        // Move player to spectator if ship is dead
-        if (entity->type() == Entity::SHIP)
-        {
-            _players.deletePlayer(entity->id());
-        }
-        _entitiesMap.remove(entity->id());
-    }
-}
-
 void Core::clientJoin(qint32 idClient)
 {
     DEBUG("Core::clientJoint() : New client" << idClient, true);
@@ -175,9 +161,7 @@ void Core::clientLeft(qint32 idClient)
     if (_players.contains(idClient))
     {
         DEBUG("Core::clientLeft() : Player left:" << idClient, true);
-
         _players.deletePlayer(idClient);
-//        _entitiesMap.remove(idClient); // Handle this in cleanEntities
     }
     else
     {
@@ -187,7 +171,6 @@ void Core::clientLeft(qint32 idClient)
 
 void Core::initMines()
 {
-    DEBUG("Core::initMines() - entitiesMaps.size() = " << _entitiesMap.size(), true);
     qint32  x, y;
 
     //Small Mines
@@ -197,8 +180,7 @@ void Core::initMines()
         y = rand() % (SCREEN_SIZE - 20) + 10;
         DEBUG("Core::initMines() Mine(" << x << "," << y << ")", false);
 
-        quint32 obsolete = 42;
-        addMine(obsolete, Mine::TypeMine::Small, x, y);
+        addMine(Mine::TypeMine::Small, x, y);
     }
 
     for (quint32 i = 0; i < 2; ++i)
@@ -207,8 +189,7 @@ void Core::initMines()
         y = rand() % SCREEN_SIZE - 10;
         DEBUG("Core::initMines() Mine(" << x << "," << y << ")", false);
 
-        quint32 obsolete = 42;
-        addMine(obsolete, Mine::TypeMine::Medium, x, y);
+        addMine(Mine::TypeMine::Medium, x, y);
     }
 
     for (quint32 i = 0; i < 2; ++i)
@@ -217,16 +198,13 @@ void Core::initMines()
         y = rand() % SCREEN_SIZE - 10;
         DEBUG("Core::initMines() Mine(" << x << "," << y << ")", false);
 
-        quint32 obsolete = 42;
-        addMine(obsolete, Mine::TypeMine::Big, x, y);
+        addMine(Mine::TypeMine::Big, x, y);
     }
-
-    DEBUG("Core::initMines() entitiesMaps.size() = " << _entitiesMap.size(), true);
 }
 
-void Core::addMine(quint32 id, Mine::TypeMine type, quint32 x, quint32 y)
+void Core::addMine(Mine::TypeMine type, quint32 x, quint32 y)
 {
-    _entities[Entity::MINE].push_back(QSharedPointer<Entity>(new Mine(id, type, QPointF(x, y))));
+    _entities[Entity::MINE].push_back(QSharedPointer<Entity>(new Mine(type, QPointF(x, y))));
 }
 
 void Core::addShip(QSharedPointer<Entity> &ship)
@@ -234,7 +212,7 @@ void Core::addShip(QSharedPointer<Entity> &ship)
     _entities[Entity::SHIP].push_back(ship);
 }
 
-void Core::addShot(QSharedPointer<Entity> &shot)
+void Core::addShot(QSharedPointer<Entity> shot)
 {
     _entities[Entity::SHOT].push_back(shot);
 }
@@ -285,22 +263,9 @@ void Core::cleanEntities()
     }
 }
 
-quint32 Core::getID()
-{
-    return ++_uniqId;
-}
-
 /**********\
 |* EVENTS *|
 \**********/
-
-void Core::scoreChanged(qint32 idClient, quint32 score)
-{
-    DEBUG("Core::newScore() : client:" << idClient << " score:" << score, true);
-    MessageScore        msg(score);
-
-    _server.unicast(idClient, msg.messageString());
-}
 
 void Core::messageDispatcher(qint32 idClient, const QString &msg)
 {
@@ -348,35 +313,28 @@ void Core::keyPressed(qint32 idClient, qint32 key)
     {
     case Qt::Key_Right:
         DEBUG("Core::keyPressed : Client" << idClient << " KeyRight", false);
-        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->rotate(15);
-
+        _players.keyRight(idClient);
         break;
 
     case Qt::Key_Left:
         DEBUG("Core::keyPressed Client" << idClient << " KeyLeft", false);
-        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->rotate(-15);
-
+        _players.keyLeft(idClient);
         break;
 
     case Qt::Key_Up:
         DEBUG("Core::keyPressed : Client" << idClient << " KeyUp", false);
-
-        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->incrementSpeed();
+        _players.keyUp(idClient);
         break;
 
     case Qt::Key_Down:
         DEBUG("Core::keyPressed : Client" << idClient << " KeyDown", false);
-        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->decrementSpeed(5);
-
+        _players.keyDown(idClient);
         break;
 
     case Qt::Key_Space:
-    {
         DEBUG("Core::keyPressed : Client " << idClient << " KeySpace", false);
-        quint32     id = getID();
-        _entitiesMap[id] = QSharedPointer<Entity>(new Projectile(id, *dynamic_cast<Ship*>(_entitiesMap[idClient].data())));
+        addShot(_players.keySpace(idClient));
         break;
-    }
 
     default:
         DEBUG("Core::keyPressed : Client" << idClient << " Unknown key:" << key, false);

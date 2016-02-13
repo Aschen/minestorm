@@ -28,7 +28,7 @@ public:
     void                    keyLeft(qint32 idClient);
     void                    keyUp(qint32 idClient);
     void                    keyDown(qint32 idClient);
-    void                    keySpace(qint32 idClient);
+    QSharedPointer<Entity>  keySpace(qint32 idClient);
 
     bool                    playerAvailable() const;
     bool                    contains(qint32 idClient) const;

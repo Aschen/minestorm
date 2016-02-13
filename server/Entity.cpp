@@ -1,8 +1,7 @@
 #include "Entity.hh"
 
-Entity::Entity(qint32 id, Type type)
-    : _type(type),
-      _id(id)
+Entity::Entity(Type type)
+    : _type(type)
 {
     _etat = ALIVE;
 }
@@ -115,11 +114,6 @@ Entity::Type Entity::type() const
 void Entity::type(Entity::Type type)
 {
     _type = type;
-}
-
-qint32 Entity::id() const
-{
-    return _id;
 }
 
 const QSize &Entity::size() const

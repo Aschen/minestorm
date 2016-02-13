@@ -35,9 +35,6 @@ private:
     QTimer              _timer;
     qint32              _step;
     Server              _server;
-    quint32             _uniqId;
-    EntityHash          _entitiesMap;
-    EntityVector        _entitiesToDelete;
     Players             _players;
     EntitiesHash        _entities;
 
@@ -48,17 +45,13 @@ public:
     void                keyPressed(qint32 idClient, qint32 key);
     void                keyReleased(qint32 idClient, qint32 key);
     void                startGame();
-    // Call from Ship::addScore()
-    void                scoreChanged(qint32 idClient, quint32 score);
 
 private:
     void                initMines();
-    void                addMine(quint32 id, Mine::TypeMine type, quint32 x, quint32 y);
+    void                addMine(Mine::TypeMine type, quint32 x, quint32 y);
     void                addShip(QSharedPointer<Entity> &ship);
-    void                addShot(QSharedPointer<Entity> &shot);
+    void                addShot(QSharedPointer<Entity> shot);
     void                cleanEntities();
-    void                removeEntitiesToDelete();
-    quint32             getID();
 
 private slots:
     void                step();

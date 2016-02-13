@@ -6,6 +6,7 @@
 # include "QImage"
 # include "Entity.hh"
 # include "Minestorm.hh"
+# include "Projectile.hh"
 
 class Ship : public Entity
 {
@@ -20,7 +21,7 @@ private:
 
 public:
     //Constructeurs
-    Ship(qint32 id, const QPointF &position, qint32 shipNumber);
+    Ship(const QPointF &position, qint32 shipNumber);
 
     void            rotateShipLeft();
     void            rotateShipRight();
@@ -28,6 +29,7 @@ public:
     bool            changeLife(qint32 change);
     void            grantShield();
     bool            removeShield();
+    QSharedPointer<Entity>  shot();
 
     //Getter & Setter
     quint32         vie() const;

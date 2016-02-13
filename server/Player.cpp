@@ -6,13 +6,13 @@ Player::Player(qint32 idClient, quint32 number, const QPoint &spawn)
       _spawn(spawn)
 {
     DEBUG("Player::Player() idClient:" << _idClient << " number:" << _number, true);
-    _ship = QSharedPointer<Entity>(new Ship(_idClient, _spawn, _number));
+    _ship = QSharedPointer<Entity>(new Ship(_spawn, _number));
 }
 
 Player::~Player()
 {
     /* Set Ship as dead so Core can clean it from Ship list*/
-    this->ship ().setEtatDead();
+    this->ship().setEtatDead();
 }
 
 

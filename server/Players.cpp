@@ -50,27 +50,27 @@ void Players::deletePlayer(qint32 idClient)
 /* EVENTS */
 void Players::keyRight(qint32 idClient)
 {
-
+    findPlayer(idClient)->ship().rotate(15);
 }
 
 void Players::keyLeft(qint32 idClient)
 {
-
+    findPlayer(idClient)->ship().rotate(-15);
 }
 
 void Players::keyUp(qint32 idClient)
 {
-
+    findPlayer(idClient)->ship().incrementSpeed();
 }
 
 void Players::keyDown(qint32 idClient)
 {
-
+    findPlayer(idClient)->ship().decrementSpeed(5);
 }
 
-void Players::keySpace(qint32 idClient)
+QSharedPointer<Entity> Players::keySpace(qint32 idClient)
 {
-
+    return findPlayer(idClient)->ship().shot();
 }
 
 /* INFOS */

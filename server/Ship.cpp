@@ -1,8 +1,8 @@
 #include "Ship.hh"
 
 
-Ship::Ship(qint32 id, const QPointF &position, qint32 shipNumber)
-    : Entity(id, Entity::SHIP),
+Ship::Ship(const QPointF &position, qint32 shipNumber)
+    : Entity(Entity::SHIP),
       _vie(3),
       _shipNumber(shipNumber),
       _tempo(0),
@@ -94,6 +94,11 @@ bool Ship::removeShield()
     DEBUG("Ship::Shield Lost", false);
     _shield = false;
     return _shield;
+}
+
+QSharedPointer<Entity> Ship::shot()
+{
+    return QSharedPointer<Entity>(new Projectile(*this));
 }
 
 QPointF Ship::center() const
