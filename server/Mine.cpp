@@ -87,12 +87,12 @@ QPointF Mine::center() const
 }
 bool Mine::makeEntityMove()
 {
-    if (this->center().x() > SCREEN_SIZE
+    if (this->center().x() > SCREEN_WIDTH
     ||  this->center().x() < 0)
     {
         this->angle(this->angle() - 180);
     }
-    if (this->center().y() > SCREEN_SIZE
+    if (this->center().y() > SCREEN_HEIGHT
     ||  this->center().y() < 0)
     {
         this->angle(this->angle() - 180);

@@ -4,10 +4,10 @@ Players::Players(qint32 maxPlayers)
     : _maxPlayers(maxPlayers),
       _spawns(maxPlayers)
 {
-    _spawns[0] = QPoint(1 * SCREEN_SIZE / 4, 1 * SCREEN_SIZE / 4);
-    _spawns[1] = QPoint(1 * SCREEN_SIZE / 4, 3 * SCREEN_SIZE / 4);
-    _spawns[2] = QPoint(3 * SCREEN_SIZE / 4, 3 * SCREEN_SIZE / 4);
-    _spawns[3] = QPoint(3 * SCREEN_SIZE / 4, 1 * SCREEN_SIZE / 4);
+    _spawns[0] = QPoint(1 * SCREEN_WIDTH / 4, 1 * SCREEN_HEIGHT / 4);
+    _spawns[1] = QPoint(1 * SCREEN_WIDTH / 4, 3 * SCREEN_HEIGHT / 4);
+    _spawns[2] = QPoint(3 * SCREEN_WIDTH / 4, 3 * SCREEN_HEIGHT / 4);
+    _spawns[3] = QPoint(3 * SCREEN_WIDTH / 4, 1 * SCREEN_HEIGHT / 4);
 }
 
 QSharedPointer<Player> &Players::findPlayer(qint32 idClient)

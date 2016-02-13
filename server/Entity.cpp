@@ -74,21 +74,21 @@ bool Entity::makeEntityMove()
         centreY = this->center().y();
         DEBUG("Entity::makeEntityMove() x:" << this->center().x() << " y:" << this->center().y(), false);
 
-        if (centreX > SCREEN_SIZE)
+        if (centreX > SCREEN_WIDTH)
         {
-            this->translate(-SCREEN_SIZE, 0);
+            this->translate(-SCREEN_WIDTH, 0);
         }
         else if (centreX < 0)
         {
-            this->translate(SCREEN_SIZE, 0);
+            this->translate(SCREEN_WIDTH, 0);
         }
-        else if (centreY > SCREEN_SIZE)
+        else if (centreY > SCREEN_HEIGHT)
         {
-            this->translate(0, -SCREEN_SIZE);
+            this->translate(0, -SCREEN_HEIGHT);
         }
         else if (centreY < 0)
         {
-            this->translate(0, SCREEN_SIZE);
+            this->translate(0, SCREEN_HEIGHT);
         }
         else {
             this->translate(_speed / 2 * cos(getRadian(_angle)),

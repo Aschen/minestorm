@@ -135,8 +135,8 @@ void Core::initMines()
     //Small Mines
     for (quint32 i = 0; i < 2; ++i)
     {
-        x = rand() % (SCREEN_SIZE - 20) + 10;
-        y = rand() % (SCREEN_SIZE - 20) + 10;
+        x = rand() % (SCREEN_WIDTH - 20) + 10;
+        y = rand() % (SCREEN_HEIGHT - 20) + 10;
         DEBUG("Core::initMines() Mine(" << x << "," << y << ")", false);
 
         addMine(Mine::TypeMine::Small, x, y);
@@ -144,8 +144,8 @@ void Core::initMines()
 
     for (quint32 i = 0; i < 2; ++i)
     {
-        x = rand() % SCREEN_SIZE - 10;
-        y = rand() % SCREEN_SIZE - 10;
+        x = rand() % SCREEN_WIDTH - 10;
+        y = rand() % SCREEN_HEIGHT - 10;
         DEBUG("Core::initMines() Mine(" << x << "," << y << ")", false);
 
         addMine(Mine::TypeMine::Medium, x, y);
@@ -153,8 +153,8 @@ void Core::initMines()
 
     for (quint32 i = 0; i < 2; ++i)
     {
-        x = rand() % SCREEN_SIZE - 10;
-        y = rand() % SCREEN_SIZE - 10;
+        x = rand() % SCREEN_WIDTH - 10;
+        y = rand() % SCREEN_HEIGHT - 10;
         DEBUG("Core::initMines() Mine(" << x << "," << y << ")", false);
 
         addMine(Mine::TypeMine::Big, x, y);

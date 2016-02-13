@@ -45,8 +45,8 @@ bool Projectile::makeEntityMove()
 
     if(_etat == Entity::ALIVE)
     {
-        if (this->center().x() > SCREEN_SIZE
-        ||  this->center().y() > SCREEN_SIZE
+        if (this->center().x() > SCREEN_WIDTH
+        ||  this->center().y() > SCREEN_HEIGHT
         ||  this->center().y() < 0
         ||  this->center().x() < 0)
         {

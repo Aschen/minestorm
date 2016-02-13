@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     if (arg == "cli")
     {
         QApplication    a(argc, argv);
-        Display         display(QSize(SCREEN_SIZE, SCREEN_SIZE));
+        Display         display(QSize(SCREEN_WIDTH, SCREEN_HEIGHT));
         MainWindow      w(&display);
 
         return a.exec();
