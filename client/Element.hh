@@ -22,7 +22,8 @@ public:
         MINE_S_ON   = 7,
         MINE_M_ON   = 8,
         MINE_L_ON   = 9,
-        SHOT        = 10
+        SHOT        = 10,
+        MINE_EXPLO  = 11
     };
 
 private:

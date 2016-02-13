@@ -48,29 +48,45 @@ void Players::deletePlayer(qint32 idClient)
 }
 
 /* EVENTS */
-void Players::keyRight(qint32 idClient)
+void Players::keyPressRight(qint32 idClient)
 {
-    findPlayer(idClient)->ship().rotate(15);
+    findPlayer(idClient)->ship().setRotation(Ship::RIGHT);
 }
 
-void Players::keyLeft(qint32 idClient)
+void Players::keyPressLeft(qint32 idClient)
 {
-    findPlayer(idClient)->ship().rotate(-15);
+    findPlayer(idClient)->ship().setRotation(Ship::LEFT);
 }
 
-void Players::keyUp(qint32 idClient)
+void Players::keyPressUp(qint32 idClient)
 {
+    findPlayer(idClient)->ship().goingUp(true);
     findPlayer(idClient)->ship().incrementSpeed();
 }
 
-void Players::keyDown(qint32 idClient)
+void Players::keyPressDown(qint32 idClient)
 {
-    findPlayer(idClient)->ship().decrementSpeed(5);
+    findPlayer(idClient)->ship().decrementSpeed(2);
 }
 
-QSharedPointer<Entity> Players::keySpace(qint32 idClient)
+QSharedPointer<Entity> Players::keyPressSpace(qint32 idClient)
 {
     return findPlayer(idClient)->ship().shot();
+}
+
+void Players::keyReleaseRight(qint32 idClient)
+{
+    findPlayer(idClient)->ship().setRotation(Ship::NONE);
+}
+
+void Players::keyReleaseLeft(qint32 idClient)
+{
+    findPlayer(idClient)->ship().setRotation(Ship::NONE);
+}
+
+void Players::keyReleaseUp(qint32 idClient)
+{
+    findPlayer(idClient)->ship().goingUp(false);
 }
 
 /* INFOS */

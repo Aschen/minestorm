@@ -10,6 +10,16 @@
 
 class Ship : public Entity
 {
+
+public:
+    enum Rotation
+    {
+        NONE = 0,
+        LEFT = 1,
+        RIGHT = 2
+    };
+
+
 private:
     quint32         _vie;
     quint32         _shipNumber;
@@ -18,18 +28,20 @@ private:
     bool            _scoreChanged;
     bool            _livesChanged;
     bool            _shield;
+    Rotation        _rotation;
+
+    bool            _goingUp;
 
 public:
     //Constructeurs
     Ship(const QPointF &position, qint32 shipNumber);
 
-    void            rotateShipLeft();
-    void            rotateShipRight();
     void            addScore(quint32 score);
     bool            changeLife(qint32 change);
     void            grantShield();
     bool            removeShield();
     QSharedPointer<Entity>  shot();
+    void            rotateShip();
 
     //Getter & Setter
     quint32         vie() const;
@@ -43,6 +55,11 @@ public:
     bool            scoreChanged();
     bool            livesChanged();
     bool            haveShield();
+    Rotation        rotation() const;
+    void            setRotation(Rotation rotation);
+    bool            goingUp();
+    void            goingUp(bool value);
+
 
     // Entity interface
 public:

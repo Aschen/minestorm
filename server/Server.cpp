@@ -87,6 +87,6 @@ quint32 Server::clientCount() const
 
 void Server::receiveMessage(qint32 socketFd, const QString &msg)
 {
-    DEBUG("Server::receiveMessage() : Worker " << socketFd << msg, false);
+    DEBUG("Server::receiveMessage() : Worker " << socketFd << msg, true);
     emit transfertMessage(socketFd, msg);
 }

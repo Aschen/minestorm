@@ -175,7 +175,7 @@ void Display::mousePressed(qint32 x, qint32 y)
 
 void Display::keyPressed(qint32 key)
 {
-    DEBUG("Display::keyPressed() : key =" << key, false);
+    DEBUG("Display::keyPressed() : key =" << key, true);
 
     MessageKey    message(MessageBase::KEY_PRESSED, key);
 
@@ -185,7 +185,11 @@ void Display::keyPressed(qint32 key)
 
 void Display::keyReleased(qint32 key)
 {
-    DEBUG("Display::keyReleased() : key =" << key, false);
+    DEBUG("Display::keyReleased() : key =" << key, true);
+    MessageKey    message(MessageBase::KEY_RELEASE, key);
+
+    if (_isRunning)
+        _client->sendMessage(message.messageString());
 }
 
 void Display::startNewGame()

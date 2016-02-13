@@ -24,11 +24,14 @@ public:
     void                    deletePlayer(qint32 idClient);
 
     /* Events */
-    void                    keyRight(qint32 idClient);
-    void                    keyLeft(qint32 idClient);
-    void                    keyUp(qint32 idClient);
-    void                    keyDown(qint32 idClient);
-    QSharedPointer<Entity>  keySpace(qint32 idClient);
+    void                    keyPressRight(qint32 idClient);
+    void                    keyPressLeft(qint32 idClient);
+    void                    keyPressUp(qint32 idClient);
+    void                    keyPressDown(qint32 idClient);
+    QSharedPointer<Entity>  keyPressSpace(qint32 idClient);
+    void                    keyReleaseRight(qint32 idClient);
+    void                    keyReleaseLeft(qint32 idClient);
+    void                    keyReleaseUp(qint32 idClient);
 
     bool                    playerAvailable() const;
     bool                    contains(qint32 idClient) const;

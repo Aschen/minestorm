@@ -13,12 +13,13 @@ class Mine : public Entity
 public:
     /*   /!\ MUST MATCH Element::Type /!\   */
     enum TypeMine {
-        Small = 0,
-        Medium = 5,
-        Big = 6,
-        Small_On = 7,
-        Medium_On = 8,
-        Big_On = 9
+        Small       = 0,
+        Medium      = 5,
+        Big         = 6,
+        Small_On    = 7,
+        Medium_On   = 8,
+        Big_On      = 9,
+        Exploded    = 11
     };
 
 private:

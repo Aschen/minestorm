@@ -1,6 +1,5 @@
 #include "Ship.hh"
 
-
 Ship::Ship(const QPointF &position, qint32 shipNumber)
     : Entity(Entity::SHIP),
       _vie(3),
@@ -13,6 +12,9 @@ Ship::Ship(const QPointF &position, qint32 shipNumber)
     _size   = QSize(SHIP_SIZE, SHIP_SIZE);
     _speed  = 0;
     _angle  = 0;
+    _rotation = NONE;
+    _goingUp = false;
+
     grantShield();
     this->addPoint(QPointF(position.x(), position.y()));
     this->addPoint(QPointF(position.x() + size().width(), position.y()));
@@ -101,6 +103,26 @@ QSharedPointer<Entity> Ship::shot()
     return QSharedPointer<Entity>(new Projectile(*this));
 }
 
+Ship::Rotation Ship::rotation() const
+{
+    return _rotation;
+}
+
+void Ship::setRotation(Rotation rotation)
+{
+    _rotation = rotation;
+}
+
+bool Ship::goingUp()
+{
+    return _goingUp;
+}
+
+void Ship::goingUp(bool value)
+{
+    _goingUp = value;
+}
+
 QPointF Ship::center() const
 {
     qint32  x;
@@ -128,8 +150,29 @@ bool Ship::changeLife(qint32 change)
 
     return aliveOrNot;
 }
+
+void Ship::rotateShip()
+{
+    switch(_rotation)
+    {
+        case LEFT:
+            this->rotate(10);
+            break;
+
+        case RIGHT:
+            this->rotate(-10);
+            break;
+        default:
+            break;
+    }
+}
+
 bool Ship::makeEntityMove()
 {
+    rotateShip();
+    if(goingUp())
+        this->incrementSpeed();
+
     Entity::makeEntityMove();
     if(_tempo % 10 == 0)
          decrementSpeed(1);

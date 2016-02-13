@@ -244,8 +244,16 @@ void Core::messageDispatcher(qint32 idClient, const QString &msg)
         }
         case MessageBase::KEY_PRESSED:
         {
+            DEBUG("Core::messageDispatcher() : KeyPRESSED" << msg, false);
             MessageKey          message(msg);
             keyPressed(idClient, message.keyCode());
+            break;
+        }
+        case MessageBase::KEY_RELEASE:
+        {
+            DEBUG("Core::messageDispatcher() : KeyRelease" << msg, false);
+            MessageKey          message(msg);
+            keyReleased(idClient, message.keyCode());
             break;
         }
         default:
@@ -272,27 +280,27 @@ void Core::keyPressed(qint32 idClient, qint32 key)
     {
     case Qt::Key_Right:
         DEBUG("Core::keyPressed : Client" << idClient << " KeyRight", false);
-        _players.keyRight(idClient);
+        _players.keyPressRight(idClient);
         break;
 
     case Qt::Key_Left:
         DEBUG("Core::keyPressed Client" << idClient << " KeyLeft", false);
-        _players.keyLeft(idClient);
+        _players.keyPressLeft(idClient);
         break;
 
     case Qt::Key_Up:
         DEBUG("Core::keyPressed : Client" << idClient << " KeyUp", false);
-        _players.keyUp(idClient);
+        _players.keyPressUp(idClient);
         break;
 
     case Qt::Key_Down:
         DEBUG("Core::keyPressed : Client" << idClient << " KeyDown", false);
-        _players.keyDown(idClient);
+        _players.keyPressDown(idClient);
         break;
 
     case Qt::Key_Space:
         DEBUG("Core::keyPressed : Client " << idClient << " KeySpace", false);
-        addShot(_players.keySpace(idClient));
+        addShot(_players.keyPressSpace(idClient));
         break;
 
     default:
@@ -303,6 +311,25 @@ void Core::keyPressed(qint32 idClient, qint32 key)
 
 void Core::keyReleased(qint32 idClient, qint32 key)
 {
-    (void) idClient;
-    (void) key;
+    switch(key)
+    {
+        case Qt::Key_Right:
+            DEBUG("Core::keyRealeased : Client" << idClient << " KeyRight", false);
+            _players.keyReleaseRight(idClient);
+            break;
+
+        case Qt::Key_Left:
+            DEBUG("Core::keyRealeased Client" << idClient << " KeyLeft", false);
+            _players.keyReleaseLeft(idClient);
+            break;
+
+        case Qt::Key_Up:
+            DEBUG("Core::keyRealeased Client" << idClient << " KeyUp", false);
+            _players.keyReleaseUp(idClient);
+            break;
+
+        default:
+            DEBUG("Core::keyReleased : Client" << idClient << " Unknown key:" << key, false);
+            break;
+    }
 }

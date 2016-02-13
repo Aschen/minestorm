@@ -35,7 +35,7 @@ qint32 MessageKey::keyCode() const
 
 void MessageKey::createKeyCode(QTextStream &stream)
 {
-    assert(_type == MessageBase::KEY_PRESSED);
+    assert(_type == MessageBase::KEY_PRESSED || _type == MessageBase::KEY_RELEASE);
 
     stream >> _keyCode;
 }
