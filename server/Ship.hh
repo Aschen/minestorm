@@ -9,6 +9,15 @@
 
 class Ship : public Entity
 {
+
+public:
+    enum Rotation
+    {
+        NONE = 0,
+        LEFT = 1,
+        RIGHT = 2
+    };
+
 private:
     quint32         _vie;
     quint32         _shipNumber;
@@ -17,17 +26,17 @@ private:
     bool            _scoreChanged;
     bool            _livesChanged;
     bool            _shield;
+    Rotation        _rotation;
 
 public:
     //Constructeurs
     Ship(qint32 id, const QPointF &position, qint32 shipNumber);
 
-    void            rotateShipLeft();
-    void            rotateShipRight();
     void            addScore(quint32 score);
     bool            changeLife(qint32 change);
     void            grantShield();
     bool            removeShield();
+    void            rotateShip();
 
     //Getter & Setter
     quint32         vie() const;
@@ -43,6 +52,8 @@ public:
     quint32         lives() const;
     bool            livesChanged();
     bool            haveShield();
+    Rotation        rotation() const;
+    void            setRotation(Rotation rotation);
 
     // Entity interface
 public:

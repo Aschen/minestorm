@@ -237,8 +237,16 @@ void Core::messageDispatcher(qint32 idClient, const QString &msg)
         }
         case MessageBase::KEY_PRESSED:
         {
+            DEBUG("Core::messageDispatcher() : KeyPRESSED" << msg, false);
             MessageKey          message(msg);
             keyPressed(idClient, message.keyCode());
+            break;
+        }
+        case MessageBase::KEY_RELEASE:
+        {
+            DEBUG("Core::messageDispatcher() : KeyRelease" << msg, false);
+            MessageKey          message(msg);
+            keyReleased(idClient, message.keyCode());
             break;
         }
         default:
@@ -265,13 +273,13 @@ void Core::keyPressed(qint32 idClient, qint32 key)
     {
     case Qt::Key_Right:
         DEBUG("Core::keyPressed : Client" << idClient << " KeyRight", false);
-        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->rotate(15);
+        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->setRotation(Ship::RIGHT);
 
         break;
 
     case Qt::Key_Left:
         DEBUG("Core::keyPressed Client" << idClient << " KeyLeft", false);
-        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->rotate(-15);
+        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->setRotation(Ship::LEFT);
 
         break;
 
@@ -303,6 +311,21 @@ void Core::keyPressed(qint32 idClient, qint32 key)
 
 void Core::keyReleased(qint32 idClient, qint32 key)
 {
-    (void) idClient;
-    (void) key;
+    switch(key)
+    {
+        case Qt::Key_Right:
+            DEBUG("Core::keyRealeased : Client" << idClient << " KeyRight", false);
+            dynamic_cast<Ship*>(_entitiesMap[idClient].data())->setRotation(Ship::NONE);
+
+            break;
+
+        case Qt::Key_Left:
+            DEBUG("Core::keyRealeased Client" << idClient << " KeyLeft", false);
+            dynamic_cast<Ship*>(_entitiesMap[idClient].data())->setRotation(Ship::NONE);
+
+            break;
+        default:
+            DEBUG("Core::keyReleased : Client" << idClient << " Unknown key:" << key, false);
+            break;
+    }
 }

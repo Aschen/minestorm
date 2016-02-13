@@ -14,6 +14,7 @@ public:
         ERROR = 0, // Trying to extract int from QTextStream return 0 if error
         MOUSE_PRESSED,
         KEY_PRESSED,
+        KEY_RELEASE,
         OBJECTS,
         SCORE,
         LIVES
