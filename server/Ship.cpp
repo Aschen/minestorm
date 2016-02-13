@@ -1,8 +1,8 @@
 #include "Ship.hh"
 
 
-Ship::Ship(qint32 id, const QPointF &position, qint32 shipNumber)
-    : Entity(id, Entity::SHIP),
+Ship::Ship(const QPointF &position, qint32 shipNumber)
+    : Entity(Entity::SHIP),
       _vie(3),
       _shipNumber(shipNumber),
       _tempo(0),
@@ -91,14 +91,14 @@ void Ship::grantShield()
 
 bool Ship::removeShield()
 {
-    DEBUG("Ship::Shield Lost", true);
+    DEBUG("Ship::Shield Lost", false);
     _shield = false;
     return _shield;
 }
 
-void Ship::shot(EntityHash &entitiesMap, quint32 id)
+QSharedPointer<Entity> Ship::shot()
 {
-    entitiesMap[id] = QSharedPointer<Entity>(new Projectile(id, *dynamic_cast<Ship*>(entitiesMap[_id].data())));
+    return QSharedPointer<Entity>(new Projectile(*this));
 }
 
 QPointF Ship::center() const
@@ -121,7 +121,7 @@ bool Ship::changeLife(qint32 change)
     {
         aliveOrNot = false;
     }
-    DEBUG("Ship::changeLife() : Ship has" << _vie << " life", true);
+    DEBUG("Ship::changeLife() : Ship has" << _vie << " life", false);
 
     /* Tell Core that lives has changed */
     _livesChanged = true;

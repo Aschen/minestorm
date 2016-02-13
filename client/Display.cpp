@@ -22,6 +22,7 @@ Display::Display(const QSize &size, QObject *parent)
 
 void Display::draw(QPainter &painter, QRect &size)
 {
+    (void) size;
     DEBUG("Display::draw() : " << _elements->size() << " elements to draw", false);
     if (_elements != nullptr)
     {

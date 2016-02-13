@@ -36,7 +36,9 @@ SOURCES += server/Core.cpp \
     server/Projectile.cpp \
     shared/MessageScore.cpp \
     shared/MessageLives.cpp \
-    server/MineTimer.cpp
+    server/MineTimer.cpp \
+    server/Player.cpp \
+    server/Players.cpp
 
 HEADERS  += server/Core.hh \
     client/Controller.hh \
@@ -62,7 +64,9 @@ HEADERS  += server/Core.hh \
     server/Projectile.hh \
     shared/MessageScore.hh \
     shared/MessageLives.hh \
-    server/MineTimer.hh
+    server/MineTimer.hh \
+    server/Player.hh \
+    server/Players.hh
 
 FORMS    +=
 

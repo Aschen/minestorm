@@ -22,7 +22,7 @@ private:
 
 public:
     MessageObjects(const QString &msg);
-    MessageObjects(const EntityHash &entities);
+    MessageObjects(const EntityList &entities);
     ~MessageObjects();
 
     const QSharedPointer<QVector<Element>>     &elements() const;

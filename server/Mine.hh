@@ -29,7 +29,7 @@ private:
 
 public:
     //Constructor
-    Mine(qint32 id, TypeMine typeMine, const QPointF &point);
+    Mine(TypeMine typeMine, const QPointF &point);
     virtual ~Mine();
 
     void            activate();

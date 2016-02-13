@@ -21,7 +21,7 @@ private:
 
 public:
     //Constructeurs
-    Ship(qint32 id, const QPointF &position, qint32 shipNumber);
+    Ship(const QPointF &position, qint32 shipNumber);
 
     void            rotateShipLeft();
     void            rotateShipRight();
@@ -29,7 +29,7 @@ public:
     bool            changeLife(qint32 change);
     void            grantShield();
     bool            removeShield();
-    void            shot(EntityHash &entitiesMap, quint32 id);
+    QSharedPointer<Entity>  shot();
 
     //Getter & Setter
     quint32         vie() const;
@@ -41,8 +41,6 @@ public:
     void            score(quint32 score);
     quint32         score() const;
     bool            scoreChanged();
-    void            lives(quint32 lives);
-    quint32         lives() const;
     bool            livesChanged();
     bool            haveShield();
 
