@@ -33,6 +33,13 @@ private:
     QString             _score;
     QString             _lives;
     Images              _images;
+    quint32             _fps;
+    QList<quint32>    _fpsValues;
+    QString             _fpsText;
+    QPixmap             _image;
+    qint32              _angle;
+    QPointF             _origin;
+    QTimer              _fpsTimer;
 
 public:
     Display(const QSize &size, QObject *parent = nullptr);
@@ -55,7 +62,7 @@ public:
     const QSize         &size() const;
     bool                isRunning() const;
     const QVector<Element> &elements() const;
-
+    QPixmap             getTransformedImage(QPixmap image, QPointF pos, QPointF anchor, qreal rot, QPointF &origin);
 
 private:
     void                receiveObjects(const QSharedPointer<QVector<Element>> &elements);
@@ -67,6 +74,7 @@ signals:
 
 private slots:
     void                messageDispatcher(qint32 socketFd, const QString &msg);
+    void                fpsCount();
 };
 
 #endif // DISPLAY_HH
