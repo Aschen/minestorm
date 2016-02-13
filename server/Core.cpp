@@ -60,19 +60,19 @@ void Core::step()
         Collision            c(_entitiesMap, _entitiesToDelete);
 
         /* Send score and lives to players */
-//        for (const QSharedPointer<Player> &player : _players)
-//        {
-//            if (player->ship().scoreChanged())
-//            {
-//                MessageScore    msg(player->ship().score());
-//                _server.unicast(player->idClient(), msg.messageString());
-//            }
-//            if (player->ship().livesChanged())
-//            {
-//                MessageLives    msg(player->ship().vie());
-//                _server.unicast(player->idClient(), msg.messageString());
-//            }
-//        }
+        for (const QSharedPointer<Player> &player : _players)
+        {
+            if (player->ship().scoreChanged())
+            {
+                MessageScore    msg(player->ship().score());
+                _server.unicast(player->idClient(), msg.messageString());
+            }
+            if (player->ship().livesChanged())
+            {
+                MessageLives    msg(player->ship().vie());
+                _server.unicast(player->idClient(), msg.messageString());
+            }
+        }
         removeEntitiesToDelete();
 
         /* Send objects list to clients */
