@@ -24,6 +24,7 @@ void Player::startShooting(EntityList *shots)
 {
     _shots = shots;
 
+    shoot();
     _shotTimer.start(1000 / SHOT_PER_S);
 }
 
