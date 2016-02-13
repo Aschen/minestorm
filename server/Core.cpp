@@ -299,10 +299,11 @@ void Core::keyPressed(qint32 idClient, qint32 key)
         break;
 
     case Qt::Key_Space:
+    {
         DEBUG("Core::keyPressed : Client " << idClient << " KeySpace", false);
-        addShot(_players.keyPressSpace(idClient));
+        _players.keyPressSpace(idClient, _entities[Entity::SHOT]);
         break;
-
+    }
     default:
         DEBUG("Core::keyPressed : Client" << idClient << " Unknown key:" << key, false);
         break;
@@ -326,6 +327,11 @@ void Core::keyReleased(qint32 idClient, qint32 key)
         case Qt::Key_Up:
             DEBUG("Core::keyRealeased Client" << idClient << " KeyUp", false);
             _players.keyReleaseUp(idClient);
+            break;
+
+        case Qt::Key_Space:
+            DEBUG("Core::keyRealeased Client" << idClient << " KeySpace", false);
+            _players.keyReleaseSpace(idClient);
             break;
 
         default:
