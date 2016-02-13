@@ -13,6 +13,8 @@ Ship::Ship(qint32 id, const QPointF &position, qint32 shipNumber)
     _speed  = 0;
     _angle  = 0;
     _rotation = NONE;
+    _goingUp = false;
+
     grantShield();
     this->addPoint(QPointF(position.x(), position.y()));
     this->addPoint(QPointF(position.x() + size().width(), position.y()));
@@ -106,6 +108,15 @@ void Ship::setRotation(Rotation rotation)
     _rotation = rotation;
 }
 
+bool Ship::goingUp()
+{
+    return _goingUp;
+}
+
+void Ship::goingUp(bool value)
+{
+    _goingUp = value;
+}
 QPointF Ship::center() const
 {
     qint32  x;
@@ -153,6 +164,9 @@ void Ship::rotateShip()
 bool Ship::makeEntityMove()
 {
     rotateShip();
+    if(goingUp())
+        this->incrementSpeed();
+
     Entity::makeEntityMove();
     if(_tempo % 10 == 0)
          decrementSpeed(1);

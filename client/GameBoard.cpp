@@ -17,6 +17,8 @@ GameBoard::GameBoard(Display *display, QWidget *parent)
      */
 //    _timer.setSingleShot(true);
 //    connect(&_timer, SIGNAL(timeout()), this, SLOT(acceptEvent()));
+    //        _acceptEvent = false;
+    //        _timer.start(1000 / EVENT_PER_S);
 }
 
 void GameBoard::paintEvent(QPaintEvent * /* event */ )
@@ -41,8 +43,6 @@ void GameBoard::keyPressEvent(QKeyEvent * event)
 {
     if (!event->isAutoRepeat())
     {
-//        _acceptEvent = false;
-//        _timer.start(1000 / EVENT_PER_S);
         _display->keyPressed(event->key());
     }
 }
@@ -51,8 +51,6 @@ void GameBoard::keyReleaseEvent(QKeyEvent * event)
 {
     if (!event->isAutoRepeat())
     {
-//        _acceptEvent = false;
-//        _timer.start(1000 / EVENT_PER_S);
         _display->keyReleased(event->key());
     }
 }

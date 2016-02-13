@@ -18,6 +18,7 @@ public:
         RIGHT = 2
     };
 
+
 private:
     quint32         _vie;
     quint32         _shipNumber;
@@ -27,6 +28,8 @@ private:
     bool            _livesChanged;
     bool            _shield;
     Rotation        _rotation;
+
+    bool            _goingUp;
 
 public:
     //Constructeurs
@@ -54,6 +57,9 @@ public:
     bool            haveShield();
     Rotation        rotation() const;
     void            setRotation(Rotation rotation);
+    bool            goingUp();
+    void            goingUp(bool value);
+
 
     // Entity interface
 public:

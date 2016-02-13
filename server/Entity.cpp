@@ -32,7 +32,7 @@ void Entity::incrementSpeed()
     DEBUG("Entity::speed++: "<< _speed, false);
 
     if (_speed < 20)
-        _speed += 5;
+        _speed += 1;
     else
         _speed = 20;
 }
@@ -166,4 +166,5 @@ void Entity::setEtatDead()
 bool Entity::isDead()
 {
     return _etat == Etat::DEAD;
+
 }
