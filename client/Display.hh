@@ -34,7 +34,7 @@ private:
     QString             _lives;
     Images              _images;
     quint32             _fps;
-    QList<quint32>    _fpsValues;
+    QList<quint32>      _fpsValues;
     QString             _fpsText;
     QPixmap             _image;
     qint32              _angle;

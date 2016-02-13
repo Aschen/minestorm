@@ -10,6 +10,8 @@
 # include <QString>
 # include <QTextStream>
 
+# include <algorithm>
+
 # include "Minestorm.hh"
 # include "Server.hh"
 # include "Ship.hh"
@@ -21,6 +23,7 @@
 # include "MessageScore.hh"
 # include "MessageLives.hh"
 # include "Collision.hh"
+# include "Player.hh"
 
 class Core : public QObject
 {    
@@ -38,11 +41,11 @@ private:
     QList<qint32>       _playersInGame;
     EntityHash          _entitiesMap;
     EntityVector        _entitiesToDelete;
-
+    QVector<QSharedPointer<Player>>                      _players;
+    QHash<Entity::Type, QList<QSharedPointer<Entity>>>   _entities;
 
 public:
     Core(qint32 cps = CYCLE_PER_S);
-    ~Core();
 
     void                mousePressed(qint32 idClient, qint32 x, qint32 y);
     void                keyPressed(qint32 idClient, qint32 key);
@@ -52,9 +55,12 @@ public:
     void                scoreChanged(qint32 idClient, quint32 score);
 
 private:
-    void                entitiesInitialization();    
+    void                initMines();
+    void                initPlayers();
     void                removeEntitiesToDelete();
     quint32             getID();
+    qint32              playerAvailable() const;
+    quint32             playersCount() const;
 
 private slots:
     void                step();

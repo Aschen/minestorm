@@ -8,15 +8,17 @@ Core::Core(qint32 cps)
       _server(SERVER_PORT),
       _playersCount(0),
       _playerSpawn(MAX_PLAYERS + 1),
-      _uniqId(100)
+      _uniqId(100),
+      _players(0)
 {
     DEBUG("Core::Core() : cps " << cps, true);
 
+    /* Start Core timer */
     _timer.setSingleShot(false);
     connect(&_timer,    SIGNAL(timeout()),
             this,       SLOT(step()));
 
-    // Connect communications functions
+    /* Connect communications functions */
     connect(&_server,   SIGNAL(transfertMessage(qint32, const QString&)),
             this,       SLOT(messageDispatcher(qint32, const QString&)));
     connect(&_server,   SIGNAL(clientConnected(qint32)),
@@ -24,18 +26,19 @@ Core::Core(qint32 cps)
     connect(&_server,   SIGNAL(sigClientDisconnected(qint32)),
             this,       SLOT(playerLeft(qint32)));
 
-    // Initialize players spawn
-    qint32      screenPart = SCREEN_SIZE / 4;
 
-    _playerSpawn[1] = QPoint(1 * screenPart, 1 * screenPart);
-    _playerSpawn[2] = QPoint(3 * screenPart, 1 * screenPart);
-    _playerSpawn[3] = QPoint(3 * screenPart, 3 * screenPart);
-    _playerSpawn[4] = QPoint(1 * screenPart, 3 * screenPart);
+    /* Initialize 4 players */
+    initPlayers();
 }
 
-Core::~Core()
+void Core::initPlayers()
 {
-    DEBUG("Core::~Core()", false);
+    qint32      screenPart = SCREEN_SIZE / 4;
+
+    _players.push_back(QSharedPointer<Player>(new Player(1, QPoint(1 * screenPart, 1 * screenPart))));
+    _players.push_back(QSharedPointer<Player>(new Player(2, QPoint(3 * screenPart, 1 * screenPart))));
+    _players.push_back(QSharedPointer<Player>(new Player(3, QPoint(3 * screenPart, 3 * screenPart))));
+    _players.push_back(QSharedPointer<Player>(new Player(4, QPoint(1 * screenPart, 3 * screenPart))));
 }
 
 void Core::startGame()
@@ -112,12 +115,6 @@ void Core::removeEntitiesToDelete()
     }
 }
 
-quint32 Core::getID()
-{
-    return ++_uniqId;
-}
-
-
 /**
  * @brief Core::newPlayer : Instancie un nouveau vaisseau lors de la connexion d'un client
  *                          Appelé par le signal clientConnected.
@@ -125,17 +122,18 @@ quint32 Core::getID()
  */
 void Core::newPlayer(qint32 idClient)
 {
-    if (_server.clientCount() <= MAX_PLAYERS)
+    qint32      i;
+
+    /* If there is a room for new player */
+    if ((i = playerAvailable()) != -1)
     {
         DEBUG("Core::NewPlayer() : " << idClient, true);
-        if(_playersCount == 0)
-            entitiesInitialization();
 
-        _playersCount++;
+        /* Init mines if first player */
+        if (playersCount() == 0)
+            initMine();
 
-        _entitiesMap[idClient] = QSharedPointer<Entity>(
-                    new Ship(idClient, _playerSpawn[_playersCount], _playersCount)
-                    );
+        _entitiesMap[idClient] = _players[i]->newPlayer(idClient);
 
         // Add player to active players list
         _playersInGame.push_back(idClient);
@@ -149,22 +147,34 @@ void Core::newPlayer(qint32 idClient)
 void Core::playerLeft(qint32 idClient)
 {
     DEBUG("Core::playerLeft() : " << idClient, true);
+    auto it = std::find_if(_players.first(),
+                           _players.end(),
+                           [idClient](const QSharedPointer<Player> &player) { return player->idClient() == idClient; });
 
-    auto it = _entitiesMap.find(idClient);
-
-    if (it != _entitiesMap.end())
+    /* If client is in players */
+    if (it != _players.end())
     {
-        _playersCount--;
-        _entitiesMap.remove(idClient);
+        QSharedPointer<Player> &player = *it;
 
-        // Delete player from active players list
-        _playersInGame.removeOne(idClient);
+        player->playerLeft();
     }
+
+
+//    auto it = _entitiesMap.find(idClient);
+
+//    if (it != _entitiesMap.end())
+//    {
+//        _playersCount--;
+//        _entitiesMap.remove(idClient);
+
+//        // Delete player from active players list
+//        _playersInGame.removeOne(idClient);
+//    }
 }
 
-void Core::entitiesInitialization()
+void Core::initMines()
 {
-    DEBUG("Core::entitiesInit() - entitiesMaps.size() = " << _entitiesMap.size(), true);
+    DEBUG("Core::initMines() - entitiesMaps.size() = " << _entitiesMap.size(), true);
     qint32  x, y, id;
 
     //Small Mines
@@ -172,7 +182,7 @@ void Core::entitiesInitialization()
     {
         x = rand() % (SCREEN_SIZE - 20) + 10;
         y = rand() % (SCREEN_SIZE - 20) + 10;
-        DEBUG("Mine(" << x << "," << y << ")", false);
+        DEBUG("Core::initMines() Mine(" << x << "," << y << ")", false);
 
         id = getID();
         this->_entitiesMap[id] = QSharedPointer<Entity>(new Mine(id,
@@ -184,7 +194,7 @@ void Core::entitiesInitialization()
     {
         x = rand() % SCREEN_SIZE - 10;
         y = rand() % SCREEN_SIZE - 10;
-        DEBUG("Mine(" << x << "," << y << ")", false);
+        DEBUG("Core::initMines() Mine(" << x << "," << y << ")", false);
 
         id = getID();
         this->_entitiesMap[id] = QSharedPointer<Entity>(new Mine(id,
@@ -196,7 +206,7 @@ void Core::entitiesInitialization()
     {
         x = rand() % SCREEN_SIZE - 10;
         y = rand() % SCREEN_SIZE - 10;
-        DEBUG("Mine(" << x << "," << y << ")", false);
+        DEBUG("Core::initMines() Mine(" << x << "," << y << ")", false);
 
         id = getID();
         this->_entitiesMap[id] = QSharedPointer<Entity>(new Mine(id,
@@ -204,7 +214,37 @@ void Core::entitiesInitialization()
                                                                  QPoint(x, y)));
     }
 
-    DEBUG("entitiesMaps.size() = " << _entitiesMap.size(), true);
+    DEBUG("Core::initMines()entitiesMaps.size() = " << _entitiesMap.size(), true);
+}
+
+quint32 Core::getID()
+{
+    return ++_uniqId;
+}
+
+quint32 Core::playersCount() const
+{
+    quint32     i = 0;
+
+    for (QSharedPointer<Player> &player : _players)
+    {
+        i += player->available() ? 1 : 0;
+    }
+
+    return i;
+}
+
+qint32 Core::playerAvailable() const
+{
+    for (quint32 i = 0; i < _players.size (); ++i)
+    {
+        if (_players[i]->available())
+        {
+            return i;
+        }
+    }
+
+    return -1;
 }
 
 /**********\

@@ -39,8 +39,6 @@ public:
     void            score(quint32 score);
     quint32         score() const;
     bool            scoreChanged();
-    void            lives(quint32 lives);
-    quint32         lives() const;
     bool            livesChanged();
     bool            haveShield();
 
