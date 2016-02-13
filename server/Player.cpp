@@ -7,10 +7,6 @@ Player::Player(quint32 number, const QPoint &spawn)
 {
 }
 
-Player::Player()
-{
-}
-
 QSharedPointer<Entity> &Player::newPlayer(qint32 idClient)
 {
     DEBUG("Player::newPlayer() idClient:" << idClient, true);

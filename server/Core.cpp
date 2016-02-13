@@ -22,9 +22,9 @@ Core::Core(qint32 cps)
     connect(&_server,   SIGNAL(transfertMessage(qint32, const QString&)),
             this,       SLOT(messageDispatcher(qint32, const QString&)));
     connect(&_server,   SIGNAL(clientConnected(qint32)),
-            this,       SLOT(newPlayer(qint32)));
+            this,       SLOT(clientJoin(qint32)));
     connect(&_server,   SIGNAL(sigClientDisconnected(qint32)),
-            this,       SLOT(playerLeft(qint32)));
+            this,       SLOT(clientLeft(qint32)));
 
 
     /* Initialize 4 players */
@@ -33,12 +33,6 @@ Core::Core(qint32 cps)
 
 void Core::initPlayers()
 {
-    qint32      screenPart = SCREEN_SIZE / 4;
-
-    _players.push_back(QSharedPointer<Player>(new Player(1, QPoint(1 * screenPart, 1 * screenPart))));
-    _players.push_back(QSharedPointer<Player>(new Player(2, QPoint(3 * screenPart, 1 * screenPart))));
-    _players.push_back(QSharedPointer<Player>(new Player(3, QPoint(3 * screenPart, 3 * screenPart))));
-    _players.push_back(QSharedPointer<Player>(new Player(4, QPoint(1 * screenPart, 3 * screenPart))));
 }
 
 void Core::startGame()
@@ -120,44 +114,54 @@ void Core::removeEntitiesToDelete()
  *                          Appelé par le signal clientConnected.
  * @param idClient        : id de la socket client
  */
-void Core::newPlayer(qint32 idClient)
+void Core::clientJoin(qint32 idClient)
 {
-    qint32      i;
 
-    /* If there is a room for new player */
-    if ((i = playerAvailable()) != -1)
+    if (_players.playerAvailable())
     {
-        DEBUG("Core::NewPlayer() : " << idClient, true);
+        DEBUG("Core::clientJoint() : New player" << idClient, true);
 
         /* Init mines if first player */
-        if (playersCount() == 0)
-            initMine();
+        if (_players.count() == 0)
+        {
+            initMines();
+        }
 
-        _entitiesMap[idClient] = _players[i]->newPlayer(idClient);
-
-        // Add player to active players list
-        _playersInGame.push_back(idClient);
+        /* Create new player and add ship to entities */
+        _entitiesMap[idClient] = _players.newPlayer(idClient);
     }
     else
     {
-        DEBUG("Core::initialize() : New spectator" << idClient, true);
+        DEBUG("Core::clientJoint() : New spectator" << idClient, true);
     }
 }
 
-void Core::playerLeft(qint32 idClient)
+void Core::clientLeft(qint32 idClient)
 {
-    DEBUG("Core::playerLeft() : " << idClient, true);
-    auto it = std::find_if(_players.first(),
-                           _players.end(),
-                           [idClient](const QSharedPointer<Player> &player) { return player->idClient() == idClient; });
-
-    /* If client is in players */
-    if (it != _players.end())
+    /* If a player left */
+    if (_players.contains(idClient))
     {
-        QSharedPointer<Player> &player = *it;
+        DEBUG("Core::clientLeft() : Player left:" << idClient, true);
 
-        player->playerLeft();
+        _players.deletePlayer(idClient);
+        _entitiesMap.remove(idClient);
     }
+    else
+    {
+        DEBUG("Core::clientLeft() : Spectator left:" << idClient, true);
+    }
+
+//    auto it = std::find_if(_players.first(),
+//                           _players.end(),
+//                           [idClient](const QSharedPointer<Player> &player) { return player->idClient() == idClient; });
+
+//    /* If client is in players */
+//    if (it != _players.end())
+//    {
+//        QSharedPointer<Player> &player = *it;
+
+//        player->playerLeft();
+//    }
 
 
 //    auto it = _entitiesMap.find(idClient);
@@ -214,37 +218,12 @@ void Core::initMines()
                                                                  QPoint(x, y)));
     }
 
-    DEBUG("Core::initMines()entitiesMaps.size() = " << _entitiesMap.size(), true);
+    DEBUG("Core::initMines() entitiesMaps.size() = " << _entitiesMap.size(), true);
 }
 
 quint32 Core::getID()
 {
     return ++_uniqId;
-}
-
-quint32 Core::playersCount() const
-{
-    quint32     i = 0;
-
-    for (QSharedPointer<Player> &player : _players)
-    {
-        i += player->available() ? 1 : 0;
-    }
-
-    return i;
-}
-
-qint32 Core::playerAvailable() const
-{
-    for (quint32 i = 0; i < _players.size (); ++i)
-    {
-        if (_players[i]->available())
-        {
-            return i;
-        }
-    }
-
-    return -1;
 }
 
 /**********\

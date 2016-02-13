@@ -23,7 +23,7 @@
 # include "MessageScore.hh"
 # include "MessageLives.hh"
 # include "Collision.hh"
-# include "Player.hh"
+# include "Players.hh"
 
 class Core : public QObject
 {    
@@ -41,7 +41,7 @@ private:
     QList<qint32>       _playersInGame;
     EntityHash          _entitiesMap;
     EntityVector        _entitiesToDelete;
-    QVector<QSharedPointer<Player>>                      _players;
+    Players             _players;
     QHash<Entity::Type, QList<QSharedPointer<Entity>>>   _entities;
 
 public:
@@ -59,14 +59,12 @@ private:
     void                initPlayers();
     void                removeEntitiesToDelete();
     quint32             getID();
-    qint32              playerAvailable() const;
-    quint32             playersCount() const;
 
 private slots:
     void                step();
     void                messageDispatcher(qint32 idClient, const QString &msg);
-    void                newPlayer(qint32 idClient);
-    void                playerLeft(qint32 idClient);
+    void                clientJoin(qint32 idClient);
+    void                clientLeft(qint32 idClient);
 };
 
 #endif // CORE_HH
