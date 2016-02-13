@@ -10,12 +10,11 @@
 
 using PlayersList = QVector<QSharedPointer<Player>>;
 
-class Players
+class Players : public PlayersList
 {
 private:
     const quint32           _maxPlayers;
     quint32                 _playersCount;
-    PlayersList             _players;
 
 public:
     Players(quint32 maxPlayers = MAX_PLAYERS);
@@ -37,7 +36,8 @@ public:
 private:
     void                    initPlayers();
     QSharedPointer<Player>  &findPlayer(qint32 idClient);
-    quint32                 findAvailable() const;
+    QSharedPointer<Player>  &findAvailable();
+    QSharedPointer<Player>  get(quint32 i);
 };
 
 #endif // PLAYERS_HH

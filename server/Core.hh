@@ -35,10 +35,7 @@ private:
     QTimer              _timer;
     qint32              _step;
     Server              _server;
-    quint32             _playersCount;
-    QVector<QPoint>     _playerSpawn;
     quint32             _uniqId;
-    QList<qint32>       _playersInGame;
     EntityHash          _entitiesMap;
     EntityVector        _entitiesToDelete;
     Players             _players;
@@ -56,7 +53,6 @@ public:
 
 private:
     void                initMines();
-    void                initPlayers();
     void                removeEntitiesToDelete();
     quint32             getID();
 

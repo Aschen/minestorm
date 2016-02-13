@@ -6,10 +6,7 @@ Core::Core(qint32 cps)
       _cps(cps),
       _step(1),
       _server(SERVER_PORT),
-      _playersCount(0),
-      _playerSpawn(MAX_PLAYERS + 1),
-      _uniqId(100),
-      _players(0)
+      _uniqId(100)
 {
     DEBUG("Core::Core() : cps " << cps, true);
 
@@ -26,13 +23,6 @@ Core::Core(qint32 cps)
     connect(&_server,   SIGNAL(sigClientDisconnected(qint32)),
             this,       SLOT(clientLeft(qint32)));
 
-
-    /* Initialize 4 players */
-    initPlayers();
-}
-
-void Core::initPlayers()
-{
 }
 
 void Core::startGame()
@@ -53,7 +43,7 @@ void Core::step()
     if (!_entitiesMap.empty() && _server.clientCount())
     {
         DEBUG("Core::step() : Send " << _entitiesMap.size() << " objects", false);
-        DEBUG("Core::step() : " << _entitiesMap.size() << " entities", false);
+        DEBUG("Core::step() : " << _entitiesMap.size() << " entities", true);
 
         /* Movements */
         for(QSharedPointer<Entity> &entity : _entitiesMap)
@@ -69,22 +59,20 @@ void Core::step()
         /* Collision */
         Collision            c(_entitiesMap, _entitiesToDelete);
 
-        /* Send score and lives to clients */
-        for (qint32 idClient : _playersInGame)
-        {
-            Ship    *ship = dynamic_cast<Ship*>(_entitiesMap[idClient].data());
-
-            if (ship->scoreChanged())
-            {
-                MessageScore    msg(ship->score());
-                _server.unicast(idClient, msg.messageString ());
-            }
-            if (ship->livesChanged())
-            {
-                MessageLives    msg(ship->vie());
-                _server.unicast(idClient, msg.messageString());
-            }
-        }
+        /* Send score and lives to players */
+//        for (const QSharedPointer<Player> &player : _players)
+//        {
+//            if (player->ship().scoreChanged())
+//            {
+//                MessageScore    msg(player->ship().score());
+//                _server.unicast(player->idClient(), msg.messageString());
+//            }
+//            if (player->ship().livesChanged())
+//            {
+//                MessageLives    msg(player->ship().vie());
+//                _server.unicast(player->idClient(), msg.messageString());
+//            }
+//        }
         removeEntitiesToDelete();
 
         /* Send objects list to clients */
@@ -103,7 +91,7 @@ void Core::removeEntitiesToDelete()
         // Move player to spectator if ship is dead
         if (entity->type() == Entity::SHIP)
         {
-            _playersInGame.removeOne(entity->id());
+            _players.deletePlayer(entity->id ());
         }
         _entitiesMap.remove(entity->id());
     }
@@ -116,15 +104,16 @@ void Core::removeEntitiesToDelete()
  */
 void Core::clientJoin(qint32 idClient)
 {
+    DEBUG("Core::clientJoint() : New client" << idClient, true);
 
-    if (_players.playerAvailable())
+    if (_players.playerAvailable() && !_players.contains(idClient))
     {
         DEBUG("Core::clientJoint() : New player" << idClient, true);
 
         /* Init mines if first player */
         if (_players.count() == 0)
         {
-            initMines();
+            //initMines();
         }
 
         /* Create new player and add ship to entities */
@@ -150,30 +139,6 @@ void Core::clientLeft(qint32 idClient)
     {
         DEBUG("Core::clientLeft() : Spectator left:" << idClient, true);
     }
-
-//    auto it = std::find_if(_players.first(),
-//                           _players.end(),
-//                           [idClient](const QSharedPointer<Player> &player) { return player->idClient() == idClient; });
-
-//    /* If client is in players */
-//    if (it != _players.end())
-//    {
-//        QSharedPointer<Player> &player = *it;
-
-//        player->playerLeft();
-//    }
-
-
-//    auto it = _entitiesMap.find(idClient);
-
-//    if (it != _entitiesMap.end())
-//    {
-//        _playersCount--;
-//        _entitiesMap.remove(idClient);
-
-//        // Delete player from active players list
-//        _playersInGame.removeOne(idClient);
-//    }
 }
 
 void Core::initMines()
@@ -242,7 +207,7 @@ void Core::messageDispatcher(qint32 idClient, const QString &msg)
 {
     DEBUG("Core::messageDispatcher() : client " << idClient << " : " << msg, false);
 
-    if (_playersInGame.contains(idClient))
+    if (_players.contains(idClient))
     {
         MessageBase::Type       msgType = MessageBase::getMessageType(msg);
 

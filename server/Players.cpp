@@ -1,23 +1,26 @@
 #include "Players.hh"
 
 Players::Players(quint32 maxPlayers)
-    : _maxPlayers(maxPlayers)
+    : _maxPlayers(maxPlayers),
+      _playersCount(0)
 {
+    initPlayers();
 }
 
 void Players::initPlayers()
 {
     qint32      screenPart = SCREEN_SIZE / 4;
 
-    _players.push_back(QSharedPointer<Player>(new Player(1, QPoint(1 * screenPart, 1 * screenPart))));
-    _players.push_back(QSharedPointer<Player>(new Player(2, QPoint(3 * screenPart, 1 * screenPart))));
-    _players.push_back(QSharedPointer<Player>(new Player(3, QPoint(3 * screenPart, 3 * screenPart))));
-    _players.push_back(QSharedPointer<Player>(new Player(4, QPoint(1 * screenPart, 3 * screenPart))));
+
+    this->push_back(QSharedPointer<Player>(new Player(1, QPoint(1 * screenPart, 1 * screenPart))));
+    this->push_back(QSharedPointer<Player>(new Player(2, QPoint(3 * screenPart, 1 * screenPart))));
+    this->push_back(QSharedPointer<Player>(new Player(3, QPoint(3 * screenPart, 3 * screenPart))));
+    this->push_back(QSharedPointer<Player>(new Player(4, QPoint(1 * screenPart, 3 * screenPart))));
 }
 
 QSharedPointer<Player> &Players::findPlayer(qint32 idClient)
 {
-    for (QSharedPointer<Player> &player : _players)
+    for (QSharedPointer<Player> &player : *this)
     {
         if (player->idClient() == idClient)
             return player;
@@ -25,33 +28,25 @@ QSharedPointer<Player> &Players::findPlayer(qint32 idClient)
     assert(false);
 }
 
-quint32 Players::findAvailable() const
+QSharedPointer<Player> &Players::findAvailable()
 {
-    quint32 index = -1;
-
     assert(this->playerAvailable());
-    for (qint32 i = 0; i < _players.size(); ++i)
+    for (QSharedPointer<Player> &player : *this)
     {
-        if (_players[i]->available())
-        {
-            index = i;
-            break;
-        }
+        if (player->available())
+            return player;
     }
+    assert(false);
+}
 
-    return index;
+QSharedPointer<Player> Players::get(quint32 i)
+{
+    return this->operator[](i);
 }
 
 quint32 Players::count() const
 {
-    quint32     availables = 0;
-
-    for (const QSharedPointer<Player> &player : _players)
-    {
-        availables += player->available() ? 1 : 0;
-    }
-
-    return availables;
+    return _playersCount;
 }
 
 QSharedPointer<Entity> &Players::newPlayer(qint32 idClient)
@@ -59,14 +54,18 @@ QSharedPointer<Entity> &Players::newPlayer(qint32 idClient)
     assert(this->playerAvailable());
     DEBUG("Players::newPlayer() idClient:" << idClient, true);
 
-    quint32     index = findAvailable();
+    QSharedPointer<Player>  &player = findAvailable();
 
-    _players[index]->newPlayer(idClient);
+    _playersCount++;
+    return player->newPlayer(idClient);
 }
 
 void Players::deletePlayer(qint32 idClient)
 {
+    QSharedPointer<Player>  &player = findPlayer(idClient);
 
+    _playersCount--;
+    player->playerLeft();
 }
 
 /* EVENTS */
@@ -98,12 +97,13 @@ void Players::keySpace(qint32 idClient)
 /* INFOS */
 bool Players::playerAvailable() const
 {
+    DEBUG("Players::playerAvailable() count:" << _playersCount << " max:" << _maxPlayers, true);
     return _playersCount < _maxPlayers;
 }
 
 bool Players::contains(qint32 idClient) const
 {
-    for (const QSharedPointer<Player> &player : _players)
+    for (const QSharedPointer<Player> &player : *this)
     {
         if (player->idClient() == idClient)
             return true;
