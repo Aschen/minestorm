@@ -13,6 +13,7 @@ private:
 
 public:
     explicit Player(qint32 idClient, quint32 number, const QPoint &spawn);
+    ~Player();
 
     QSharedPointer<Entity>  &entity();
     Ship                    &ship();

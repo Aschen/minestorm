@@ -2,7 +2,7 @@
 
 Core::Core(qint32 cps)
     : QObject(),
-      _isRunning(false),
+      _isPlaying(false),
       _cps(cps),
       _step(1),
       _server(SERVER_PORT),
@@ -23,41 +23,45 @@ Core::Core(qint32 cps)
     connect(&_server,   SIGNAL(sigClientDisconnected(qint32)),
             this,       SLOT(clientLeft(qint32)));
 
+    _entities[Entity::SHIP] = EntityList();
+    _entities[Entity::MINE] = EntityList();
+    _entities[Entity::SHOT] = EntityList();
+
 }
 
 void Core::startGame()
 {
     DEBUG("Core::startGame()", true);
-    if (_isRunning == false)
-    {
-        _server.start();
-        _timer.start(1000 / _cps); // Nombre de cycle de jeu par seconde
-        _isRunning = true;
-    }
+    _server.start();
+    _timer.start(1000 / _cps); // Nombre de cycle de jeu par seconde
 }
 
 void Core::step()
 {
     DEBUG("Core::step() : " << _step, false);
 
-    if (!_entitiesMap.empty() && _server.clientCount())
+    if (_isPlaying)
     {
-        DEBUG("Core::step() : Send " << _entitiesMap.size() << " objects", false);
-        DEBUG("Core::step() : " << _entitiesMap.size() << " entities", false);
-
-        /* Movements */
-        for(QSharedPointer<Entity> &entity : _entitiesMap)
+        /* Move all ships */
+        for (QSharedPointer<Entity> &entity : _entities[Entity::SHIP])
         {
             entity->makeEntityMove();
-
-            //En cours : a ne faire que pour les tirs (et les mines ?)
-            if(entity->isDead())
-                _entitiesToDelete.push_back(entity);
         }
-        removeEntitiesToDelete();
+        /* Move all mines */
+        for (QSharedPointer<Entity> &entity : _entities[Entity::MINE])
+        {
+            entity->makeEntityMove();
+        }
+        /* Move all shots */
+        for (QSharedPointer<Entity> &entity : _entities[Entity::SHOT])
+        {
+            entity->makeEntityMove();
+        }
+
+        cleanEntities();
 
         /* Collision */
-        Collision            c(_entitiesMap, _entitiesToDelete);
+//        Collision            c(_entitiesMap, _entitiesToDelete);
 
         /* Send score and lives to players */
         for (const QSharedPointer<Player> &player : _players)
@@ -73,13 +77,57 @@ void Core::step()
                 _server.unicast(player->idClient(), msg.messageString());
             }
         }
-        removeEntitiesToDelete();
 
-        /* Send objects list to clients */
-        MessageObjects      message(_entitiesMap);
+        /* Merge the lists */
+        EntityList          entitiesList;
+        for (const EntityList &list : _entities)
+            entitiesList += list;
+
+        /* Send entities list to clients */
+        MessageObjects      message(entitiesList);
         _server.broadcast(message.messageString());
-
     }
+
+//    if (!_entitiesMap.empty() && _server.clientCount())
+//    {
+//        DEBUG("Core::step() : Send " << _entitiesMap.size() << " objects", false);
+//        DEBUG("Core::step() : " << _entitiesMap.size() << " entities", false);
+
+//        /* Movements */
+//        for(QSharedPointer<Entity> &entity : _entitiesMap)
+//        {
+//            entity->makeEntityMove();
+
+//            //En cours : a ne faire que pour les tirs (et les mines ?)
+//            if(entity->isDead())
+//                _entitiesToDelete.push_back(entity);
+//        }
+//        removeEntitiesToDelete();
+
+//        /* Collision */
+//        Collision            c(_entitiesMap, _entitiesToDelete);
+
+//        /* Send score and lives to players */
+//        for (const QSharedPointer<Player> &player : _players)
+//        {
+//            if (player->ship().scoreChanged())
+//            {
+//                MessageScore    msg(player->ship().score());
+//                _server.unicast(player->idClient(), msg.messageString());
+//            }
+//            if (player->ship().livesChanged())
+//            {
+//                MessageLives    msg(player->ship().vie());
+//                _server.unicast(player->idClient(), msg.messageString());
+//            }
+//        }
+//        removeEntitiesToDelete();
+
+//        /* Send objects list to clients */
+//        MessageObjects      message(_entitiesMap);
+//        _server.broadcast(message.messageString());
+
+//    }
 
     ++_step;
 }
@@ -91,17 +139,12 @@ void Core::removeEntitiesToDelete()
         // Move player to spectator if ship is dead
         if (entity->type() == Entity::SHIP)
         {
-            _players.deletePlayer(entity->id ());
+            _players.deletePlayer(entity->id());
         }
         _entitiesMap.remove(entity->id());
     }
 }
 
-/**
- * @brief Core::newPlayer : Instancie un nouveau vaisseau lors de la connexion d'un client
- *                          Appelé par le signal clientConnected.
- * @param idClient        : id de la socket client
- */
 void Core::clientJoin(qint32 idClient)
 {
     DEBUG("Core::clientJoint() : New client" << idClient, true);
@@ -113,11 +156,12 @@ void Core::clientJoin(qint32 idClient)
         /* Init mines if first player */
         if (_players.count() == 0)
         {
+            _isPlaying = true;
             initMines();
         }
 
         /* Create new player and add ship to entities */
-        _entitiesMap[idClient] = _players.newPlayer(idClient);
+        addShip(_players.newPlayer(idClient));
     }
     else
     {
@@ -133,7 +177,7 @@ void Core::clientLeft(qint32 idClient)
         DEBUG("Core::clientLeft() : Player left:" << idClient, true);
 
         _players.deletePlayer(idClient);
-        _entitiesMap.remove(idClient);
+//        _entitiesMap.remove(idClient); // Handle this in cleanEntities
     }
     else
     {
@@ -144,7 +188,7 @@ void Core::clientLeft(qint32 idClient)
 void Core::initMines()
 {
     DEBUG("Core::initMines() - entitiesMaps.size() = " << _entitiesMap.size(), true);
-    qint32  x, y, id;
+    qint32  x, y;
 
     //Small Mines
     for (quint32 i = 0; i < 2; ++i)
@@ -153,10 +197,8 @@ void Core::initMines()
         y = rand() % (SCREEN_SIZE - 20) + 10;
         DEBUG("Core::initMines() Mine(" << x << "," << y << ")", false);
 
-        id = getID();
-        this->_entitiesMap[id] = QSharedPointer<Entity>(new Mine(id,
-                                                                 Mine::TypeMine::Small,
-                                                                 QPointF(x, y)));
+        quint32 obsolete = 42;
+        addMine(obsolete, Mine::TypeMine::Small, x, y);
     }
 
     for (quint32 i = 0; i < 2; ++i)
@@ -165,10 +207,8 @@ void Core::initMines()
         y = rand() % SCREEN_SIZE - 10;
         DEBUG("Core::initMines() Mine(" << x << "," << y << ")", false);
 
-        id = getID();
-        this->_entitiesMap[id] = QSharedPointer<Entity>(new Mine(id,
-                                                                 Mine::TypeMine::Big,
-                                                                 QPoint(x, y)));
+        quint32 obsolete = 42;
+        addMine(obsolete, Mine::TypeMine::Medium, x, y);
     }
 
     for (quint32 i = 0; i < 2; ++i)
@@ -177,13 +217,72 @@ void Core::initMines()
         y = rand() % SCREEN_SIZE - 10;
         DEBUG("Core::initMines() Mine(" << x << "," << y << ")", false);
 
-        id = getID();
-        this->_entitiesMap[id] = QSharedPointer<Entity>(new Mine(id,
-                                                                 Mine::TypeMine::Medium,
-                                                                 QPoint(x, y)));
+        quint32 obsolete = 42;
+        addMine(obsolete, Mine::TypeMine::Big, x, y);
     }
 
     DEBUG("Core::initMines() entitiesMaps.size() = " << _entitiesMap.size(), true);
+}
+
+void Core::addMine(quint32 id, Mine::TypeMine type, quint32 x, quint32 y)
+{
+    _entities[Entity::MINE].push_back(QSharedPointer<Entity>(new Mine(id, type, QPointF(x, y))));
+}
+
+void Core::addShip(QSharedPointer<Entity> &ship)
+{
+    _entities[Entity::SHIP].push_back(ship);
+}
+
+void Core::addShot(QSharedPointer<Entity> &shot)
+{
+    _entities[Entity::SHOT].push_back(shot);
+}
+
+void Core::cleanEntities()
+{
+    EntityList  &ships = _entities[Entity::SHIP];
+    EntityList  &mines = _entities[Entity::MINE];
+    EntityList  &shots = _entities[Entity::SHOT];
+
+    /* Erase dead ships */
+    for (EntityList::iterator it = ships.begin(); it != ships.end();)
+    {
+        if ((*it)->isDead())
+        {
+            it = ships.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
+
+    /* Erase dead mines */
+    for (EntityList::iterator it = mines.begin(); it != mines.end();)
+    {
+        if ((*it)->isDead())
+        {
+            it = mines.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
+
+    /* Erase dead shots */
+    for (EntityList::iterator it = shots.begin(); it != shots.end();)
+    {
+        if ((*it)->isDead())
+        {
+            it = shots.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
 }
 
 quint32 Core::getID()

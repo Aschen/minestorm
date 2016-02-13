@@ -30,7 +30,7 @@ class Core : public QObject
     Q_OBJECT
 
 private:
-    bool                _isRunning;
+    bool                _isPlaying;
     const qint32        _cps;
     QTimer              _timer;
     qint32              _step;
@@ -39,7 +39,7 @@ private:
     EntityHash          _entitiesMap;
     EntityVector        _entitiesToDelete;
     Players             _players;
-    QHash<Entity::Type, QList<QSharedPointer<Entity>>>   _entities;
+    EntitiesHash        _entities;
 
 public:
     Core(qint32 cps = CYCLE_PER_S);
@@ -53,6 +53,10 @@ public:
 
 private:
     void                initMines();
+    void                addMine(quint32 id, Mine::TypeMine type, quint32 x, quint32 y);
+    void                addShip(QSharedPointer<Entity> &ship);
+    void                addShot(QSharedPointer<Entity> &shot);
+    void                cleanEntities();
     void                removeEntitiesToDelete();
     quint32             getID();
 

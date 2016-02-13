@@ -104,7 +104,7 @@ void MessageObjects::deserializeMine(QTextStream &stream)
 }
 
 /* SERIALIZE *******************************************************************/
-MessageObjects::MessageObjects(const EntityHash &entities)
+MessageObjects::MessageObjects(const EntityList &entities)
     : MessageBase(MessageBase::OBJECTS, ""),
       _elements(nullptr)
 {
