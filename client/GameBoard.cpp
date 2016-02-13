@@ -39,20 +39,16 @@ void GameBoard::mousePressEvent (QMouseEvent * event)
 
 void GameBoard::keyPressEvent(QKeyEvent * event)
 {
-    if (_acceptEvent && !event->isAutoRepeat())
+    if (!event->isAutoRepeat())
     {
-        _acceptEvent = false;
-        _timer.start(1000 / EVENT_PER_S);
         _display->keyPressed(event->key());
     }
 }
 
 void GameBoard::keyReleaseEvent(QKeyEvent * event)
 {
-    if (_acceptEvent && !event->isAutoRepeat())
+    if (!event->isAutoRepeat())
     {
-        _acceptEvent = false;
-        _timer.start(1000 / EVENT_PER_S);
         _display->keyReleased(event->key());
     }
 }

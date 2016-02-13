@@ -1,4 +1,5 @@
 #include <QVBoxLayout>
+#include <QLabel>
 #include "MainWindow.hh"
 #include "Controller.hh"
 #include "GameBoard.hh"

@@ -279,6 +279,7 @@ void Core::keyPressed(qint32 idClient, qint32 key)
 
     case Qt::Key_Left:
         DEBUG("Core::keyPressed Client" << idClient << " KeyLeft", false);
+
         dynamic_cast<Ship*>(_entitiesMap[idClient].data())->setRotation(Ship::LEFT);
 
         break;
@@ -286,12 +287,13 @@ void Core::keyPressed(qint32 idClient, qint32 key)
     case Qt::Key_Up:
         DEBUG("Core::keyPressed : Client" << idClient << " KeyUp", false);
 
+        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->goingUp(true);
         dynamic_cast<Ship*>(_entitiesMap[idClient].data())->incrementSpeed();
         break;
 
     case Qt::Key_Down:
         DEBUG("Core::keyPressed : Client" << idClient << " KeyDown", false);
-        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->decrementSpeed(5);
+        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->decrementSpeed(2);
 
         break;
 
@@ -324,6 +326,11 @@ void Core::keyReleased(qint32 idClient, qint32 key)
             dynamic_cast<Ship*>(_entitiesMap[idClient].data())->setRotation(Ship::NONE);
 
             break;
+        case Qt::Key_Up:
+            DEBUG("Core::keyRealeased Client" << idClient << " KeyUp", false);
+            dynamic_cast<Ship*>(_entitiesMap[idClient].data())->goingUp(false);
+
+        break;
         default:
             DEBUG("Core::keyReleased : Client" << idClient << " Unknown key:" << key, false);
             break;
