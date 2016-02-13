@@ -41,14 +41,18 @@ void Core::step()
 
     if (_isPlaying)
     {
+        Collision c(_entities);
+
         /* Move all ships */
         for (QSharedPointer<Entity> &entity : _entities[Entity::SHIP])
         {
+            c.detectShipCollision(entity);
             entity->makeEntityMove();
         }
         /* Move all mines */
         for (QSharedPointer<Entity> &entity : _entities[Entity::MINE])
         {
+            c.detectMineCollision(entity);
             entity->makeEntityMove();
         }
         /* Move all shots */
