@@ -6,18 +6,15 @@
 class Player
 {
 private:
+    const qint32            _idClient;
     const quint32           _number;
     const QPoint            _spawn;
-    bool                    _available;
-    qint32                  _idClient;
     QSharedPointer<Entity>  _ship;
 
 public:
-    explicit Player(quint32 number, const QPoint &spawn);
+    explicit Player(qint32 idClient, quint32 number, const QPoint &spawn);
 
-    QSharedPointer<Entity>  &newPlayer(qint32 idClient);
-    void                    playerLeft();
-
+    QSharedPointer<Entity>  &entity();
     Ship                    &ship();
     quint32                 number() const;
     const QPoint            &spawn() const;

@@ -1,23 +1,24 @@
 #ifndef PLAYERS_HH
 # define PLAYERS_HH
 
-# include <QVector>
+# include <QList>
+# include <QPoint>
 # include <QSharedPointer>
 
 # include "Player.hh"
 
 # include <cassert>
 
-using PlayersList = QVector<QSharedPointer<Player>>;
+using PlayersList = QList<QSharedPointer<Player>>;
 
 class Players : public PlayersList
 {
 private:
-    const quint32           _maxPlayers;
-    quint32                 _playersCount;
+    const qint32            _maxPlayers;
+    QVector<QPoint>         _spawns;
 
 public:
-    Players(quint32 maxPlayers = MAX_PLAYERS);
+    Players(qint32 maxPlayers = MAX_PLAYERS);
 
     QSharedPointer<Entity>  &newPlayer(qint32 idClient);
     void                    deletePlayer(qint32 idClient);
@@ -31,13 +32,9 @@ public:
 
     bool                    playerAvailable() const;
     bool                    contains(qint32 idClient) const;
-    quint32                 count() const;
+    QSharedPointer<Player>  &findPlayer(qint32 idClient);
 
 private:
-    void                    initPlayers();
-    QSharedPointer<Player>  &findPlayer(qint32 idClient);
-    QSharedPointer<Player>  &findAvailable();
-    QSharedPointer<Player>  get(quint32 i);
 };
 
 #endif // PLAYERS_HH

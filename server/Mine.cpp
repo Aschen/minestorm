@@ -37,7 +37,7 @@ Mine::~Mine()
 
 void Mine::activate()
 {
-    DEBUG("Mine::activate() id:" << _id << " type:" << _typeMine, true);
+    DEBUG("Mine::activate() id:" << _id << " type:" << _typeMine, false);
     _armed = true;
     switch (_typeMine)
     {
@@ -53,7 +53,7 @@ void Mine::activate()
     default:
         break;
     }
-    DEBUG("Mine::activate() type:" << _typeMine, true);
+    DEBUG("Mine::activate() type:" << _typeMine, false);
 }
 
 qint32 Mine::size() const

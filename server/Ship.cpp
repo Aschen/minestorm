@@ -91,7 +91,7 @@ void Ship::grantShield()
 
 bool Ship::removeShield()
 {
-    DEBUG("Ship::Shield Lost", true);
+    DEBUG("Ship::Shield Lost", false);
     _shield = false;
     return _shield;
 }
@@ -116,7 +116,7 @@ bool Ship::changeLife(qint32 change)
     {
         aliveOrNot = false;
     }
-    DEBUG("Ship::changeLife() : Ship has" << _vie << " life", true);
+    DEBUG("Ship::changeLife() : Ship has" << _vie << " life", false);
 
     /* Tell Core that lives has changed */
     _livesChanged = true;

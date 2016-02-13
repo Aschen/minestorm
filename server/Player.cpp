@@ -1,29 +1,17 @@
 #include "Player.hh"
 
-Player::Player(quint32 number, const QPoint &spawn)
-    : _number(number),
-      _spawn(spawn),
-      _available(true)
+Player::Player(qint32 idClient, quint32 number, const QPoint &spawn)
+    : _idClient(idClient),
+      _number(number),
+      _spawn(spawn)
 {
+    DEBUG("Player::Player() idClient:" << _idClient << " number:" << _number, true);
+    _ship = QSharedPointer<Entity>(new Ship(_idClient, _spawn, _number));
 }
 
-QSharedPointer<Entity> &Player::newPlayer(qint32 idClient)
+QSharedPointer<Entity> &Player::entity()
 {
-    DEBUG("Player::newPlayer() idClient:" << idClient, true);
-
-    _ship = QSharedPointer<Entity>(new Ship(idClient, _spawn, _number));
-    _idClient = idClient;
-    _available = false;
-
     return _ship;
-}
-
-void Player::playerLeft()
-{
-    DEBUG("Player::playerLeft() idClient:" << _idClient, true);
-    _ship = QSharedPointer<Entity>();
-    _idClient = 0;
-    _available = true;
 }
 
 Ship &Player::ship()
@@ -41,11 +29,6 @@ const QPoint &Player::spawn() const
     return _spawn;
 }
 
-bool Player::available() const
-{
-    return _available;
-}
-
 qint32 Player::idClient() const
 {
     return _idClient;
@@ -53,14 +36,10 @@ qint32 Player::idClient() const
 
 quint32 Player::score() const
 {
-    if (!_available)
-        return dynamic_cast<Ship*>(_ship.data())->score();
-    return 42424242;
+    return dynamic_cast<Ship*>(_ship.data())->score();
 }
 
 quint32 Player::lives() const
 {
-    if (!_available)
-        return dynamic_cast<Ship*>(_ship.data())->vie();
-    return 42424242;
+    return dynamic_cast<Ship*>(_ship.data())->vie();
 }

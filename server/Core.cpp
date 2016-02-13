@@ -43,7 +43,7 @@ void Core::step()
     if (!_entitiesMap.empty() && _server.clientCount())
     {
         DEBUG("Core::step() : Send " << _entitiesMap.size() << " objects", false);
-        DEBUG("Core::step() : " << _entitiesMap.size() << " entities", true);
+        DEBUG("Core::step() : " << _entitiesMap.size() << " entities", false);
 
         /* Movements */
         for(QSharedPointer<Entity> &entity : _entitiesMap)
@@ -113,7 +113,7 @@ void Core::clientJoin(qint32 idClient)
         /* Init mines if first player */
         if (_players.count() == 0)
         {
-            //initMines();
+            initMines();
         }
 
         /* Create new player and add ship to entities */
