@@ -266,34 +266,27 @@ void Core::keyPressed(qint32 idClient, qint32 key)
     case Qt::Key_Right:
         DEBUG("Core::keyPressed : Client" << idClient << " KeyRight", false);
         dynamic_cast<Ship*>(_entitiesMap[idClient].data())->rotate(15);
-
         break;
 
     case Qt::Key_Left:
         DEBUG("Core::keyPressed Client" << idClient << " KeyLeft", false);
         dynamic_cast<Ship*>(_entitiesMap[idClient].data())->rotate(-15);
-
         break;
 
     case Qt::Key_Up:
         DEBUG("Core::keyPressed : Client" << idClient << " KeyUp", false);
-
         dynamic_cast<Ship*>(_entitiesMap[idClient].data())->incrementSpeed();
         break;
 
     case Qt::Key_Down:
         DEBUG("Core::keyPressed : Client" << idClient << " KeyDown", false);
         dynamic_cast<Ship*>(_entitiesMap[idClient].data())->decrementSpeed(5);
-
         break;
 
     case Qt::Key_Space:
-    {
         DEBUG("Core::keyPressed : Client " << idClient << " KeySpace", false);
-        quint32     id = getID();
-        _entitiesMap[id] = QSharedPointer<Entity>(new Projectile(id, *dynamic_cast<Ship*>(_entitiesMap[idClient].data())));
+        dynamic_cast<Ship*>(_entitiesMap[idClient].data())->shot(_entitiesMap, getID());
         break;
-    }
 
     default:
         DEBUG("Core::keyPressed : Client" << idClient << " Unknown key:" << key, false);

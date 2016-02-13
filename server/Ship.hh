@@ -6,6 +6,7 @@
 # include "QImage"
 # include "Entity.hh"
 # include "Minestorm.hh"
+# include "Projectile.hh"
 
 class Ship : public Entity
 {
@@ -28,6 +29,7 @@ public:
     bool            changeLife(qint32 change);
     void            grantShield();
     bool            removeShield();
+    void            shot(EntityHash &entitiesMap, quint32 id);
 
     //Getter & Setter
     quint32         vie() const;

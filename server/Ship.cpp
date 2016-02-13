@@ -96,6 +96,11 @@ bool Ship::removeShield()
     return _shield;
 }
 
+void Ship::shot(EntityHash &entitiesMap, quint32 id)
+{
+    entitiesMap[id] = QSharedPointer<Entity>(new Projectile(id, *dynamic_cast<Ship*>(entitiesMap[_id].data())));
+}
+
 QPointF Ship::center() const
 {
     qint32  x;

@@ -3,7 +3,8 @@
 
 #include <QRect>
 #include "Entity.hh"
-#include "Ship.hh"
+
+class Ship;
 
 using namespace std;
 
@@ -39,3 +40,5 @@ public:
 };
 
 #endif // PROJECTILE_HH
+
+#include "Ship.hh"
