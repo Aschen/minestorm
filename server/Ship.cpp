@@ -165,11 +165,11 @@ void Ship::rotateShip()
     switch(_rotation)
     {
         case LEFT:
-            this->rotate(10);
+            this->rotate(-10);
             break;
 
         case RIGHT:
-            this->rotate(-10);
+            this->rotate(10);
             break;
         default:
             break;
