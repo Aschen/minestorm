@@ -110,7 +110,7 @@ bool Ship::haveShield() const
 
 void Ship::grantShield()
 {
-    DEBUG("Ship::Shield grant", true);
+    DEBUG("Ship::Shield grant", false);
     _shield = true;
 }
 

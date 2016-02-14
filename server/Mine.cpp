@@ -7,7 +7,7 @@ Mine::Mine(TypeMine typeMine, const QPointF &point)
       _delay(rand() % MINE_MAX_DELAY),
       _timer(CYCLE_PER_S * _delay)
 {
-    DEBUG("Mine::Mine() delay:" << _delay, false);
+    DEBUG("Mine::Mine() delay:" << _delay, true);
     switch(_typeMine)
     {
         case Small:
@@ -42,7 +42,7 @@ Mine::~Mine()
 
 void Mine::activate()
 {
-    DEBUG("Mine::activate() type:" << _typeMine, false);
+    DEBUG("Mine::activate() type:" << _typeMine, true);
     _armed = true;
     switch (_typeMine)
     {
