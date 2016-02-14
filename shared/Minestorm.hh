@@ -17,6 +17,7 @@
 # define MAX_CLIENTS    50
 # define MAX_PLAYERS    4
 # define SCORE_MINE     100
+# define SCORE_SHIP     250
 
 /* DISPLAY */
 # define EVENT_PER_S    15

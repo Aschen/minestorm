@@ -35,7 +35,7 @@ MessageObjects::MessageObjects(const QString &msg)
             deserializeMine(stream);
             break;
         default:
-            DEBUG("MessageObjects::MessageObjects() : Unknown entity" << messageType, true);
+            DEBUG("MessageObjects::MessageObjects() : Unknown entity" << messageType, false);
             break;
         }
     }
