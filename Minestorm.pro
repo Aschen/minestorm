@@ -40,7 +40,9 @@ SOURCES += server/Core.cpp \
     server/Player.cpp \
     server/Players.cpp \
     client/PlayerInfos.cpp \
-    client/PlayersInfos.cpp
+    client/PlayersInfos.cpp \
+    shared/MessagePlayersInfos.cpp \
+    client/FpsCounter.cpp
 
 HEADERS  += server/Core.hh \
     client/Controller.hh \
@@ -71,7 +73,9 @@ HEADERS  += server/Core.hh \
     server/Players.hh \
     client/PlayerInfos.hh \
     client/IDrawable.hh \
-    client/PlayersInfos.hh
+    client/PlayersInfos.hh \
+    shared/MessagePlayersInfos.hh \
+    client/FpsCounter.hh
 
 FORMS    +=
 

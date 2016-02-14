@@ -21,6 +21,7 @@
 # include "Images.hh"
 # include "Element.hh"
 # include "PlayersInfos.hh"
+# include "FpsCounter.hh"
 
 class Display : public QObject
 {
@@ -31,15 +32,12 @@ private:
     const QSize         _size;
     QSharedPointer<Client>              _client;
     QSharedPointer<QVector<Element>>    _elements;
-    quint32             _fps;
-    QList<quint32>      _fpsValues;
-    QString             _fpsText;
     Images              _images;
     QPixmap             _image;
     qint32              _angle;
     QPointF             _origin;
-    QTimer              _fpsTimer;
     PlayersInfos        _playersInfos;
+    FpsCounter          _fpsCounter;
 
 
 public:
@@ -75,7 +73,6 @@ signals:
 
 private slots:
     void                messageDispatcher(qint32 socketFd, const QString &msg);
-    void                fpsCount();
 };
 
 #endif // DISPLAY_HH

@@ -7,23 +7,20 @@ Display::Display(const QSize &size, QObject *parent)
       _isRunning(false),
       _size(size),
       _client(QSharedPointer<Client>(new Client)),
-      _elements(nullptr),
-      _fps(0)
+      _elements(nullptr)
 {
     DEBUG("Display::Display()", true);
 
     connect(_client.data(), SIGNAL(transfertMessage(qint32, QString)),
             this,           SLOT(messageDispatcher(qint32,QString)));
-
-    /* Fps Timer */
-    _fpsTimer.setSingleShot(false);
-    connect(&_fpsTimer, SIGNAL(timeout()), this, SLOT(fpsCount()));
 }
 
 void Display::draw(QPainter &painter, QRect &size)
 {
     (void) size;
     DEBUG("Display::draw() : " << _elements->size() << " elements to draw", false);
+
+    /* Draw elements */
     if (_elements != nullptr)
     {
         for (const Element &element : *_elements)
@@ -33,23 +30,21 @@ void Display::draw(QPainter &painter, QRect &size)
         }
     }
 
+    /* Draw players infos*/
     for (const QSharedPointer<PlayerInfos> &playerInfos : _playersInfos)
     {
         playerInfos->draw(painter, _images);
     }
 
-    /* Draw fps */
-    painter.setPen(QColor(255, 255, 255));
-    painter.setBrush(QBrush(QColor(255, 255, 255)));
-    painter.drawText(QPoint(SCREEN_WIDTH - 50, 40), _fpsText);
-
-    _fps++;
+    /* Draw FPS */
+    _fpsCounter.draw(painter, _images);
+    _fpsCounter.frameDraw();
 }
 
 void Display::startDisplay()
 {
     _isRunning = true;
-    _fpsTimer.start(1000);
+    _fpsCounter.start();
 }
 
 void Display::messageDispatcher(qint32 socketFd, const QString &msg)
@@ -85,12 +80,6 @@ void Display::messageDispatcher(qint32 socketFd, const QString &msg)
         break;
     }
     }
-}
-
-void Display::fpsCount()
-{
-    _fpsText = QString::number(_fps);
-    _fps = 0;
 }
 
 void Display::receiveObjects(const QSharedPointer<QVector<Element>> &elements)
