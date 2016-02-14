@@ -4,7 +4,7 @@ PlayersInfos::PlayersInfos()
     : _positions(MAX_PLAYERS)
 {
     quint32     padding = 30;
-    quint32     textSize = 50;
+    quint32     textSize = 80;
 
     _positions[0] = QPoint(padding, padding);
     _positions[1] = QPoint(SCREEN_WIDTH - textSize, padding);

@@ -6,7 +6,6 @@ PlayerInfos::PlayerInfos(quint32 number, const QPoint &position)
       _score(0),
       _lives(0),
       _scoreText(""),
-      _livesText(""),
       _color(QColor(255, 255, 255)),
       _brush(QBrush(_color))
 {
@@ -19,7 +18,7 @@ PlayerInfos::~PlayerInfos()
 void PlayerInfos::score(quint32 score)
 {
     _score = score;
-    _scoreText = QString("Score: ") + QString::number(_score);
+    _scoreText = QString::number(_score);
 }
 
 quint32 PlayerInfos::score() const
@@ -30,7 +29,6 @@ quint32 PlayerInfos::score() const
 void PlayerInfos::lives(quint32 lives)
 {
     _lives = lives;
-    _livesText = QString("Vies: ") + QString::number(_lives);
 }
 
 quint32 PlayerInfos::lives() const
@@ -45,10 +43,14 @@ quint32 PlayerInfos::number() const
 
 void PlayerInfos::draw(QPainter &painter, Images &images) const
 {
-    (void) images;
     painter.setPen(_color);
     painter.setBrush(_brush);
     painter.drawText(_position, "Player " + QString::number(_number));
-    painter.drawText(_position.x(), _position.y() + 15, _livesText);
-    painter.drawText(_position.x(), _position.y() + 30, _scoreText);
+    painter.drawText(_position.x(), _position.y() + 15, _scoreText);
+
+    /* Draw lives */
+    for (quint32 i = 0; i < _lives; ++i)
+    {
+        painter.drawImage (_position.x() + i * 24, _position.y() + 25, images.getImage(Element::LIVE));
+    }
 }

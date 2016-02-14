@@ -7,6 +7,7 @@
 # include <QBrush>
 
 # include "IDrawable.hh"
+# include "Element.hh"
 
 class PlayerInfos : public IDrawable
 {
@@ -16,7 +17,6 @@ private:
     quint32         _score;
     quint32         _lives;
     QString         _scoreText;
-    QString         _livesText;
     QColor          _color;
     QBrush          _brush;
 
