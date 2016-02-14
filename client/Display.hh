@@ -34,8 +34,6 @@ private:
     QSharedPointer<QVector<Element>>    _elements;
     Images              _images;
     QPixmap             _image;
-    qint32              _angle;
-    QPointF             _origin;
     PlayersInfos        _playersInfos;
     FpsCounter          _fpsCounter;
 
@@ -45,6 +43,7 @@ public:
 
     void                draw(QPainter &painter, QRect &size);
     void                startDisplay();
+    void                stopDisplay();
 
     // Events triggered from Gameboard
     void                mousePressed(qint32 x, qint32 y);
@@ -57,6 +56,8 @@ public:
     void                joinGame(const QString &host);
     void                exitGame();
 
+    // Key events for Display only
+    void                stopGame();
 
     const QSize         &size() const;
     bool                isRunning() const;

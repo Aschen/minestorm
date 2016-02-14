@@ -44,12 +44,6 @@ void Display::draw(QPainter &painter, QRect &size)
     _fpsCounter.frameDraw();
 }
 
-void Display::startDisplay()
-{
-    _isRunning = true;
-    _fpsCounter.start();
-}
-
 void Display::messageDispatcher(qint32 socketFd, const QString &msg)
 {
     (void) socketFd;
@@ -152,10 +146,31 @@ void Display::keyPressed(qint32 key)
 void Display::keyReleased(qint32 key)
 {
     DEBUG("Display::keyReleased() : key =" << key, false);
+
+    /* Key echap is only for Client */
+    if (key == Qt::Key_Escape)
+    {
+        DEBUG("Display::keyPressed() : Echap", true);
+        stopGame();
+        return ;
+    }
+
     MessageKey    message(MessageBase::KEY_RELEASE, key);
 
     if (_isRunning)
         _client->sendMessage(message.messageString());
+}
+
+void Display::startDisplay()
+{
+    _isRunning = true;
+    _fpsCounter.start();
+}
+
+void Display::stopDisplay()
+{
+    _isRunning = false;
+    _fpsCounter.stop();
 }
 
 void Display::startNewGame()
@@ -168,10 +183,12 @@ void Display::startNewGame()
 
 void Display::joinGame(const QString &host)
 {
-    DEBUG("Display::joinGame() : Join" << host, true);
-
-    _client->start(host);
-    startDisplay();
+    if (!_isRunning)
+    {
+        DEBUG("Display::joinGame() : Join" << host, true);
+        _client->start(host);
+        startDisplay();
+    }
 }
 
 void Display::exitGame()
@@ -181,6 +198,19 @@ void Display::exitGame()
     _client->stop();
 
     QApplication::quit();
+}
+
+void Display::stopGame()
+{
+    if (_isRunning)
+    {
+        _elements.clear();
+        _playersInfos.clear();
+
+        emit changed ();
+        _client->stop();
+        stopDisplay();
+    }
 }
 
 /* GETTERS/SETTERS */

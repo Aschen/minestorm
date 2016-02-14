@@ -24,6 +24,7 @@ public:
     FpsCounter();
 
     void            start();
+    void            stop();
     void            frameDraw();
 
     const QString   &fpsText() const;
@@ -31,6 +32,9 @@ public:
     // IDrawable interface (Pb with QOBject..)
 public:
     void            draw(QPainter &painter, Images &images) const;
+
+signals:
+    void            stopTimer();
 
 private slots:
     void            count();
