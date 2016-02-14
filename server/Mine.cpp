@@ -27,6 +27,8 @@ Mine::Mine(TypeMine typeMine, const QPointF &point)
             break;
     }
 
+    _angle = 0;
+
     addPoint(point);
     addPoint(point.x()+ _size, point.y());
     addPoint(point.x()+ _size, point.y() + _size);

@@ -7,15 +7,17 @@ Ship::Ship(const QPointF &position, qint32 shipNumber)
       _tempo(0),
       _score(0),
       _scoreChanged(true),
-      _livesChanged(true)
+      _livesChanged(true),
+      _shooting(false),
+      _shield(false),
+      _goingUp(false),
+      _rotation(NONE)
 {
     _size   = QSize(SHIP_SIZE, SHIP_SIZE);
     _speed  = 0;
     _angle  = 0;
     this->vx(0);
     this->vy(0);
-    _rotation = NONE;
-    _goingUp = false;
 
     grantShield();
     this->addPoint(QPointF(position.x(), position.y()));
@@ -103,6 +105,22 @@ bool Ship::removeShield()
 QSharedPointer<Entity> Ship::shot()
 {
     return QSharedPointer<Entity>(new Projectile(*this));
+}
+
+void Ship::startShooting()
+{
+    _shooting = true;
+}
+
+bool Ship::isShooting(quint32 cycle) const
+{
+    /* Apply shoot rate */
+    return (cycle % (CYCLE_PER_S / SHOT_PER_S) == 0) && _shooting;
+}
+
+void Ship::stopShooting()
+{
+    _shooting = false;
 }
 
 Ship::Rotation Ship::rotation() const

@@ -46,13 +46,20 @@ void Core::step()
         /* Move all ships */
         for (QSharedPointer<Entity> &entity : _entities[Entity::SHIP])
         {
-            c.detectShipCollision(entity);
+            Ship    *ship = dynamic_cast<Ship*>(entity.data());
+
+            /* Create shots */
+            if (ship->isShooting(_step))
+                addShot(QSharedPointer<Entity>(new Projectile(*ship)));
+
+            //            c.detectShipCollision(entity);
             entity->makeEntityMove();
+
         }
         /* Move all mines */
         for (QSharedPointer<Entity> &entity : _entities[Entity::MINE])
         {
-            c.detectMineCollision(entity);
+//            c.detectMineCollision(entity);
             entity->makeEntityMove();
         }
         /* Move all shots */
@@ -314,7 +321,7 @@ void Core::keyPressed(qint32 idClient, qint32 key)
     case Qt::Key_Space:
     {
         DEBUG("Core::keyPressed : Client " << idClient << " KeySpace", false);
-        _players.keyPressSpace(idClient, _entities[Entity::SHOT]);
+        _players.keyPressSpace(idClient);
         break;
     }
     default:

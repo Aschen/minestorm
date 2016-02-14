@@ -27,10 +27,11 @@ private:
     quint32         _score;
     bool            _scoreChanged;
     bool            _livesChanged;
+    bool            _shooting;
     bool            _shield;
+    bool            _goingUp;
     Rotation        _rotation;
 
-    bool            _goingUp;
 
 public:
     //Constructeurs
@@ -41,6 +42,9 @@ public:
     void            grantShield();
     bool            removeShield();
     QSharedPointer<Entity>  shot();
+    void            startShooting();
+    bool            isShooting(quint32 cycle) const;
+    void            stopShooting();
     void            rotateShip();
 
     //Getter & Setter

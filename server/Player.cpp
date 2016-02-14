@@ -1,17 +1,12 @@
 #include "Player.hh"
 
 Player::Player(qint32 idClient, quint32 number, const QPoint &spawn)
-    : QObject(),
-      _idClient(idClient),
+    : _idClient(idClient),
       _number(number),
       _spawn(spawn),
-      _ship(QSharedPointer<Entity>(new Ship(_spawn, _number))),
-      _acceptShot(true)
+      _ship(QSharedPointer<Entity>(new Ship(_spawn, _number)))
 {
     DEBUG("Player::Player() idClient:" << _idClient << " number:" << _number, true);
-    /* Prepare timer to limit shot rate */
-    connect(&_shotTimer, SIGNAL(timeout()), this, SLOT(shoot()));
-    connect(this, SIGNAL(stopTimer()), &_shotTimer, SLOT(stop()));
 }
 
 Player::~Player()
@@ -20,17 +15,14 @@ Player::~Player()
     this->ship().setEtatDead();
 }
 
-void Player::startShooting(EntityList *shots)
+void Player::startShooting()
 {
-    _shots = shots;
-
-    shoot();
-    _shotTimer.start(1000 / SHOT_PER_S);
+    this->ship().startShooting();
 }
 
 void Player::stopShooting()
 {
-    emit stopTimer();
+    this->ship().stopShooting();
 }
 
 QSharedPointer<Entity> &Player::entity()
@@ -66,9 +58,4 @@ quint32 Player::score() const
 quint32 Player::lives() const
 {
     return dynamic_cast<Ship*>(_ship.data())->vie();
-}
-
-void Player::shoot()
-{
-    _shots->push_back (QSharedPointer<Entity>(new Projectile(this->ship())));
 }

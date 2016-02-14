@@ -81,6 +81,5 @@ using EntityList = QList<QSharedPointer<Entity>>;
 using EntitiesHash = QHash<Entity::Type, EntityList>;
 
 using EntityVector = QVector<QSharedPointer<Entity>>;
-using EntityHash = QHash<qint32, QSharedPointer<Entity>>;
 
 #endif // ENTITY_HH

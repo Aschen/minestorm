@@ -23,7 +23,7 @@ class MessageObjects : public MessageBase
 {
 private:
     QSharedPointer<QVector<Element>>           _elements;
-    char buf[sizeof(qint32)*8+1];
+//    char buf[sizeof(qint32)*8+1];
 
 public:
     MessageObjects(const QString &msg);
