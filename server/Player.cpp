@@ -3,6 +3,7 @@
 Player::Player(qint32 idClient, quint32 number, const QPoint &spawn)
     : _idClient(idClient),
       _number(number),
+      _pseudo(QString("Player_" + QString::number(_number))),
       _spawn(spawn),
       _ship(QSharedPointer<Entity>(new Ship(_spawn, _number)))
 {
@@ -58,4 +59,14 @@ quint32 Player::score() const
 quint32 Player::lives() const
 {
     return dynamic_cast<Ship*>(_ship.data())->vie();
+}
+
+const QString &Player::pseudo() const
+{
+    return _pseudo;
+}
+
+void Player::pseudo(const QString &pseudo)
+{
+    _pseudo = pseudo;
 }

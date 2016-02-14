@@ -33,6 +33,7 @@ public:
     void                    keyReleaseLeft(qint32 idClient);
     void                    keyReleaseUp(qint32 idClient);
     void                    keyReleaseSpace(qint32 idClient);
+    void                    playerPseudo(qint32 idClient, const QString &pseudo);
 
     bool                    playerAvailable() const;
     bool                    contains(qint32 idClient) const;

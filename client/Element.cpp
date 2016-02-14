@@ -62,9 +62,9 @@ void Element::draw(QPainter &painter, Images &images) const
 //            painter.drawEllipse(_center, SHIP_SIZE / 2, SHIP_SIZE / 2);
         }
 
-        painter.setPen(QColor("#AAAAAA"));
-        painter.setBrush(QBrush(Qt::NoBrush));
-        painter.drawConvexPolygon(_polygon);
+//        painter.setPen(QColor("#AAAAAA"));
+//        painter.setBrush(QBrush(Qt::NoBrush));
+//        painter.drawConvexPolygon(_polygon);
         painter.drawImage(QRect(QPoint(_imageCenter .x(), _imageCenter.y()),QSize(32,32))
                         , images.getImage(_type, _angle));
         break;

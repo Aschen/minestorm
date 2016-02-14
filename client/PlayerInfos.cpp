@@ -5,6 +5,7 @@ PlayerInfos::PlayerInfos(quint32 number, const QPoint &position)
       _position(position),
       _score(0),
       _lives(0),
+      _pseudo(""),
       _scoreText(""),
       _color(QColor(255, 255, 255)),
       _brush(QBrush(_color))
@@ -41,11 +42,21 @@ quint32 PlayerInfos::number() const
     return _number;
 }
 
+const QString &PlayerInfos::pseudo() const
+{
+    return _pseudo;
+}
+
+void PlayerInfos::pseudo(const QString &pseudo)
+{
+    _pseudo = pseudo;
+}
+
 void PlayerInfos::draw(QPainter &painter, Images &images) const
 {
     painter.setPen(_color);
     painter.setBrush(_brush);
-    painter.drawText(_position, "Player " + QString::number(_number));
+    painter.drawText(_position, _pseudo);
     painter.drawText(_position.x(), _position.y() + 15, _scoreText);
 
     /* Draw lives */

@@ -13,10 +13,10 @@
 
 # include "Minestorm.hh"
 # include "MessageObjects.hh"
-# include "MessageScore.hh"
+# include "MessagePlayersInfos.hh"
+# include "MessagePseudo.hh"
 # include "MessageMouse.hh"
 # include "MessageKey.hh"
-# include "MessageLives.hh"
 # include "Client.hh"
 # include "Images.hh"
 # include "Element.hh"
@@ -53,7 +53,7 @@ public:
 
     // Events triggered from Controller
     void                startNewGame();
-    void                joinGame(const QString &host);
+    void                joinGame(const QString &host, const QString &pseudo);
     void                exitGame();
 
     // Key events for Display only

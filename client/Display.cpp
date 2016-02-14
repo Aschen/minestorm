@@ -59,16 +59,12 @@ void Display::messageDispatcher(qint32 socketFd, const QString &msg)
         receiveObjects(message.elements());
         break;
     }
-    case MessageBase::SCORE:
+    case MessageBase::PLAYERS_INFOS:
     {
-        MessageScore        message(msg);
-        receiveScore(message.playerNumber(), message.score());
-        break;
-    }
-    case MessageBase::LIVES:
-    {
-        MessageLives        message(msg);
-        receiveLives(message.playerNumber(), message.lives());
+        MessagePlayersInfos message(msg, &_playersInfos);
+
+        if (_isRunning)
+            emit changed();
         break;
     }
     default:
@@ -101,8 +97,6 @@ void Display::receiveScore(quint32 playerNumber, quint32 score)
 
     _playersInfos.setPlayerScore(playerNumber, score);
 
-    if (_isRunning)
-        emit changed();
 }
 
 void Display::receiveLives(quint32 playerNumber, quint32 lives)
@@ -181,12 +175,20 @@ void Display::startNewGame()
     startDisplay();
 }
 
-void Display::joinGame(const QString &host)
+void Display::joinGame(const QString &host, const QString &pseudo)
 {
     if (!_isRunning)
     {
+        MessagePseudo       message(MessageBase::PSEUDO, pseudo);
+
         DEBUG("Display::joinGame() : Join" << host, true);
+        /* Start client (socket) */
         _client->start(host);
+
+        /* Send pseudo to Server */
+        _client->sendMessage(message.messageString ());
+
+        /* Start display */
         startDisplay();
     }
 }
