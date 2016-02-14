@@ -46,13 +46,13 @@ void Core::step()
         /* Move all ships */
         for (QSharedPointer<Entity> &entity : _entities[Entity::SHIP])
         {
-         //   c.detectShipCollision(entity);
+            c.detectShipCollision(entity);
             entity->makeEntityMove();
         }
         /* Move all mines */
         for (QSharedPointer<Entity> &entity : _entities[Entity::MINE])
         {
-     //       c.detectMineCollision(entity);
+            c.detectMineCollision(entity);
             entity->makeEntityMove();
         }
         /* Move all shots */
@@ -62,9 +62,6 @@ void Core::step()
         }
 
         cleanEntities();
-
-        /* Collision */
-//        Collision            c(_entitiesMap, _entitiesToDelete);
 
         /* Send score and lives to players */
         sendPlayersInfos();
