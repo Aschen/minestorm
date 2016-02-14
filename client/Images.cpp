@@ -38,6 +38,5 @@ void Images::loadImages()
     _images[Element::SHOT]       = QSharedPointer<QImage>(new QImage("images/shot.png"));
     _images[Element::MINE_EXPLO] = QSharedPointer<QImage>(new QImage("images/explosion.png"));
     _images[Element::LIVE]       = QSharedPointer<QImage>(new QImage("images/live.png"));
-
 }
 

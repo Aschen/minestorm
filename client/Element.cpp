@@ -91,6 +91,12 @@ void Element::draw(QPainter &painter, Images &images) const
 
         break;
     default:
+//=======
+//        painter.setPen(QColor(255, 0, 51)); // RED
+//        painter.setBrush(QBrush(Qt::NoBrush));
+//        //painter.drawConvexPolygon(_polygon);
+//        painter.drawImage(QRect(QPoint(_imageCenter.x(), _imageCenter.y()), QSize(60, 42)), images.getImage(_type, _angle));
+//>>>>>>> 54376e8d0026064e71d9044cff1193e7dbc9abce
         break;
     }
 }
