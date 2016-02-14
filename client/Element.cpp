@@ -68,10 +68,8 @@ void Element::draw(QPainter &painter, Images &images) const
         painter.setBrush(QBrush(Qt::NoBrush));
         painter.drawConvexPolygon(_polygon);
 
-        painter.drawImage(QRect(QPoint(_imageCenter.x(), _imageCenter.y()),QSize(SHIP_SIZE,SHIP_SIZE)),
-                          images.getImage(type(), _angle));
             /*
-             * WORST  BUG EVER. #SAMASOULAY #SAMASOULAY #SAMASOULAY
+             * #SAMASOULAY #SAMASOULAY #SAMASOULAY
              * /
              *
          // p1 = (QPixmap("images/void_viper.png")).scaled(35, 35, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation).transformed(t.rotate(angle()));
@@ -86,6 +84,8 @@ void Element::draw(QPainter &painter, Images &images) const
                                QPixmap(ship));
 
         */
+        painter.drawImage(QRect(QPoint(_imageCenter .x(), _imageCenter.y()),QSize(32,32))
+                        , images.getImage(_type, _angle));
         break;
 
     case Element::SHOT:

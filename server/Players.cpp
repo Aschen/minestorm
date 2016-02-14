@@ -94,6 +94,11 @@ void Players::keyReleaseSpace(qint32 idClient)
     findPlayer(idClient)->stopShooting();
 }
 
+void Players::playerPseudo(qint32 idClient, const QString &pseudo)
+{
+    findPlayer(idClient)->pseudo(pseudo);
+}
+
 /* INFOS */
 bool Players::playerAvailable() const
 {

@@ -9,11 +9,18 @@ FpsCounter::FpsCounter()
 {
     _timer.setSingleShot(false);
     connect(&_timer, SIGNAL(timeout()), this, SLOT(count()));
+    connect(this, SIGNAL(stopTimer()), &_timer, SLOT(stop()));
 }
 
 void FpsCounter::start()
 {
     _timer.start(1000);
+}
+
+void FpsCounter::stop()
+{
+    _frameCount = 0;
+    emit stopTimer();
 }
 
 void FpsCounter::frameDraw()

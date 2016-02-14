@@ -71,20 +71,12 @@ void Core::step()
         cleanEntities();
 
         /* Send score and lives to players */
-        sendPlayersInfos();
+        if (_step % CYCLE_PER_S == 0)
+            sendPlayersInfos();
 
         /* Maintain fps rate */
         if (_step % (CYCLE_PER_S / 25) == 0)
-        {
-            /* Merge the lists */
-            EntityList          entitiesList;
-            for (const EntityList &list : _entities)
-                entitiesList += list;
-
-            /* Send entities list to clients */
-            MessageObjects      message(entitiesList);
-            _server.broadcast(message.messageString());
-        }
+            sendObjects();
     }
 
     ++_step;
@@ -112,7 +104,6 @@ void Core::clientJoin(qint32 idClient)
     {
         DEBUG("Core::clientJoint() : New spectator" << idClient, true);
     }
-    sendPlayersInfos(true);
 }
 
 void Core::clientLeft(qint32 idClient)
@@ -223,23 +214,24 @@ void Core::cleanEntities()
     }
 }
 
-void Core::sendPlayersInfos(bool force)
+void Core::sendPlayersInfos()
 {
-    for (const QSharedPointer<Player> &player : _players)
-    {
-        if (force || player->ship().scoreChanged())
-        {
-            DEBUG("Core::sendPlayersInfos() send score for "<< player->number (), true);
-            MessageScore    msg(player->number(), player->ship().score());
-            _server.broadcast(msg.messageString());
-        }
-        if (force || player->ship().livesChanged())
-        {
-            DEBUG("Core::sendPlayersInfos() send lives for "<< player->number (), true);
-            MessageLives    msg(player->number(), player->ship().vie());
-            _server.broadcast(msg.messageString());
-        }
-    }
+    MessagePlayersInfos     msg(_players);
+
+    _server.broadcast(msg.messageString ());
+}
+
+void Core::sendObjects()
+{
+    /* Merge the lists */
+    EntityList          entitiesList;
+
+    for (const EntityList &list : _entities)
+        entitiesList += list;
+
+    /* Send entities list to clients */
+    MessageObjects      message(entitiesList);
+    _server.broadcast(message.messageString());
 }
 
 /**********\
@@ -274,6 +266,12 @@ void Core::messageDispatcher(qint32 idClient, const QString &msg)
             DEBUG("Core::messageDispatcher() : KeyRelease" << msg, false);
             MessageKey          message(msg);
             keyReleased(idClient, message.keyCode());
+            break;
+        }
+        case MessageBase::PSEUDO:
+        {
+            MessagePseudo       message(msg);
+            _players.playerPseudo (idClient, message.pseudo());
             break;
         }
         default:

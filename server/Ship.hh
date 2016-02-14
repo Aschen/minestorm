@@ -25,6 +25,7 @@ private:
     quint32         _shipNumber;
     qint32          _tempo;
     quint32         _score;
+    quint32         _timerSpawn;
     bool            _scoreChanged;
     bool            _livesChanged;
     bool            _shooting;
@@ -46,6 +47,8 @@ public:
     bool            isShooting(quint32 cycle) const;
     void            stopShooting();
     void            rotateShip();
+    void            resetSpawn(const QPointF &position);
+    void            init(const QPointF &position);
 
     //Getter & Setter
     quint32         vie() const;

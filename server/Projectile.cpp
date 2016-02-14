@@ -19,7 +19,7 @@ void Projectile::init()
     cX = _ship.center().x() + 16 * cos(_ship.getRadian(_angle));
     cY = _ship.center().y() + 16 * sin(_ship.getRadian(_angle));
 
-    DEBUG("Center(" << cX << "," << cY,true);
+    DEBUG("Center(" << cX << "," << cY,false);
 
     QPointF a =  QPointF(cX,cY -6);
 
@@ -32,8 +32,8 @@ void Projectile::init()
     this->addPoint(c);
     this->addPoint(d);
 
-    DEBUG("A(" << a.x() << "," << a.y() << ") - B(" << b.x() << "," << b.y() << ")", true);
-    DEBUG("D(" << d.x() << "," << d.y() << ") -C(" << c.x() << "," << c.y() << ")", true);
+    DEBUG("A(" << a.x() << "," << a.y() << ") - B(" << b.x() << "," << b.y() << ")", false);
+    DEBUG("D(" << d.x() << "," << d.y() << ") -C(" << c.x() << "," << c.y() << ")", false);
 }
 
 Ship &Projectile::ship() const

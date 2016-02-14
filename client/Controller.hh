@@ -17,6 +17,7 @@ class Controller : public QWidget
 private:
     Display     *_display;
     QLineEdit   *_inputHost;
+    QLineEdit   *_inputPseudo;
     QSharedPointer<CoreRunner>  _coreRunner;
 
 public:
