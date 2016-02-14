@@ -158,7 +158,7 @@ qreal Entity::vy() const
 void Entity::vy(qreal vy)
 {
     _vy = vy;
-    DEBUG("Entity::vy:" << _vy, true);
+    DEBUG("Entity::vy:" << _vy, false);
 }
 qreal Entity::vx() const
 {
@@ -168,7 +168,7 @@ qreal Entity::vx() const
 void Entity::vx(qreal vx)
 {
     _vx = vx;
-    DEBUG("Entity::vx:" << _vx, true);
+    DEBUG("Entity::vx:" << _vx, false);
 }
 
 void Entity::setEtatDead()

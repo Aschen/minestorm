@@ -13,7 +13,8 @@ Projectile::Projectile(Ship& ship)
 
 void Projectile::init()
 {
-    QPointF a = _ship.center();
+    QPointF a =  QPointF(_ship.center().x() + 16 * cos(_ship.getRadian(_angle)),
+                         _ship.center().y() + 16 * sin(_ship.getRadian(_angle)));
     QPointF b = QPointF(a.x() + 6 * cos(_ship.getRadian(_angle)),
                       a.y() + 6 * sin(_ship.getRadian(_angle)));
 
