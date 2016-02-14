@@ -62,7 +62,6 @@ public:
     const QSize         &size() const;
     bool                isRunning() const;
     const QVector<Element> &elements() const;
-    QPixmap             getTransformedImage(QPixmap image, QPointF pos, QPointF anchor, qreal rot, QPointF &origin);
 
 private:
     void                receiveObjects(const QSharedPointer<QVector<Element>> &elements);

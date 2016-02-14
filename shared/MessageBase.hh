@@ -17,8 +17,6 @@ public:
         KEY_RELEASE,
         OBJECTS,
         PLAYERS_INFOS,
-        SCORE,
-        LIVES,
         PSEUDO
     };
 

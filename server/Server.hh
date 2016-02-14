@@ -17,7 +17,7 @@ class Server : public QTcpServer
 private:
     quint16                     _port;
     QHostAddress                _address;
-    quint32                      _clientCount;
+    quint32                     _clientCount;
     QTimer                      _timer;
 
 public:

@@ -11,14 +11,6 @@ GameBoard::GameBoard(Display *display, QWidget *parent)
     setFocusPolicy(Qt::StrongFocus);
     setMouseTracking(true);
     setObjectName("GameBoard");
-
-    /*
-     * On utilise un timer pour limiter le nombre d'events
-     */
-//    _timer.setSingleShot(true);
-//    connect(&_timer, SIGNAL(timeout()), this, SLOT(acceptEvent()));
-    //        _acceptEvent = false;
-    //        _timer.start(1000 / EVENT_PER_S);
 }
 
 void GameBoard::paintEvent(QPaintEvent * /* event */ )
@@ -41,6 +33,7 @@ void GameBoard::mousePressEvent (QMouseEvent * event)
 
 void GameBoard::keyPressEvent(QKeyEvent * event)
 {
+    event->accept();
     if (!event->isAutoRepeat())
     {
         _display->keyPressed(event->key());
@@ -49,15 +42,9 @@ void GameBoard::keyPressEvent(QKeyEvent * event)
 
 void GameBoard::keyReleaseEvent(QKeyEvent * event)
 {
+    event->accept();
     if (!event->isAutoRepeat())
     {
         _display->keyReleased(event->key());
     }
-}
-
-void GameBoard::acceptEvent()
-{
-    DEBUG("GameBoard::acceptEvent()", false);
-
-    _acceptEvent = true;
 }

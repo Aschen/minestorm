@@ -34,8 +34,6 @@ SOURCES += server/Core.cpp \
     client/Images.cpp \
     server/Collision.cpp \
     server/Projectile.cpp \
-    shared/MessageScore.cpp \
-    shared/MessageLives.cpp \
     server/Player.cpp \
     server/Players.cpp \
     client/PlayerInfos.cpp \
@@ -66,8 +64,6 @@ HEADERS  += server/Core.hh \
     client/Images.hh \
     server/Collision.hh \
     server/Projectile.hh \
-    shared/MessageScore.hh \
-    shared/MessageLives.hh \
     server/Player.hh \
     server/Players.hh \
     client/PlayerInfos.hh \

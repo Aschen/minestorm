@@ -26,18 +26,11 @@ private:
 public:
     explicit GameBoard(Display *display, QWidget *parent = 0);
 
-signals:
-
-public slots:
-
 protected:
     void        paintEvent(QPaintEvent *);
     void        mousePressEvent(QMouseEvent * event);
     void        keyPressEvent(QKeyEvent * event);
     void        keyReleaseEvent(QKeyEvent * event);
-
-private slots:
-    void        acceptEvent();
 };
 
 #endif // GAMEBOARD_HH
