@@ -16,7 +16,7 @@ void PlayersInfos::addPlayer(quint32 playerNumber)
 {
     if (this->size() < MAX_PLAYERS)
     {
-        DEBUG("PlayersInfos::addPlayer() playerNumber" << playerNumber, true);
+        DEBUG("PlayersInfos::addPlayer() playerNumber" << playerNumber, false);
         this->push_back(QSharedPointer<PlayerInfos>(
                             new PlayerInfos(playerNumber, _positions[playerNumber - 1])));
     }

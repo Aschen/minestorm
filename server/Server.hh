@@ -2,7 +2,7 @@
 # define SERVER_HH
 
 # include <QTcpServer>
-# include <QTimer>
+# include <QNetworkInterface>
 
 # include "Minestorm.hh"
 # include "Worker.hh"
@@ -18,7 +18,6 @@ private:
     quint16                     _port;
     QHostAddress                _address;
     quint32                     _clientCount;
-    QTimer                      _timer;
 
 public:
     Server(quint16 port, QObject *parent = nullptr);
@@ -28,7 +27,7 @@ public:
     void                        broadcast(const QString &message);
     void                        unicast(qint32 idClient, const QString &message);
 
-    quint32                      clientCount() const;
+    quint32                     clientCount() const;
 
     // QTcpServer override
     void                        incomingConnection(qintptr socketFd) Q_DECL_OVERRIDE;

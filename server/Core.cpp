@@ -7,7 +7,7 @@ Core::Core(qint32 cps)
       _step(1),
       _server(SERVER_PORT)
 {
-    DEBUG("Core::Core() : cps " << cps, true);
+    DEBUG("Core::Core() : cps " << cps, false);
 
     /* Start Core timer */
     _timer.setSingleShot(false);
@@ -30,7 +30,7 @@ Core::Core(qint32 cps)
 
 void Core::startGame()
 {
-    DEBUG("Core::startGame()", true);
+    DEBUG("Core::startGame()", false);
     _server.start();
     _timer.start(1000 / _cps); // Nombre de cycle de jeu par seconde
 }
@@ -115,7 +115,7 @@ void Core::step()
 
 void Core::clientJoin(qint32 idClient)
 {
-    DEBUG("Core::clientJoint() : New client" << idClient, true);
+    DEBUG("Core::clientJoint() : New client" << idClient, false);
 
     if (_players.playerAvailable() && !_players.contains(idClient))
     {

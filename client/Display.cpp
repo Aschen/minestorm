@@ -10,7 +10,7 @@ Display::Display(const QSize &size, QObject *parent)
       _client(QSharedPointer<Client>(new Client)),
       _elements(nullptr)
 {
-    DEBUG("Display::Display()", true);
+    DEBUG("Display::Display()", false);
 
     connect(_client.data(), SIGNAL(transfertMessage(qint32, QString)),
             this,           SLOT(messageDispatcher(qint32,QString)));
@@ -150,7 +150,7 @@ void Display::joinGame(const QString &host, const QString &pseudo)
     {
         MessagePseudo       message(MessageBase::PSEUDO, pseudo);
 
-        DEBUG("Display::joinGame() : Join" << host, true);
+        DEBUG("Display::joinGame() : Join" << host, false);
         /* Start client (socket) */
         _client->start(host);
 
