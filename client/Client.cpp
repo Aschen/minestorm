@@ -30,14 +30,14 @@ Client::~Client()
     DEBUG("Client::~Client()", true);
 }
 
-void Client::start()
+bool Client::start()
 {
     assert(_host != "");
 
     if (!_socket.isValid())
     {
         _socket.connectToHost(_host, _port);
-        if (!_socket.isValid() || !_socket.isOpen())
+        if (!_socket.isOpen())
         {
             DEBUG("Client::start() : Unable to connect to" << _host << _port << " :" << _socket.errorString(), true);
         }
@@ -48,7 +48,7 @@ void Client::start()
     }
 }
 
-void Client::start(const QString &host)
+bool Client::start(const QString &host)
 {
     _host = host;
 
@@ -57,7 +57,7 @@ void Client::start(const QString &host)
 
 void Client::stop()
 {
-    if (_socket.isValid())
+    if (_socket.isOpen())
     {
         DEBUG("Client::stop() : Stop connection", true);
         // Need to reset _msgSize when stop socket
