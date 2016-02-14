@@ -10,7 +10,7 @@ Mine::Mine(TypeMine typeMine, const QPointF &point)
     {
         case Small:
         case Small_On:
-            _size = 10;
+            _size = 20;
             _speed = 4;
             break;
         case Medium:

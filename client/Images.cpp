@@ -11,12 +11,12 @@ QImage Images::getImage(Element::Type type, qreal angle)
     if (angle != 0)
     {
         QTransform     m;
-        DEBUG("Images::getImages() : angle:" << angle, true);
+        DEBUG("Images::getImages() : angle:" << angle, false);
         return _images[type]->transformed(m.rotate(angle));
     }
     else
     {
-        DEBUG("Images::getImages() :" << angle, true);
+        DEBUG("Images::getImages() :" << angle, false);
         return *(_images[type].data());
     }
 }
