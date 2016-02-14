@@ -41,14 +41,18 @@ void Core::step()
 
     if (_isPlaying)
     {
+        Collision c(_entities);
+
         /* Move all ships */
         for (QSharedPointer<Entity> &entity : _entities[Entity::SHIP])
         {
+            c.detectShipCollision(entity);
             entity->makeEntityMove();
         }
         /* Move all mines */
         for (QSharedPointer<Entity> &entity : _entities[Entity::MINE])
         {
+            c.detectMineCollision(entity);
             entity->makeEntityMove();
         }
         /* Move all shots */
@@ -63,19 +67,7 @@ void Core::step()
 //        Collision            c(_entitiesMap, _entitiesToDelete);
 
         /* Send score and lives to players */
-        for (const QSharedPointer<Player> &player : _players)
-        {
-            if (player->ship().scoreChanged())
-            {
-                MessageScore    msg(player->ship().score());
-                _server.unicast(player->idClient(), msg.messageString());
-            }
-            if (player->ship().livesChanged())
-            {
-                MessageLives    msg(player->ship().vie());
-                _server.unicast(player->idClient(), msg.messageString());
-            }
-        }
+        sendPlayersInfos();
 
         /* Merge the lists */
         EntityList          entitiesList;
@@ -112,6 +104,7 @@ void Core::clientJoin(qint32 idClient)
     {
         DEBUG("Core::clientJoint() : New spectator" << idClient, true);
     }
+    sendPlayersInfos(true);
 }
 
 void Core::clientLeft(qint32 idClient)
@@ -222,6 +215,25 @@ void Core::cleanEntities()
     }
 }
 
+void Core::sendPlayersInfos(bool force)
+{
+    for (const QSharedPointer<Player> &player : _players)
+    {
+        if (force || player->ship().scoreChanged())
+        {
+            DEBUG("Core::sendPlayersInfos() send score for "<< player->number (), true);
+            MessageScore    msg(player->number(), player->ship().score());
+            _server.broadcast(msg.messageString());
+        }
+        if (force || player->ship().livesChanged())
+        {
+            DEBUG("Core::sendPlayersInfos() send lives for "<< player->number (), true);
+            MessageLives    msg(player->number(), player->ship().vie());
+            _server.broadcast(msg.messageString());
+        }
+    }
+}
+
 /**********\
 |* EVENTS *|
 \**********/
@@ -299,10 +311,11 @@ void Core::keyPressed(qint32 idClient, qint32 key)
         break;
 
     case Qt::Key_Space:
+    {
         DEBUG("Core::keyPressed : Client " << idClient << " KeySpace", false);
-        addShot(_players.keyPressSpace(idClient));
+        _players.keyPressSpace(idClient, _entities[Entity::SHOT]);
         break;
-
+    }
     default:
         DEBUG("Core::keyPressed : Client" << idClient << " Unknown key:" << key, false);
         break;
@@ -326,6 +339,11 @@ void Core::keyReleased(qint32 idClient, qint32 key)
         case Qt::Key_Up:
             DEBUG("Core::keyRealeased Client" << idClient << " KeyUp", false);
             _players.keyReleaseUp(idClient);
+            break;
+
+        case Qt::Key_Space:
+            DEBUG("Core::keyRealeased Client" << idClient << " KeySpace", false);
+            _players.keyReleaseSpace(idClient);
             break;
 
         default:

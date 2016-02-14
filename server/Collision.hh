@@ -12,14 +12,12 @@
 class Collision
 {
 private:
-    EntityHash          &_entitiesMap;
-    EntityVector        &_entitiesToDelete;
+    EntitiesHash          _entitiesMap;
 
 public:
-    Collision(EntityHash &entitiesMap, EntityVector &entitiesToDelete);
+    Collision(EntitiesHash &entitiesMap);
 
-
-    void                detectCollision();
+    bool                checkCollision(Entity &entity1, Entity &entity2);
     void                detectShipCollision(QSharedPointer<Entity> &shipEntity);
     void                detectMineCollision(QSharedPointer<Entity> &mineEntity);
 };

@@ -75,7 +75,7 @@ void Server::broadcast(const QString &message)
 
 void Server::unicast(qint32 idClient, const QString &message)
 {
-    DEBUG("Server::unicast() : Client:" << idClient << " message:" << message, true);
+    DEBUG("Server::unicast() : Client:" << idClient << " message:" << message, false);
 
     emit sendMessage(idClient, message);
 }
@@ -87,6 +87,6 @@ quint32 Server::clientCount() const
 
 void Server::receiveMessage(qint32 socketFd, const QString &msg)
 {
-    DEBUG("Server::receiveMessage() : Worker " << socketFd << msg, true);
+    DEBUG("Server::receiveMessage() : Worker " << socketFd << msg, false);
     emit transfertMessage(socketFd, msg);
 }

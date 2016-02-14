@@ -7,17 +7,12 @@ Display::Display(const QSize &size, QObject *parent)
       _isRunning(false),
       _size(size),
       _client(QSharedPointer<Client>(new Client)),
-      _elements(nullptr),
-      _fps(0)
+      _elements(nullptr)
 {
     DEBUG("Display::Display()", true);
 
     connect(_client.data(), SIGNAL(transfertMessage(qint32, QString)),
             this,           SLOT(messageDispatcher(qint32,QString)));
-
-    /* Fps Timer */
-    _fpsTimer.setSingleShot(false);
-    connect(&_fpsTimer, SIGNAL(timeout()), this, SLOT(fpsCount()));
 }
 
 void Display::draw(QPainter &painter, QRect &size)
@@ -26,76 +21,32 @@ void Display::draw(QPainter &painter, QRect &size)
     QTransform t;
     QTransform tInv;
     DEBUG("Display::draw() : " << _elements->size() << " elements to draw", false);
+
+    /* Draw elements */
     if (_elements != nullptr)
     {
         for (const Element &element : *_elements)
         {
             DEBUG("Display:draw() : element.type() = " << element.type(), false);
-            switch (element.type())
-            {
-            case Element::MINE_S:
-            case Element::MINE_L:
-            case Element::MINE_M:
-            case Element::MINE_S_ON:
-            case Element::MINE_L_ON:
-            case Element::MINE_M_ON:
-                painter.drawImage(element.center(), _images.getImage(element.type()));
-                break;
-            case Element::SHIP_1:
-            case Element::SHIP_2:
-            case Element::SHIP_3:
-            case Element::SHIP_4:
-                /*  IF SHIELD
-                 * if(element.shild) { ... }
-                */
-                painter.setBrush(QBrush("#98F5FF"));
-                painter.setPen(QColor("#98F5FF"));
-                painter.drawEllipse(element.center(), SHIP_SIZE / 2, SHIP_SIZE / 2);
-
-                painter.setPen(QColor("#AAAAAA"));
-                painter.setBrush(QBrush(Qt::NoBrush));
-                painter.drawConvexPolygon(element.polygon());
-                painter.drawPoint(element.center());
-
-                t.translate(-SHIP_SIZE /2, - SHIP_SIZE /2);
-                tInv.translate(SHIP_SIZE /2, SHIP_SIZE /2);
-                painter.setTransform(t);
-                painter.drawImage(QRect(QPoint(element.center().x(), element.center().y()),QSize(32,32))
-                                  , _images.getImage(element.type(), element.angle()));
-
-                painter.setTransform(tInv);
-                break;
-            case Element::SHOT:
-                painter.setPen(QColor(255, 0, 51)); // RED
-                painter.setBrush(QBrush(Qt::NoBrush));
-                painter.drawConvexPolygon(element.polygon());
-                break;
-            }
+            element.draw(painter, _images);
         }
     }
 
-    /* Draw score */
-    painter.setPen(QColor(255, 255, 255));
-    painter.setBrush(QBrush(QColor(255, 255, 255)));
-    painter.drawText(QPoint(SCREEN_WIDTH - 50, 10), _score);
+    /* Draw players infos*/
+    for (const QSharedPointer<PlayerInfos> &playerInfos : _playersInfos)
+    {
+        playerInfos->draw(painter, _images);
+    }
 
-    /* Draw lives */
-    painter.setPen(QColor(255, 255, 255));
-    painter.setBrush(QBrush(QColor(255, 255, 255)));
-    painter.drawText(QPoint(SCREEN_WIDTH - 50, 20), _lives);
-
-    /* Draw fps */
-    painter.setPen(QColor(255, 255, 255));
-    painter.setBrush(QBrush(QColor(255, 255, 255)));
-    painter.drawText(QPoint(SCREEN_WIDTH - 50, 40), _fpsText);
-
-    _fps++;
+    /* Draw FPS */
+    _fpsCounter.draw(painter, _images);
+    _fpsCounter.frameDraw();
 }
 
 void Display::startDisplay()
 {
     _isRunning = true;
-    _fpsTimer.start(1000);
+    _fpsCounter.start();
 }
 
 void Display::messageDispatcher(qint32 socketFd, const QString &msg)
@@ -116,13 +67,13 @@ void Display::messageDispatcher(qint32 socketFd, const QString &msg)
     case MessageBase::SCORE:
     {
         MessageScore        message(msg);
-        receiveScore(message.score());
+        receiveScore(message.playerNumber(), message.score());
         break;
     }
     case MessageBase::LIVES:
     {
         MessageLives        message(msg);
-        receiveLives(message.lives());
+        receiveLives(message.playerNumber(), message.lives());
         break;
     }
     default:
@@ -131,12 +82,6 @@ void Display::messageDispatcher(qint32 socketFd, const QString &msg)
         break;
     }
     }
-}
-
-void Display::fpsCount()
-{
-    _fpsText = QString::number(_fps);
-    _fps = 0;
 }
 
 void Display::receiveObjects(const QSharedPointer<QVector<Element>> &elements)
@@ -149,21 +94,33 @@ void Display::receiveObjects(const QSharedPointer<QVector<Element>> &elements)
         emit changed();
 }
 
-void Display::receiveScore(quint32 score)
+void Display::receiveScore(quint32 playerNumber, quint32 score)
 {
-    DEBUG("Client::receiveScore() : Receive score " << score, true);
+    DEBUG("Client::receiveScore() : Receive player" << playerNumber << " score " << score, true);
 
-    _score = QString::number(score);
+    /* Add player to list if not exist */
+    if (!_playersInfos.contains(playerNumber))
+    {
+        _playersInfos.addPlayer(playerNumber);
+    }
+
+    _playersInfos.setPlayerScore(playerNumber, score);
 
     if (_isRunning)
         emit changed();
 }
 
-void Display::receiveLives(quint32 lives)
+void Display::receiveLives(quint32 playerNumber, quint32 lives)
 {
     DEBUG("Client::receiveLives() : Receive lives " << lives, true);
 
-    _lives = QString("Vies: ") + QString::number(lives);
+    /* Add player to list if not exist */
+    if (!_playersInfos.contains(playerNumber))
+    {
+        _playersInfos.addPlayer(playerNumber);
+    }
+
+    _playersInfos.setPlayerLives(playerNumber, lives);
 
     if (_isRunning)
         emit changed();
@@ -183,7 +140,7 @@ void Display::mousePressed(qint32 x, qint32 y)
 
 void Display::keyPressed(qint32 key)
 {
-    DEBUG("Display::keyPressed() : key =" << key, true);
+    DEBUG("Display::keyPressed() : key =" << key, false);
 
     MessageKey    message(MessageBase::KEY_PRESSED, key);
 
@@ -193,7 +150,7 @@ void Display::keyPressed(qint32 key)
 
 void Display::keyReleased(qint32 key)
 {
-    DEBUG("Display::keyReleased() : key =" << key, true);
+    DEBUG("Display::keyReleased() : key =" << key, false);
     MessageKey    message(MessageBase::KEY_RELEASE, key);
 
     if (_isRunning)

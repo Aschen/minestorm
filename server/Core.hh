@@ -52,6 +52,7 @@ private:
     void                addShip(QSharedPointer<Entity> &ship);
     void                addShot(QSharedPointer<Entity> shot);
     void                cleanEntities();
+    void                sendPlayersInfos(bool force = false);
 
 private slots:
     void                step();

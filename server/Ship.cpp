@@ -140,15 +140,24 @@ QPointF Ship::center() const
 bool Ship::changeLife(qint32 change)
 {
     bool aliveOrNot = true;
-    _vie += change;
-    if(_vie <= 0)
-    {
-        aliveOrNot = false;
-    }
-    DEBUG("Ship::changeLife() : Ship has" << _vie << " life", false);
 
-    /* Tell Core that lives has changed */
-    _livesChanged = true;
+    //On enléve une vie au vaisseau si il n'a pas de shield
+    if (this->haveShield())
+    {
+        this->removeShield();
+    }
+    else
+    {
+        _vie += change;
+        if(_vie <= 0)
+        {
+            aliveOrNot = false;
+            this->setEtatDead();
+        }
+
+        /* Tell Core that lives has changed */
+        _livesChanged = true;
+    }
 
     return aliveOrNot;
 }
