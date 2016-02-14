@@ -133,7 +133,7 @@ QPointF Ship::center() const
 
     x = ((*this)[0].x() + (*this)[1].x() + (*this)[2].x() + (*this)[3].x()) / 4;
     y = ((*this)[0].y() + (*this)[1].y() + (*this)[2].y() + (*this)[3].y()) / 4;
-    DEBUG("Ship::center() : " << x << y, true);
+    DEBUG("Ship::center() : " << x << y, false);
 
     return QPointF(x, y);
 }

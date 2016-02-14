@@ -14,15 +14,26 @@ Projectile::Projectile(Ship& ship)
 
 void Projectile::init()
 {
-    QPointF a =  QPointF(_ship.center().x() + 16 * cos(_ship.getRadian(_angle)),
-                         _ship.center().y() + 16 * sin(_ship.getRadian(_angle)));
-    QPointF b = QPointF(a.x() + 6 * cos(_ship.getRadian(_angle)),
-                      a.y() + 6 * sin(_ship.getRadian(_angle)));
+
+    qreal cX, cY;
+    cX = _ship.center().x() + 16 * cos(_ship.getRadian(_angle));
+    cY = _ship.center().y() + 16 * sin(_ship.getRadian(_angle));
+
+    DEBUG("Center(" << cX << "," << cY,true);
+
+    QPointF a =  QPointF(cX,cY -6);
+
+    QPointF b = QPointF(cX + 12,cY -6);
+    QPointF c = QPointF(cX + 12,cY +6);
+    QPointF d = QPointF(cX ,cY + 6);
 
     this->addPoint(a);
     this->addPoint(b);
+    this->addPoint(c);
+    this->addPoint(d);
 
-    DEBUG("A(" << a.x() << "," << a.y() << ") - B(" << b.x() << "," << b.y() << ")", false);
+    DEBUG("A(" << a.x() << "," << a.y() << ") - B(" << b.x() << "," << b.y() << ")", true);
+    DEBUG("D(" << d.x() << "," << d.y() << ") -C(" << c.x() << "," << c.y() << ")", true);
 }
 
 Ship &Projectile::ship() const
@@ -35,8 +46,8 @@ QPointF Projectile::center() const
     qint32  x;
     qint32  y;
 
-    x = ((*this)[0].x() + (*this)[1].x()) / 2;
-    y = ((*this)[0].y() + (*this)[1].y()) / 2;
+    x = ((*this)[0].x() + (*this)[1].x() + (*this)[2].x() + (*this)[3].x()) / 4;
+    y = ((*this)[0].y() + (*this)[1].y() + (*this)[2].y() + (*this)[3].y()) / 4;
     DEBUG("Projectile::center() : 2 points :" << x << y, false);
     return QPointF(x, y);
 }

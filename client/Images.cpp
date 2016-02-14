@@ -16,6 +16,7 @@ QImage Images::getImage(Element::Type type, qreal angle)
     }
     else
     {
+        DEBUG("Images::getImages() :" << angle, false);
         return *(_images[type].data());
     }
 }
