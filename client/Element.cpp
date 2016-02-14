@@ -58,7 +58,7 @@ void Element::draw(QPainter &painter, Images &images) const
           painter.setBrush(QBrush(Qt::NoBrush));
           painter.drawConvexPolygon(_polygon);
           painter.drawPoint(_center);
-          painter.drawImage(QRect(QPoint(_center.x(), _center.y()),QSize(32,32))
+          painter.drawImage(QRect(QPoint(_imageCenter .x(), _imageCenter.y()),QSize(32,32))
                             , images.getImage(_type, _angle));
 
         break;
