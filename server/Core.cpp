@@ -66,11 +66,14 @@ void Core::step()
 
         }
         /* Move all mines */
+        quint32     mineCount = 0;
         for (QSharedPointer<Entity> &entity : _entities[Entity::MINE])
         {
             c.detectMineCollision(entity);
             entity->makeEntityMove();
+            mineCount++;
         }
+
         /* Move all shots */
         for (QSharedPointer<Entity> &entity : _entities[Entity::SHOT])
         {
@@ -92,6 +95,12 @@ void Core::step()
         else
         {
             sendObjects();
+        }
+
+        /* respawn mines */
+        if (mineCount == 0)
+        {
+            initMines ();
         }
     }
 
