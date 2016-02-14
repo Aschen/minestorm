@@ -27,7 +27,7 @@ Mine::Mine(TypeMine typeMine, const QPointF &point)
             break;
     }
 
-    _angle = 0;
+    _angle = rand() % 360;
 
     addPoint(point);
     addPoint(point.x() + _size, point.y());
