@@ -9,8 +9,8 @@
 # include <QTransform>
 
 # include "Minestorm.hh"
-# include "Element.hh"
 # include "Entity.hh"
+# include "Element.hh"
 
 class Images
 {

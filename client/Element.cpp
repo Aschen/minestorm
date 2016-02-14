@@ -19,8 +19,8 @@ Element::Element(Type type, const QPolygon &polygon)
 Element::Element(Element::Type type, const QPolygon &polygon, quint32 armed, const QPoint &center)
     : _type(type),
       _polygon(polygon),
-      _armed(armed),
-      _center(center)
+      _center(center),
+      _armed(armed)
 {
 }
 
@@ -32,9 +32,42 @@ Element::~Element()
 {
 }
 
-void Element::draw(QPainter &painter)
+void Element::draw(QPainter &painter, Images &images) const
 {
+    switch (_type)
+    {
+    case Element::MINE_S:
+    case Element::MINE_L:
+    case Element::MINE_M:
+    case Element::MINE_S_ON:
+    case Element::MINE_L_ON:
+    case Element::MINE_M_ON:
+        painter.drawImage(_center, images.getImage(_type));
+        break;
+    case Element::SHIP_1:
+    case Element::SHIP_2:
+    case Element::SHIP_3:
+    case Element::SHIP_4:
+        /*  IF SHIELD
+         * if(element.shild) { ... }
+        */
+        painter.setBrush(QBrush("#98F5FF"));
+        painter.setPen(QColor("#98F5FF"));
+        painter.drawEllipse(_center, SHIP_SIZE / 2, SHIP_SIZE / 2);
 
+        painter.setPen(QColor("#AAAAAA"));
+        painter.setBrush(QBrush(Qt::NoBrush));
+        painter.drawConvexPolygon(_polygon);
+        painter.drawPoint(_center);
+        painter.drawImage(_imageCenter, images.getImage(_type, _angle));
+
+        break;
+    case Element::SHOT:
+        painter.setPen(QColor(255, 0, 51)); // RED
+        painter.setBrush(QBrush(Qt::NoBrush));
+        painter.drawConvexPolygon(_polygon);
+        break;
+    }
 }
 
 Element::Type Element::type() const
@@ -66,4 +99,3 @@ const QPoint &Element::imageCenter() const
 {
     return _imageCenter;
 }
-

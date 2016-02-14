@@ -38,7 +38,9 @@ SOURCES += server/Core.cpp \
     shared/MessageLives.cpp \
     server/MineTimer.cpp \
     server/Player.cpp \
-    server/Players.cpp
+    server/Players.cpp \
+    client/PlayerInfos.cpp \
+    client/PlayersInfos.cpp
 
 HEADERS  += server/Core.hh \
     client/Controller.hh \
@@ -66,7 +68,10 @@ HEADERS  += server/Core.hh \
     shared/MessageLives.hh \
     server/MineTimer.hh \
     server/Player.hh \
-    server/Players.hh
+    server/Players.hh \
+    client/PlayerInfos.hh \
+    client/IDrawable.hh \
+    client/PlayersInfos.hh
 
 FORMS    +=
 

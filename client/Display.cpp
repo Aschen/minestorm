@@ -29,52 +29,14 @@ void Display::draw(QPainter &painter, QRect &size)
         for (const Element &element : *_elements)
         {
             DEBUG("Display:draw() : element.type() = " << element.type(), false);
-            switch (element.type())
-            {
-            case Element::MINE_S:
-            case Element::MINE_L:
-            case Element::MINE_M:
-            case Element::MINE_S_ON:
-            case Element::MINE_L_ON:
-            case Element::MINE_M_ON:
-                painter.drawImage(element.center(), _images.getImage(element.type()));
-                break;
-            case Element::SHIP_1:
-            case Element::SHIP_2:
-            case Element::SHIP_3:
-            case Element::SHIP_4:
-                /*  IF SHIELD
-                 * if(element.shild) { ... }
-                */
-                painter.setBrush(QBrush("#98F5FF"));
-                painter.setPen(QColor("#98F5FF"));
-                painter.drawEllipse(element.center(), SHIP_SIZE / 2, SHIP_SIZE / 2);
-
-                painter.setPen(QColor("#AAAAAA"));
-                painter.setBrush(QBrush(Qt::NoBrush));
-                painter.drawConvexPolygon(element.polygon());
-                painter.drawPoint(element.center());
-                painter.drawImage(element.imageCenter(), _images.getImage(element.type(), element.angle()));
-
-                break;
-            case Element::SHOT:
-                painter.setPen(QColor(255, 0, 51)); // RED
-                painter.setBrush(QBrush(Qt::NoBrush));
-                painter.drawConvexPolygon(element.polygon());
-                break;
-            }
+            element.draw(painter, _images);
         }
     }
 
-    /* Draw score */
-    painter.setPen(QColor(255, 255, 255));
-    painter.setBrush(QBrush(QColor(255, 255, 255)));
-    painter.drawText(QPoint(SCREEN_WIDTH - 50, 10), _score);
-
-    /* Draw lives */
-    painter.setPen(QColor(255, 255, 255));
-    painter.setBrush(QBrush(QColor(255, 255, 255)));
-    painter.drawText(QPoint(SCREEN_WIDTH - 50, 20), _lives);
+    for (const QSharedPointer<PlayerInfos> &playerInfos : _playersInfos)
+    {
+        playerInfos->draw(painter, _images);
+    }
 
     /* Draw fps */
     painter.setPen(QColor(255, 255, 255));
@@ -108,13 +70,13 @@ void Display::messageDispatcher(qint32 socketFd, const QString &msg)
     case MessageBase::SCORE:
     {
         MessageScore        message(msg);
-        receiveScore(message.score());
+        receiveScore(message.playerNumber(), message.score());
         break;
     }
     case MessageBase::LIVES:
     {
         MessageLives        message(msg);
-        receiveLives(message.lives());
+        receiveLives(message.playerNumber(), message.lives());
         break;
     }
     default:
@@ -141,21 +103,33 @@ void Display::receiveObjects(const QSharedPointer<QVector<Element>> &elements)
         emit changed();
 }
 
-void Display::receiveScore(quint32 score)
+void Display::receiveScore(quint32 playerNumber, quint32 score)
 {
-    DEBUG("Client::receiveScore() : Receive score " << score, true);
+    DEBUG("Client::receiveScore() : Receive player" << playerNumber << " score " << score, true);
 
-    _score = QString::number(score);
+    /* Add player to list if not exist */
+    if (!_playersInfos.contains(playerNumber))
+    {
+        _playersInfos.addPlayer(playerNumber);
+    }
+
+    _playersInfos.setPlayerScore(playerNumber, score);
 
     if (_isRunning)
         emit changed();
 }
 
-void Display::receiveLives(quint32 lives)
+void Display::receiveLives(quint32 playerNumber, quint32 lives)
 {
     DEBUG("Client::receiveLives() : Receive lives " << lives, true);
 
-    _lives = QString("Vies: ") + QString::number(lives);
+    /* Add player to list if not exist */
+    if (!_playersInfos.contains(playerNumber))
+    {
+        _playersInfos.addPlayer(playerNumber);
+    }
+
+    _playersInfos.setPlayerLives(playerNumber, lives);
 
     if (_isRunning)
         emit changed();
@@ -175,7 +149,7 @@ void Display::mousePressed(qint32 x, qint32 y)
 
 void Display::keyPressed(qint32 key)
 {
-    DEBUG("Display::keyPressed() : key =" << key, true);
+    DEBUG("Display::keyPressed() : key =" << key, false);
 
     MessageKey    message(MessageBase::KEY_PRESSED, key);
 
@@ -185,7 +159,7 @@ void Display::keyPressed(qint32 key)
 
 void Display::keyReleased(qint32 key)
 {
-    DEBUG("Display::keyReleased() : key =" << key, true);
+    DEBUG("Display::keyReleased() : key =" << key, false);
     MessageKey    message(MessageBase::KEY_RELEASE, key);
 
     if (_isRunning)

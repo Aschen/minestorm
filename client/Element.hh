@@ -4,9 +4,10 @@
 # include <QPolygon>
 # include <QPainter>
 
+# include "IDrawable.hh"
 # include "Minestorm.hh"
 
-class Element
+class Element : public IDrawable
 {
 public:
     /*   /!\ MUST MATCH Mine::TypeMine /!\   */
@@ -45,8 +46,6 @@ public:
     Element();
     ~Element();
 
-    void            draw(QPainter &painter);
-
     const QPoint    &center() const;
     const QPoint    &imageCenter() const;
 
@@ -54,6 +53,12 @@ public:
     const QPolygon  &polygon() const;
     qreal           angle() const;
     quint32         armed() const;
+
+    // IDrawable interface
+public:
+    void            draw(QPainter &painter, Images &images) const override;
 };
 
 #endif // ELEMENT_HH
+
+# include "Images.hh"

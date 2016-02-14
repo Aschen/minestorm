@@ -63,19 +63,7 @@ void Core::step()
 //        Collision            c(_entitiesMap, _entitiesToDelete);
 
         /* Send score and lives to players */
-        for (const QSharedPointer<Player> &player : _players)
-        {
-            if (player->ship().scoreChanged())
-            {
-                MessageScore    msg(player->ship().score());
-                _server.unicast(player->idClient(), msg.messageString());
-            }
-            if (player->ship().livesChanged())
-            {
-                MessageLives    msg(player->ship().vie());
-                _server.unicast(player->idClient(), msg.messageString());
-            }
-        }
+        sendPlayersInfos();
 
         /* Merge the lists */
         EntityList          entitiesList;
@@ -112,6 +100,7 @@ void Core::clientJoin(qint32 idClient)
     {
         DEBUG("Core::clientJoint() : New spectator" << idClient, true);
     }
+    sendPlayersInfos(true);
 }
 
 void Core::clientLeft(qint32 idClient)
@@ -218,6 +207,25 @@ void Core::cleanEntities()
         else
         {
             ++it;
+        }
+    }
+}
+
+void Core::sendPlayersInfos(bool force)
+{
+    for (const QSharedPointer<Player> &player : _players)
+    {
+        if (force || player->ship().scoreChanged())
+        {
+            DEBUG("Core::sendPlayersInfos() send score for "<< player->number (), true);
+            MessageScore    msg(player->number(), player->ship().score());
+            _server.broadcast(msg.messageString());
+        }
+        if (force || player->ship().livesChanged())
+        {
+            DEBUG("Core::sendPlayersInfos() send lives for "<< player->number (), true);
+            MessageLives    msg(player->number(), player->ship().vie());
+            _server.broadcast(msg.messageString());
         }
     }
 }
