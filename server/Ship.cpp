@@ -14,16 +14,12 @@ Ship::Ship(const QPointF &position, qint32 shipNumber)
       _rotation(NONE)
 {
     _size   = QSize(SHIP_SIZE, SHIP_SIZE);
-    _speed  = 0;
-    _angle  = 0;
+
+    init(position);
+    grantShield();
+
     this->vx(0);
     this->vy(0);
-
-    grantShield();
-    this->addPoint(QPointF(position.x(), position.y()));
-    this->addPoint(QPointF(position.x() + size().width(), position.y()));
-    this->addPoint(QPointF(position.x() + size().height(), position.y() + size().width()));
-    this->addPoint(QPointF(position.x(), position.y() + size().height()));
 }
 
 void Ship::addScore(quint32 score)
@@ -35,8 +31,28 @@ void Ship::addScore(quint32 score)
     _scoreChanged = true;
 }
 
+void Ship::init(const QPointF &position)
+{
+    _speed      = 0;
+    _angle      = 0;
+    _etat       = INVINCIBLE;
+    _timerSpawn = 120;
+
+    this->addPoint(QPointF(position.x(), position.y()));
+    this->addPoint(QPointF(position.x() + size().width(), position.y()));
+    this->addPoint(QPointF(position.x() + size().height(), position.y() + size().width()));
+    this->addPoint(QPointF(position.x(), position.y() + size().height()));
+}
+
+void Ship::resetSpawn(const QPointF &position)
+{
+    this->clear();
+    init(position);
+}
+
 
 //Getter & Setter
+
 quint32 Ship::vie() const
 {
     return _vie;
@@ -173,6 +189,9 @@ bool Ship::changeLife(qint32 change)
         {
             aliveOrNot = false;
             this->setEtatDead();
+        }else
+        {
+            resetSpawn(QPointF(SCREEN_WIDTH/2 -12 , SCREEN_HEIGHT/2 - 12));
         }
 
         /* Tell Core that lives has changed */
@@ -200,6 +219,12 @@ void Ship::rotateShip()
 
 bool Ship::makeEntityMove()
 {
+    if (_timerSpawn > 0)
+    {
+        _timerSpawn--;
+        if (_timerSpawn == 0)
+            _etat = ALIVE;
+    }
     rotateShip();
     qreal tempX, tempY;
 

@@ -34,40 +34,43 @@ void Collision::detectShipCollision(QSharedPointer<Entity> &shipEntity)
 {
     Ship *ship = dynamic_cast<Ship*>(shipEntity.data());
 
-    //Pour tous les vaisseau on regarde si il y a collision avec le vaisseau
-    for(QSharedPointer<Entity> &entity : _entitiesMap[Entity::SHIP])
+    if(ship->etat() == Entity::ALIVE)
     {
-        if(ship != entity.data() && entity->etat() == Entity::ALIVE)
+        //Pour tous les vaisseau on regarde si il y a collision avec le vaisseau
+        for(QSharedPointer<Entity> &entity : _entitiesMap[Entity::SHIP])
         {
-            if(checkCollision(*shipEntity.data(), *entity))
+            if(ship != entity.data() && entity->etat() == Entity::ALIVE)
             {
-                ship->changeLife(-1);
+                if(checkCollision(*shipEntity.data(), *entity))
+                {
+                    ship->changeLife(-1);
+                }
             }
         }
-    }
 
-    //Pour toutes les mines on regarde si il y a collision avec le vaisseau
-    for(QSharedPointer<Entity> &entity : _entitiesMap[Entity::MINE])
-    {
-        if(entity->etat() == Entity::ALIVE)
+        //Pour toutes les mines on regarde si il y a collision avec le vaisseau
+        for(QSharedPointer<Entity> &entity : _entitiesMap[Entity::MINE])
         {
-            if(checkCollision(*shipEntity.data(), *entity))
+            if(entity->etat() == Entity::ALIVE)
             {
-                ship->changeLife(-1);
+                if(checkCollision(*shipEntity.data(), *entity))
+                {
+                    ship->changeLife(-1);
+                }
             }
         }
-    }
 
-    //Pour tous les tirs on regarde si il y a collision avec le vaisseau
-    for(QSharedPointer<Entity> &entity : _entitiesMap[Entity::SHOT])
-    {
-        Projectile *tir = dynamic_cast<Projectile*>(entity.data());
-        if(tir->ship() != *ship && entity->etat() == Entity::ALIVE)
+        //Pour tous les tirs on regarde si il y a collision avec le vaisseau
+        for(QSharedPointer<Entity> &entity : _entitiesMap[Entity::SHOT])
         {
-            if(checkCollision(*shipEntity.data(), *entity))
+            Projectile *tir = dynamic_cast<Projectile*>(entity.data());
+            if(tir->ship() != *ship && entity->etat() == Entity::ALIVE)
             {
-                DEBUG("Collision::detectShipCollision() collision vaisseau tir", false);
-                ship->changeLife(-1);
+                if(checkCollision(*shipEntity.data(), *entity))
+                {
+                    DEBUG("Collision::detectShipCollision() collision vaisseau tir", false);
+                    ship->changeLife(-1);
+                }
             }
         }
     }

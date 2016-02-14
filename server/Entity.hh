@@ -30,7 +30,8 @@ public:
     enum Etat
     {
         DEAD = 0,
-        ALIVE = 1
+        ALIVE = 1,
+        INVINCIBLE
     };
 
 protected:

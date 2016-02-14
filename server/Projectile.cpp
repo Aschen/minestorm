@@ -32,8 +32,8 @@ void Projectile::init()
     this->addPoint(c);
     this->addPoint(d);
 
-    DEBUG("A(" << a.x() << "," << a.y() << ") - B(" << b.x() << "," << b.y() << ")", true);
-    DEBUG("D(" << d.x() << "," << d.y() << ") -C(" << c.x() << "," << c.y() << ")", true);
+    DEBUG("A(" << a.x() << "," << a.y() << ") - B(" << b.x() << "," << b.y() << ")", false);
+    DEBUG("D(" << d.x() << "," << d.y() << ") -C(" << c.x() << "," << c.y() << ")", false);
 }
 
 Ship &Projectile::ship() const
