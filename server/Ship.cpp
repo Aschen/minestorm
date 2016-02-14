@@ -90,6 +90,7 @@ bool Ship::haveShield()
 
 void Ship::grantShield()
 {
+    DEBUG("Ship::Shield Lost", true);
     _shield = true;
 }
 
@@ -132,7 +133,7 @@ QPointF Ship::center() const
 
     x = ((*this)[0].x() + (*this)[1].x() + (*this)[2].x() + (*this)[3].x()) / 4;
     y = ((*this)[0].y() + (*this)[1].y() + (*this)[2].y() + (*this)[3].y()) / 4;
-    DEBUG("Ship::center() : " << x << y, false);
+    DEBUG("Ship::center() : " << x << y, true);
 
     return QPointF(x, y);
 }
@@ -183,22 +184,22 @@ bool Ship::makeEntityMove()
     rotateShip();
     qreal tempX, tempY;
 
-    tempX = vx() + (_speed / 2) * cos(getRadian(_angle));
-    tempY = vy() + (_speed / 2) * sin(getRadian(_angle));
-
-    if (tempX > 10)
-      tempX = 10;
-   else if (tempX < -10)
-       tempX = -10;
-
-
-    if (tempY > 10)
-        tempY = 10;
-    else if (tempY < -10)
-        tempY = -10;
 
     if (goingUp())
     {
+        tempX = vx() + (_speed / 2) * cos(getRadian(_angle));
+        tempY = vy() + (_speed / 2) * sin(getRadian(_angle));
+
+        if (tempX > 10)
+          tempX = 10;
+       else if (tempX < -10)
+           tempX = -10;
+
+        if (tempY > 10)
+            tempY = 10;
+        else if (tempY < -10)
+            tempY = -10;
+
         this->vy(tempY);
         this->vx(tempX);
     }
@@ -208,7 +209,6 @@ bool Ship::makeEntityMove()
             vx(vx() * 0.97);
         else {
             vx(0);
-            speed(0);
         }
 
         if(vy() > 0.3 || vy() < -0.3)
@@ -216,7 +216,6 @@ bool Ship::makeEntityMove()
         else
         {
             vy(0);
-            speed(0);
         }
     }
     Entity::makeEntityMove();
