@@ -5,9 +5,9 @@ Players::Players(qint32 maxPlayers)
       _spawns(maxPlayers)
 {
     _spawns[0] = QPoint(1 * SCREEN_WIDTH / 4, 1 * SCREEN_HEIGHT / 4);
-    _spawns[1] = QPoint(1 * SCREEN_WIDTH / 4, 3 * SCREEN_HEIGHT / 4);
+    _spawns[1] = QPoint(3 * SCREEN_WIDTH / 4, 1 * SCREEN_HEIGHT / 4);
     _spawns[2] = QPoint(3 * SCREEN_WIDTH / 4, 3 * SCREEN_HEIGHT / 4);
-    _spawns[3] = QPoint(3 * SCREEN_WIDTH / 4, 1 * SCREEN_HEIGHT / 4);
+    _spawns[3] = QPoint(1 * SCREEN_WIDTH / 4, 3 * SCREEN_HEIGHT / 4);
 }
 
 QSharedPointer<Player> &Players::findPlayer(qint32 idClient)
@@ -69,9 +69,9 @@ void Players::keyPressDown(qint32 idClient)
     findPlayer(idClient)->ship().decrementSpeed(2);
 }
 
-QSharedPointer<Entity> Players::keyPressSpace(qint32 idClient)
+void Players::keyPressSpace(qint32 idClient, EntityList &shots)
 {
-    return findPlayer(idClient)->ship().shot();
+    findPlayer(idClient)->startShooting(&shots);
 }
 
 void Players::keyReleaseRight(qint32 idClient)
@@ -87,6 +87,11 @@ void Players::keyReleaseLeft(qint32 idClient)
 void Players::keyReleaseUp(qint32 idClient)
 {
     findPlayer(idClient)->ship().goingUp(false);
+}
+
+void Players::keyReleaseSpace(qint32 idClient)
+{
+    findPlayer(idClient)->stopShooting();
 }
 
 /* INFOS */

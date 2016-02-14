@@ -28,10 +28,11 @@ public:
     void                    keyPressLeft(qint32 idClient);
     void                    keyPressUp(qint32 idClient);
     void                    keyPressDown(qint32 idClient);
-    QSharedPointer<Entity>  keyPressSpace(qint32 idClient);
+    void                    keyPressSpace(qint32 idClient, EntityList &shots);
     void                    keyReleaseRight(qint32 idClient);
     void                    keyReleaseLeft(qint32 idClient);
     void                    keyReleaseUp(qint32 idClient);
+    void                    keyReleaseSpace(qint32 idClient);
 
     bool                    playerAvailable() const;
     bool                    contains(qint32 idClient) const;

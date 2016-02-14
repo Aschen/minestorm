@@ -18,8 +18,10 @@
 # include "MessageKey.hh"
 # include "MessageLives.hh"
 # include "Client.hh"
-# include "Element.hh"
 # include "Images.hh"
+# include "Element.hh"
+# include "PlayersInfos.hh"
+# include "FpsCounter.hh"
 
 class Display : public QObject
 {
@@ -30,16 +32,13 @@ private:
     const QSize         _size;
     QSharedPointer<Client>              _client;
     QSharedPointer<QVector<Element>>    _elements;
-    QString             _score;
-    QString             _lives;
     Images              _images;
-    quint32             _fps;
-    QList<quint32>      _fpsValues;
-    QString             _fpsText;
     QPixmap             _image;
     qint32              _angle;
     QPointF             _origin;
-    QTimer              _fpsTimer;
+    PlayersInfos        _playersInfos;
+    FpsCounter          _fpsCounter;
+
 
 public:
     Display(const QSize &size, QObject *parent = nullptr);
@@ -66,15 +65,14 @@ public:
 
 private:
     void                receiveObjects(const QSharedPointer<QVector<Element>> &elements);
-    void                receiveScore(quint32 score);
-    void                receiveLives(quint32 lives);
+    void                receiveScore(quint32 playerNumber, quint32 score);
+    void                receiveLives(quint32 playerNumber, quint32 lives);
 
 signals:
     void                changed();
 
 private slots:
     void                messageDispatcher(qint32 socketFd, const QString &msg);
-    void                fpsCount();
 };
 
 #endif // DISPLAY_HH
