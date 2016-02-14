@@ -24,6 +24,7 @@ public:
 
     void                        setPlayerScore(quint32 playerNumber, quint32 score);
     void                        setPlayerLives(quint32 playerNumber, quint32 lives);
+    void                        setPlayerPseudo(quint32 playerNumber, const QString &pseudo);
 };
 
 #endif // PLAYERS_HH

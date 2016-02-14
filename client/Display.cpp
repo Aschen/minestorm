@@ -44,12 +44,6 @@ void Display::draw(QPainter &painter, QRect &size)
     _fpsCounter.frameDraw();
 }
 
-void Display::startDisplay()
-{
-    _isRunning = true;
-    _fpsCounter.start();
-}
-
 void Display::messageDispatcher(qint32 socketFd, const QString &msg)
 {
     (void) socketFd;
@@ -65,16 +59,12 @@ void Display::messageDispatcher(qint32 socketFd, const QString &msg)
         receiveObjects(message.elements());
         break;
     }
-    case MessageBase::SCORE:
+    case MessageBase::PLAYERS_INFOS:
     {
-        MessageScore        message(msg);
-        receiveScore(message.playerNumber(), message.score());
-        break;
-    }
-    case MessageBase::LIVES:
-    {
-        MessageLives        message(msg);
-        receiveLives(message.playerNumber(), message.lives());
+        MessagePlayersInfos message(msg, &_playersInfos);
+
+        if (_isRunning)
+            emit changed();
         break;
     }
     default:
@@ -107,8 +97,6 @@ void Display::receiveScore(quint32 playerNumber, quint32 score)
 
     _playersInfos.setPlayerScore(playerNumber, score);
 
-    if (_isRunning)
-        emit changed();
 }
 
 void Display::receiveLives(quint32 playerNumber, quint32 lives)
@@ -152,10 +140,31 @@ void Display::keyPressed(qint32 key)
 void Display::keyReleased(qint32 key)
 {
     DEBUG("Display::keyReleased() : key =" << key, false);
+
+    /* Key echap is only for Client */
+    if (key == Qt::Key_Escape)
+    {
+        DEBUG("Display::keyPressed() : Echap", true);
+        stopGame();
+        return ;
+    }
+
     MessageKey    message(MessageBase::KEY_RELEASE, key);
 
     if (_isRunning)
         _client->sendMessage(message.messageString());
+}
+
+void Display::startDisplay()
+{
+    _isRunning = true;
+    _fpsCounter.start();
+}
+
+void Display::stopDisplay()
+{
+    _isRunning = false;
+    _fpsCounter.stop();
 }
 
 void Display::startNewGame()
@@ -166,12 +175,22 @@ void Display::startNewGame()
     startDisplay();
 }
 
-void Display::joinGame(const QString &host)
+void Display::joinGame(const QString &host, const QString &pseudo)
 {
-    DEBUG("Display::joinGame() : Join" << host, true);
+    if (!_isRunning)
+    {
+        MessagePseudo       message(MessageBase::PSEUDO, pseudo);
 
-    _client->start(host);
-    startDisplay();
+        DEBUG("Display::joinGame() : Join" << host, true);
+        /* Start client (socket) */
+        _client->start(host);
+
+        /* Send pseudo to Server */
+        _client->sendMessage(message.messageString ());
+
+        /* Start display */
+        startDisplay();
+    }
 }
 
 void Display::exitGame()
@@ -181,6 +200,19 @@ void Display::exitGame()
     _client->stop();
 
     QApplication::quit();
+}
+
+void Display::stopGame()
+{
+    if (_isRunning)
+    {
+        _elements.clear();
+        _playersInfos.clear();
+
+        emit changed ();
+        _client->stop();
+        stopDisplay();
+    }
 }
 
 /* GETTERS/SETTERS */

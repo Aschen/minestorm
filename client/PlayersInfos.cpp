@@ -64,3 +64,8 @@ void PlayersInfos::setPlayerLives(quint32 playerNumber, quint32 lives)
     findPlayer(playerNumber)->lives(lives);
 }
 
+void PlayersInfos::setPlayerPseudo(quint32 playerNumber, const QString &pseudo)
+{
+    findPlayer(playerNumber)->pseudo(pseudo);
+}
+

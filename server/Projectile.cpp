@@ -19,7 +19,7 @@ void Projectile::init()
     cX = _ship.center().x() + 16 * cos(_ship.getRadian(_angle));
     cY = _ship.center().y() + 16 * sin(_ship.getRadian(_angle));
 
-    DEBUG("Center(" << cX << "," << cY,true);
+    DEBUG("Center(" << cX << "," << cY,false);
 
     QPointF a =  QPointF(cX,cY -6);
 

@@ -20,8 +20,8 @@
 # include "MessageMouse.hh"
 # include "MessageKey.hh"
 # include "MessageObjects.hh"
-# include "MessageScore.hh"
-# include "MessageLives.hh"
+# include "MessagePlayersInfos.hh"
+# include "MessagePseudo.hh"
 # include "Collision.hh"
 # include "Players.hh"
 
@@ -41,18 +41,24 @@ private:
 public:
     Core(qint32 cps);
 
+    void                startGame();
+
+
+private:
+    // Events from messageDispatcher
     void                mousePressed(qint32 idClient, qint32 x, qint32 y);
     void                keyPressed(qint32 idClient, qint32 key);
     void                keyReleased(qint32 idClient, qint32 key);
-    void                startGame();
 
-private:
+    // Entities handles
     void                initMines();
     void                addMine(Mine::TypeMine type, quint32 x, quint32 y);
     void                addShip(QSharedPointer<Entity> &ship);
     void                addShot(QSharedPointer<Entity> shot);
     void                cleanEntities();
-    void                sendPlayersInfos(bool force = false);
+
+    void                sendPlayersInfos();
+    void                sendObjects();
 
 private slots:
     void                step();

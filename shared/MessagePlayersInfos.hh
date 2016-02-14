@@ -7,14 +7,15 @@
 
 # include "MessageBase.hh"
 # include "Players.hh"
+# include "PlayersInfos.hh"
 
 class MessagePlayersInfos : public MessageBase
 {
 private:
-    quint32         _playerNumber;
+    PlayersInfos    *_playersInfos;
+
 public:
-    MessagePlayersInfos(const QString &msg);
-    MessagePlayersInfos(MessageBase::Type type, QTextStream &stream);
+    MessagePlayersInfos(const QString &msg, PlayersInfos *playersInfos);
     MessagePlayersInfos(const Players &players);
 
 

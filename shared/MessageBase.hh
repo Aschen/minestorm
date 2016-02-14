@@ -16,8 +16,10 @@ public:
         KEY_PRESSED,
         KEY_RELEASE,
         OBJECTS,
+        PLAYERS_INFOS,
         SCORE,
-        LIVES
+        LIVES,
+        PSEUDO
     };
 
 protected:
