@@ -60,7 +60,12 @@ void Element::draw(QPainter &painter, Images &images) const
           painter.drawImage(QRect(QPoint(_imageCenter.x(), _imageCenter.y()),QSize(32,32))
                             , images.getImage(_type, _angle));
         break;
-    case Element::SHOT:
+        case Element::SHOT:
+        if(playSound() == true)
+        {
+            DEBUG("Projectile:playsound" << playSound(), true);
+            QSound::play("sound/shot.wav");
+        }
         painter.setPen(QColor(255, 0, 51)); // RED
         painter.setBrush(QBrush(Qt::NoBrush));
         painter.drawConvexPolygon(_polygon);
@@ -86,9 +91,14 @@ qreal Element::angle() const
     return _angle;
 }
 
-quint32 Element::armed() const
+void Element::playSound(bool value)
 {
-    return _armed;
+    _playSound = value;
+}
+
+bool Element::playSound() const
+{
+    return _playSound;
 }
 
 const QPoint &Element::center() const
