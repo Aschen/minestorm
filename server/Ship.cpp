@@ -39,6 +39,10 @@ void Ship::init()
     _angle      = 0;
     _etat       = INVINCIBLE;
     _timerSpawn = 120;
+    _vx         = 0.0;
+    _vy         = 0.0;
+    _shieldRepop = -1;
+    _shield     = true;
 
     this->addPoint(QPointF(_spawn.x(), _spawn.y()));
     this->addPoint(QPointF(_spawn.x() + size().width(), _spawn.y()));
@@ -108,7 +112,7 @@ bool Ship::haveShield() const
     return _shield == true ;
 }
 
-void Ship::grantShield()
+void Ship:: grantShield()
 {
     DEBUG("Ship::Shield grant", false);
     _shield = true;
