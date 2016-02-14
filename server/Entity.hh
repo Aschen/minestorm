@@ -36,9 +36,11 @@ public:
 protected:
     Type                    _type;
     QSize                   _size;
-    qint32                  _speed;
+    qreal                   _speed;
     qint32                  _angle;
     Etat                    _etat;
+    qreal                   _vx;
+    qreal                   _vy;
 
 
 
@@ -63,12 +65,16 @@ public:
     void                    type(Entity::Type type);
     const QSize             &size() const; // rename it
     void                    size(const QSize &value); // rename it
-    qint32                  speed() const;
-    void                    speed(qint32 value);
+    qreal                   speed() const;
+    void                    speed(qreal value);
     qint32                  angle() const;
     void                    angle(qint32 value);
     Etat                    etat() const;
     void                    setEtat(const Etat &etat);
+    qreal                   vy() const;
+    void                    vy(qreal value);
+    qreal                   vx() const;
+    void                    vx(qreal value);
 };
 
 using EntityList = QList<QSharedPointer<Entity>>;

@@ -12,6 +12,8 @@ Ship::Ship(const QPointF &position, qint32 shipNumber)
     _size   = QSize(SHIP_SIZE, SHIP_SIZE);
     _speed  = 0;
     _angle  = 0;
+    this->vx(0);
+    this->vy(0);
     _rotation = NONE;
     _goingUp = false;
 
@@ -156,11 +158,11 @@ void Ship::rotateShip()
     switch(_rotation)
     {
         case LEFT:
-            this->rotate(10);
+            this->rotate(-10);
             break;
 
         case RIGHT:
-            this->rotate(-10);
+            this->rotate(10);
             break;
         default:
             break;
@@ -170,12 +172,44 @@ void Ship::rotateShip()
 bool Ship::makeEntityMove()
 {
     rotateShip();
-    if(goingUp())
-        this->incrementSpeed();
+    qreal tempX, tempY;
 
+    tempX = vx() + (_speed / 2) * cos(getRadian(_angle));
+    tempY = vy() + (_speed / 2) * sin(getRadian(_angle));
+
+    if (tempX > 10)
+      tempX = 10;
+   else if (tempX < -10)
+       tempX = -10;
+
+
+    if (tempY > 10)
+        tempY = 10;
+    else if (tempY < -10)
+        tempY = -10;
+
+    if (goingUp())
+    {
+        this->vy(tempY);
+        this->vx(tempX);
+    }
+    else
+    {
+        if(vx() > 0.3 || vx() < -0.3)
+            vx(vx() * 0.97);
+        else {
+            vx(0);
+            speed(0);
+        }
+
+        if(vy() > 0.3 || vy() < -0.3)
+            vy(vy() * 0.97);
+        else
+        {
+            vy(0);
+            speed(0);
+        }
+    }
     Entity::makeEntityMove();
-    if(_tempo % 10 == 0)
-         decrementSpeed(1);
-    _tempo = ( _tempo + 1 ) % 100;
     return true;
 }

@@ -23,6 +23,8 @@ Display::Display(const QSize &size, QObject *parent)
 void Display::draw(QPainter &painter, QRect &size)
 {
     (void) size;
+    QTransform t;
+    QTransform tInv;
     DEBUG("Display::draw() : " << _elements->size() << " elements to draw", false);
     if (_elements != nullptr)
     {
@@ -54,8 +56,14 @@ void Display::draw(QPainter &painter, QRect &size)
                 painter.setBrush(QBrush(Qt::NoBrush));
                 painter.drawConvexPolygon(element.polygon());
                 painter.drawPoint(element.center());
-                painter.drawImage(element.imageCenter(), _images.getImage(element.type(), element.angle()));
 
+                t.translate(-SHIP_SIZE /2, - SHIP_SIZE /2);
+                tInv.translate(SHIP_SIZE /2, SHIP_SIZE /2);
+                painter.setTransform(t);
+                painter.drawImage(QRect(QPoint(element.center().x(), element.center().y()),QSize(32,32))
+                                  , _images.getImage(element.type(), element.angle()));
+
+                painter.setTransform(tInv);
                 break;
             case Element::SHOT:
                 painter.setPen(QColor(255, 0, 51)); // RED
