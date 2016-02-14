@@ -81,8 +81,16 @@ void Core::step()
             sendPlayersInfos();
 
         /* Maintain fps rate */
-        if (_step % (CYCLE_PER_S / 25) == 0)
-            sendObjects();
+        if (CYCLE_PER_S == 30)
+        {
+            if (_step % 4)
+                sendObjects();
+        }
+        else
+        {
+            if (_step % (CYCLE_PER_S / 25) == 0)
+                sendObjects();
+        }
     }
 
     ++_step;
