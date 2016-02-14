@@ -47,9 +47,8 @@ void Element::draw(QPainter &painter, Images &images) const
     case Element::SHIP_2:
     case Element::SHIP_3:
     case Element::SHIP_4:
-
-          painter.drawImage(QRect(QPoint(_center.x() - 20, _center.y() - 20),QSize(40,40))
-                          , images.getImage(Element::SHIELD, _angle));
+          painter.drawImage(QRect(QPoint(_center.x() - 20, _center.y() - 20),QSize(40,40)),
+                            images.getImage(Element::SHIELD, _angle));
           painter.setBrush(QBrush("#98F5FF"));
           painter.setPen(QColor("#98F5FF"));
 
@@ -66,6 +65,7 @@ void Element::draw(QPainter &painter, Images &images) const
         painter.setPen(QColor(255, 0, 51)); // RED
         painter.setBrush(QBrush(Qt::NoBrush));
         painter.drawConvexPolygon(_polygon);
+        painter.drawImage(QRect(QPoint(_imageCenter.x(), _imageCenter.y()), QSize(60, 42)), images.getImage(_type, _angle));
         break;
     }
 }
