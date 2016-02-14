@@ -4,8 +4,10 @@ Mine::Mine(TypeMine typeMine, const QPointF &point)
     : Entity(Entity::MINE),
       _typeMine(typeMine),
       _armed(false),
-      _timer(*this)
+      _delay(rand() % MINE_MAX_DELAY),
+      _timer(CYCLE_PER_S * _delay)
 {
+    DEBUG("Mine::Mine() delay:" << _delay, true);
     switch(_typeMine)
     {
         case Small:
@@ -24,6 +26,8 @@ Mine::Mine(TypeMine typeMine, const QPointF &point)
             _speed = 2;
             break;
     }
+
+    _angle = 0;
 
     addPoint(point);
     addPoint(point.x()+ _size, point.y());
@@ -87,6 +91,13 @@ QPointF Mine::center() const
 }
 bool Mine::makeEntityMove()
 {
+    if (_timer > 0)
+    {
+        _timer--;
+        if (_timer == 0)
+            activate();
+    }
+
     if (this->center().x() > SCREEN_WIDTH
     ||  this->center().x() < 0)
     {

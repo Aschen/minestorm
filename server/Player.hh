@@ -1,31 +1,22 @@
 #ifndef PLAYER_HH
 # define PLAYER_HH
 
-# include <QObject>
-# include <QTimer>
-
 # include "Ship.hh"
 
-class Player : public QObject
+class Player
 {
-    Q_OBJECT
-
 private:
     const qint32            _idClient;
     const quint32           _number;
     const QPoint            _spawn;
     QSharedPointer<Entity>  _ship;
-    bool                    _acceptShot;
-    QTimer                  _shotTimer;
-    EntityList              *_shots;
 
 public:
     explicit Player(qint32 idClient, quint32 number, const QPoint &spawn);
     ~Player();
 
-    void                    startShooting(EntityList *shots);
+    void                    startShooting();
     void                    stopShooting();
-    bool                    shot(QSharedPointer<Entity> &shot);
 
     QSharedPointer<Entity>  &entity();
     Ship                    &ship();
@@ -35,12 +26,6 @@ public:
     qint32                  idClient() const;
     quint32                 score() const;
     quint32                 lives() const;
-
-signals:
-    void                    stopTimer();
-
-private slots:
-    void                    shoot();
 };
 
 #endif // PLAYER_HH

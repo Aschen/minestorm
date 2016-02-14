@@ -1,7 +1,8 @@
 #include "Entity.hh"
 
 Entity::Entity(Type type)
-    : _type(type)
+    : _type(type),
+      _angle(0)
 {
     _etat = ALIVE;
 }

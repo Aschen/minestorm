@@ -1,12 +1,13 @@
 #include "Element.hh"
 
 
-Element::Element(Type type, const QPolygon &polygon, qreal angle, const QPoint &center)
+Element::Element(Type type, const QPolygon &polygon, qreal angle, bool shield, const QPoint &center)
     : _type(type),
       _polygon(polygon),
       _angle(angle),
       _center(center),
-      _imageCenter(_center.x() - 16, _center.y() - 16)
+      _imageCenter(_center.x() - 16, _center.y() - 16),
+      _shield(shield)
 {
 }
 Element::Element(Type type, const QPolygon &polygon)
@@ -47,18 +48,24 @@ void Element::draw(QPainter &painter, Images &images) const
     case Element::SHIP_2:
     case Element::SHIP_3:
     case Element::SHIP_4:
-          painter.drawImage(QRect(QPoint(_center.x() - 20, _center.y() - 20),QSize(40,40)),
-                            images.getImage(Element::SHIELD, _angle));
-          painter.setBrush(QBrush("#98F5FF"));
-          painter.setPen(QColor("#98F5FF"));
 
+        /* Draw shield */
+        if (shielded())
+        {
+            DEBUG("Element::draw() Shield", false);
+            painter.drawImage(QRect(QPoint(_center.x() - 20, _center.y() - 20),QSize(40,40)),
+                              images.getImage(Element::SHIELD, _angle));
+//            painter.setBrush(QBrush("#98F5FF"));
+//            painter.setPen(QColor("#98F5FF"));
+//            painter.drawEllipse(_center, SHIP_SIZE / 2, SHIP_SIZE / 2);
+        }
 
-          painter.setPen(QColor("#AAAAAA"));
-          painter.setBrush(QBrush(Qt::NoBrush));
-          painter.drawConvexPolygon(_polygon);
-          painter.drawPoint(_center);
-          painter.drawImage(QRect(QPoint(_imageCenter.x(), _imageCenter.y()),QSize(32,32))
-                            , images.getImage(_type, _angle));
+        painter.setPen(QColor("#AAAAAA"));
+        painter.setBrush(QBrush(Qt::NoBrush));
+        painter.drawConvexPolygon(_polygon);
+        painter.drawImage(QRect(QPoint(_imageCenter .x(), _imageCenter.y()),QSize(32,32))
+                        , images.getImage(_type, _angle));
+
         break;
     case Element::SHOT:
         painter.setPen(QColor(255, 0, 51)); // RED
@@ -86,9 +93,9 @@ qreal Element::angle() const
     return _angle;
 }
 
-quint32 Element::armed() const
+bool Element::shielded() const
 {
-    return _armed;
+    return _shield;
 }
 
 const QPoint &Element::center() const

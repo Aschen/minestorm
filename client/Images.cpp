@@ -1,7 +1,7 @@
 #include "Images.hh"
 
 Images::Images()
-    : _images(13)
+    : _images(14)
 {
     loadImages();
 }
@@ -36,5 +36,7 @@ void Images::loadImages()
     _images[Element::SHIP_4]    = QSharedPointer<QImage>(new QImage("images/void_viper.png"));
     _images[Element::SHIELD]    = QSharedPointer<QImage>(new QImage("images/shield.png"));
     _images[Element::SHOT]      = QSharedPointer<QImage>(new QImage("images/shot.png"));
+    _images[Element::MINE_EXPLO] = QSharedPointer<QImage>(new QImage("images/void_viper.png"));
+    _images[Element::LIVE]      = QSharedPointer<QImage>(new QImage("images/live.png"));
 }
 

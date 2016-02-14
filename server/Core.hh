@@ -39,7 +39,7 @@ private:
     EntitiesHash        _entities;
 
 public:
-    Core(qint32 cps = CYCLE_PER_S);
+    Core(qint32 cps);
 
     void                mousePressed(qint32 idClient, qint32 x, qint32 y);
     void                keyPressed(qint32 idClient, qint32 key);

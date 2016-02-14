@@ -24,7 +24,9 @@ public:
         MINE_M_ON   = 8,
         MINE_L_ON   = 9,
         SHOT        = 10,
-        SHIELD      = 11
+        SHIELD      = 11,
+        MINE_EXPLO  = 12,
+        LIVE        = 13
     };
 
 private:
@@ -33,11 +35,11 @@ private:
     qreal           _angle;
     QPoint          _center;
     QPoint          _imageCenter;
-    quint32         _armed;
+    bool            _shield;
 
 public:
     // Ship
-    Element(Type type, const QPolygon &polygon, qreal angle, const QPoint &center);
+    Element(Type type, const QPolygon &polygon, qreal angle, bool shield, const QPoint &center);
     // Shot
     Element(Type type, const QPolygon &polygon);
     // Mine
@@ -52,7 +54,7 @@ public:
     Type            type() const;
     const QPolygon  &polygon() const;
     qreal           angle() const;
-    quint32         armed() const;
+    bool            shielded() const;
 
     // IDrawable interface
 public:

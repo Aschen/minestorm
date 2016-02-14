@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
 {
     QString     arg(argv[1]);
 
+
     if (arg == "cli")
     {
         QApplication    a(argc, argv);
@@ -27,7 +28,7 @@ int main(int argc, char *argv[])
     else
     {
         QApplication    a(argc, argv);
-        Core            *core = new Core;
+        Core            *core = new Core(CYCLE_PER_S);
 
         core->startGame();
 
