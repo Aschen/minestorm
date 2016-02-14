@@ -63,20 +63,21 @@ void Core::step()
 
         cleanEntities();
 
-        /* Collision */
-//        Collision            c(_entitiesMap, _entitiesToDelete);
-
         /* Send score and lives to players */
         sendPlayersInfos();
 
-        /* Merge the lists */
-        EntityList          entitiesList;
-        for (const EntityList &list : _entities)
-            entitiesList += list;
+        /* Maintain fps rate */
+        if (_step % (CYCLE_PER_S / 25) == 0)
+        {
+            /* Merge the lists */
+            EntityList          entitiesList;
+            for (const EntityList &list : _entities)
+                entitiesList += list;
 
-        /* Send entities list to clients */
-        MessageObjects      message(entitiesList);
-        _server.broadcast(message.messageString());
+            /* Send entities list to clients */
+            MessageObjects      message(entitiesList);
+            _server.broadcast(message.messageString());
+        }
     }
 
     ++_step;

@@ -174,6 +174,18 @@ void MessageObjects::serializeShot(const Projectile &shot)
 /* type armed center_x center_y */
 void MessageObjects::serializeMine(const Mine &mine)
 {
+//    sprintf(buf, "%d ", (int) mine.typeMine());
+//    _messageString += buf;
+
+//    sprintf(buf, "%d ", mine.armed() ? 1 : 0);
+//    _messageString += buf;
+
+//    sprintf(buf, "%d ", (int) mine.center().x());
+//    _messageString += buf;
+
+//    sprintf(buf, "%d ", (int) mine.center().y());
+//    _messageString += buf;
+
     /* Write type */
     _messageString += QString::number(mine.typeMine()) + " ";
 
@@ -186,6 +198,39 @@ void MessageObjects::serializeMine(const Mine &mine)
     /* Write center_y */
     _messageString += QString::number(mine.center().y()) + " ";
 }
+
+void MessageObjects::put_nbr(char *buf, quint32 i)
+{
+
+}
+//void MessageObjects::reverseString (char *s)
+//{
+//  char t, *d = &(s[strlen (s) - 1]);
+//  while (d > s) {
+//    t = *s;
+//    *s++ = *d;
+//    *d-- = t;
+//  }
+//}
+
+
+//void MessageObjects::write_nbr(char *str, qint32 nbr)
+//{
+//    int     i = 0;
+
+//    while (nbr)
+//      {
+//        str[i] = nbr % 10 + '0';
+//        nbr = nbr / 10;
+//        i++;
+//      }
+//    str[i] = ' ';
+//    while (str[++i])
+//    {
+//        str[i] = '0';
+//    }
+//}
+
 
 MessageObjects::~MessageObjects()
 {

@@ -5,6 +5,7 @@ QT      +=  core gui network testlib
 
 CONFIG  +=  C++11
 CONFIG  +=  testcase
+CONFIG  +=  debug
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -36,7 +37,6 @@ SOURCES += server/Core.cpp \
     server/Projectile.cpp \
     shared/MessageScore.cpp \
     shared/MessageLives.cpp \
-    server/MineTimer.cpp \
     server/Player.cpp \
     server/Players.cpp \
     client/PlayerInfos.cpp \
@@ -68,7 +68,6 @@ HEADERS  += server/Core.hh \
     server/Projectile.hh \
     shared/MessageScore.hh \
     shared/MessageLives.hh \
-    server/MineTimer.hh \
     server/Player.hh \
     server/Players.hh \
     client/PlayerInfos.hh \

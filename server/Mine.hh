@@ -4,7 +4,6 @@
 # include <QPoint>
 
 # include "Entity.hh"
-# include "MineTimer.hh"
 
 using namespace std;
 
@@ -26,7 +25,8 @@ private:
     TypeMine        _typeMine;
     bool            _armed;
     qint32          _size;
-    MineTimer       _timer;
+    quint32         _delay;
+    quint32         _timer;
 
 public:
     //Constructor
