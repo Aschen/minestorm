@@ -4,12 +4,12 @@ PlayersInfos::PlayersInfos()
     : _positions(MAX_PLAYERS)
 {
     quint32     padding = 30;
-    quint32     textSize = 50;
+    quint32     textSize = 80;
 
     _positions[0] = QPoint(padding, padding);
     _positions[1] = QPoint(SCREEN_WIDTH - textSize, padding);
-    _positions[2] = QPoint(SCREEN_WIDTH - textSize, SCREEN_HEIGHT - padding);
-    _positions[3] = QPoint(padding, SCREEN_HEIGHT - padding);
+    _positions[2] = QPoint(SCREEN_WIDTH - textSize, SCREEN_HEIGHT - padding - 30);
+    _positions[3] = QPoint(padding, SCREEN_HEIGHT - padding - 30);
 }
 
 void PlayersInfos::addPlayer(quint32 playerNumber)
@@ -62,5 +62,10 @@ void PlayersInfos::setPlayerScore(quint32 playerNumber, quint32 score)
 void PlayersInfos::setPlayerLives(quint32 playerNumber, quint32 lives)
 {
     findPlayer(playerNumber)->lives(lives);
+}
+
+void PlayersInfos::setPlayerPseudo(quint32 playerNumber, const QString &pseudo)
+{
+    findPlayer(playerNumber)->pseudo(pseudo);
 }
 

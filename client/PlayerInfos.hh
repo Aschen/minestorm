@@ -7,6 +7,7 @@
 # include <QBrush>
 
 # include "IDrawable.hh"
+# include "Element.hh"
 
 class PlayerInfos : public IDrawable
 {
@@ -15,8 +16,8 @@ private:
     const QPoint    _position;
     quint32         _score;
     quint32         _lives;
+    QString         _pseudo;
     QString         _scoreText;
-    QString         _livesText;
     QColor          _color;
     QBrush          _brush;
 
@@ -29,6 +30,8 @@ public:
     void            lives(quint32 lives);
     quint32         lives() const;
     quint32         number() const;
+    const QString   &pseudo() const;
+    void            pseudo(const QString &pseudo);
 
     // IDrawable interface
 public:

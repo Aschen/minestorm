@@ -7,32 +7,54 @@ Ship::Ship(const QPointF &position, qint32 shipNumber)
       _tempo(0),
       _score(0),
       _scoreChanged(true),
-      _livesChanged(true)
+      _livesChanged(true),
+      _shooting(false),
+      _shield(false),
+      _goingUp(false),
+      _rotation(NONE),
+      _shieldRepop(-1),
+      _spawn(position)
 {
     _size   = QSize(SHIP_SIZE, SHIP_SIZE);
-    _speed  = 0;
-    _angle  = 0;
-    _rotation = NONE;
-    _goingUp = false;
 
+    init();
     grantShield();
-    this->addPoint(QPointF(position.x(), position.y()));
-    this->addPoint(QPointF(position.x() + size().width(), position.y()));
-    this->addPoint(QPointF(position.x() + size().height(), position.y() + size().width()));
-    this->addPoint(QPointF(position.x(), position.y() + size().height()));
+
+    this->vx(0);
+    this->vy(0);
 }
 
 void Ship::addScore(quint32 score)
 {
     _score += score;
-    DEBUG("Ship::addScore() : add:" << score << " total:" << _score, true);
+    DEBUG("Ship::addScore() : add:" << score << " total:" << _score, false);
 
     /* Tell the Core that score has changed */
     _scoreChanged = true;
 }
 
+void Ship::init()
+{
+    _speed      = 0;
+    _angle      = 0;
+    _etat       = INVINCIBLE;
+    _timerSpawn = 120;
+
+    this->addPoint(QPointF(_spawn.x(), _spawn.y()));
+    this->addPoint(QPointF(_spawn.x() + size().width(), _spawn.y()));
+    this->addPoint(QPointF(_spawn.x() + size().height(), _spawn.y() + size().width()));
+    this->addPoint(QPointF(_spawn.x(), _spawn.y() + size().height()));
+}
+
+void Ship::resetSpawn()
+{
+    this->clear();
+    init();
+}
+
 
 //Getter & Setter
+
 quint32 Ship::vie() const
 {
     return _vie;
@@ -81,13 +103,14 @@ bool Ship::livesChanged()
     return ret;
 }
 
-bool Ship::haveShield()
+bool Ship::haveShield() const
 {
     return _shield == true ;
 }
 
 void Ship::grantShield()
 {
+    DEBUG("Ship::Shield grant", true);
     _shield = true;
 }
 
@@ -95,12 +118,30 @@ bool Ship::removeShield()
 {
     DEBUG("Ship::Shield Lost", false);
     _shield = false;
+    _shieldRepop = CYCLE_PER_S * SHIELD_REPOP;
     return _shield;
 }
 
 QSharedPointer<Entity> Ship::shot()
 {
     return QSharedPointer<Entity>(new Projectile(*this));
+}
+
+QSharedPointer<Entity> Ship::startShooting()
+{
+    _shooting = true;
+    return shot();
+}
+
+bool Ship::isShooting(quint32 cycle) const
+{
+    /* Apply shoot rate */
+    return (cycle % (CYCLE_PER_S / SHOT_PER_S) == 0) && _shooting;
+}
+
+void Ship::stopShooting()
+{
+    _shooting = false;
 }
 
 Ship::Rotation Ship::rotation() const
@@ -152,6 +193,10 @@ bool Ship::changeLife(qint32 change)
             aliveOrNot = false;
             this->setEtatDead();
         }
+        else
+        {
+            resetSpawn();
+        }
 
         /* Tell Core that lives has changed */
         _livesChanged = true;
@@ -178,13 +223,55 @@ void Ship::rotateShip()
 
 bool Ship::makeEntityMove()
 {
+    if (_timerSpawn > 0)
+    {
+        _timerSpawn--;
+        if (_timerSpawn == 0)
+            _etat = ALIVE;
+    }
     rotateShip();
-    if(goingUp())
-        this->incrementSpeed();
+    qreal tempX, tempY;
 
+    /* Repop shield */
+    if (_shieldRepop == 0)
+    {
+        grantShield();
+    }
+    _shieldRepop--;
+
+    if (goingUp())
+    {
+        tempX = vx() + (_speed / 2) * cos(getRadian(_angle));
+        tempY = vy() + (_speed / 2) * sin(getRadian(_angle));
+
+        if (tempX > 10)
+          tempX = 10;
+       else if (tempX < -10)
+           tempX = -10;
+
+        if (tempY > 10)
+            tempY = 10;
+        else if (tempY < -10)
+            tempY = -10;
+
+        this->vy(tempY);
+        this->vx(tempX);
+    }
+    else
+    {
+        if(vx() > 0.3 || vx() < -0.3)
+            vx(vx() * 0.97);
+        else {
+            vx(0);
+        }
+
+        if(vy() > 0.3 || vy() < -0.3)
+            vy(vy() * 0.97);
+        else
+        {
+            vy(0);
+        }
+    }
     Entity::makeEntityMove();
-    if(_tempo % 10 == 0)
-         decrementSpeed(1);
-    _tempo = ( _tempo + 1 ) % 100;
     return true;
 }

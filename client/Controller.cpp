@@ -9,6 +9,7 @@ Controller::Controller(Display *display, QWidget *parent)
     : QWidget(parent),
       _display(display),
       _inputHost(new QLineEdit("localhost", this)),
+      _inputPseudo(new QLineEdit("Je_suis_un_bot", this)),
       _coreRunner(nullptr)
 {
     auto startNewGame = new QPushButton("New Game", this);
@@ -17,6 +18,10 @@ Controller::Controller(Display *display, QWidget *parent)
 
     QHBoxLayout *layout = new QHBoxLayout(this);
 
+    _inputPseudo->setMaxLength(15);
+    _inputPseudo->setFixedWidth(100);
+
+    layout->addWidget (_inputPseudo);
     layout->addWidget(startNewGame);
     layout->addWidget(joinGame);
     layout->addWidget(_inputHost);
@@ -39,7 +44,7 @@ void Controller::startNewGame()
 
 void Controller::joinGame()
 {
-    _display->joinGame(_inputHost->text());
+    _display->joinGame(_inputHost->text(), _inputPseudo->text());
 }
 
 void Controller::exitGame()

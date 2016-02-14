@@ -34,8 +34,8 @@ public:
     Client(QObject *parent = nullptr);
     ~Client();
 
-    void                start();
-    void                start(const QString &host);
+    bool                start();
+    bool                start(const QString &host);
     void                stop();
 
     void                sendMessage(const QString &msg);

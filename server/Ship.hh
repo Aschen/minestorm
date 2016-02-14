@@ -25,12 +25,15 @@ private:
     quint32         _shipNumber;
     qint32          _tempo;
     quint32         _score;
+    quint32         _timerSpawn;
     bool            _scoreChanged;
     bool            _livesChanged;
+    bool            _shooting;
     bool            _shield;
-    Rotation        _rotation;
-
     bool            _goingUp;
+    Rotation        _rotation;
+    qint32          _shieldRepop;
+    QPointF         _spawn;
 
 public:
     //Constructeurs
@@ -41,7 +44,12 @@ public:
     void            grantShield();
     bool            removeShield();
     QSharedPointer<Entity>  shot();
+    QSharedPointer<Entity>  startShooting();
+    bool            isShooting(quint32 cycle) const;
+    void            stopShooting();
     void            rotateShip();
+    void            resetSpawn();
+    void            init();
 
     //Getter & Setter
     quint32         vie() const;
@@ -54,7 +62,7 @@ public:
     quint32         score() const;
     bool            scoreChanged();
     bool            livesChanged();
-    bool            haveShield();
+    bool            haveShield() const;
     Rotation        rotation() const;
     void            setRotation(Rotation rotation);
     bool            goingUp();

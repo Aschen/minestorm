@@ -4,7 +4,6 @@
 # include <QPoint>
 
 # include "Entity.hh"
-# include "MineTimer.hh"
 
 using namespace std;
 
@@ -19,14 +18,16 @@ public:
         Small_On    = 7,
         Medium_On   = 8,
         Big_On      = 9,
-        Exploded    = 11
+        Exploded    = 12
     };
 
 private:
     TypeMine        _typeMine;
     bool            _armed;
     qint32          _size;
-    MineTimer       _timer;
+    quint32         _delay;
+    quint32         _timer;
+    quint32         _timerExplo;
 
 public:
     //Constructor
@@ -38,12 +39,15 @@ public:
     //Entity Interface
     QPointF         center() const override;
     bool            makeEntityMove() override;
+    void            setEtatDead() override;
 
     //Getter & Setter
     qint32          size() const;
     void            setSize(qint32 size);
     TypeMine        typeMine() const;
     bool            armed() const;
+
+
 };
 
 #endif // MINE_HH

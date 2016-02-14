@@ -4,13 +4,15 @@ Mine::Mine(TypeMine typeMine, const QPointF &point)
     : Entity(Entity::MINE),
       _typeMine(typeMine),
       _armed(false),
-      _timer(*this)
+      _delay(rand() % MINE_MAX_DELAY),
+      _timer(CYCLE_PER_S * _delay)
 {
+    DEBUG("Mine::Mine() delay:" << _delay, false);
     switch(_typeMine)
     {
         case Small:
         case Small_On:
-            _size = 10;
+            _size = 20;
             _speed = 4;
             break;
         case Medium:
@@ -25,9 +27,12 @@ Mine::Mine(TypeMine typeMine, const QPointF &point)
             break;
     }
 
+    _angle = 0;
+    _timer = 0;
+
     addPoint(point);
-    addPoint(point.x()+ _size, point.y());
-    addPoint(point.x()+ _size, point.y() + _size);
+    addPoint(point.x() + _size, point.y());
+    addPoint(point.x() + _size, point.y() + _size);
     addPoint(point.x(), point.y() + _size);
 }
 
@@ -87,6 +92,22 @@ QPointF Mine::center() const
 }
 bool Mine::makeEntityMove()
 {
+    if (_timer > 0)
+    {
+        _timer--;
+        if (_timer == 0)
+            activate();
+    }
+
+
+    if(typeMine() == Mine::Exploded)
+    {
+        if(_timerExplo < 12)
+            _timerExplo++;
+        else
+            Entity::setEtatDead();
+    }
+
     if (this->center().x() > SCREEN_WIDTH
     ||  this->center().x() < 0)
     {
@@ -99,4 +120,14 @@ bool Mine::makeEntityMove()
     }
     this->translate(_speed * cos(getRadian(_angle)), _speed * sin(getRadian(_angle)));
     return true;
+
+}
+
+void Mine::setEtatDead()
+{
+    _typeMine = Mine::Exploded;
+    _timerExplo = 0;
+    _speed = 0;
+    vx(0);
+    vy(0);
 }

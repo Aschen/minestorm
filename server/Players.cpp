@@ -69,9 +69,9 @@ void Players::keyPressDown(qint32 idClient)
     findPlayer(idClient)->ship().decrementSpeed(2);
 }
 
-void Players::keyPressSpace(qint32 idClient, EntityList &shots)
+QSharedPointer<Entity> Players::keyPressSpace(qint32 idClient)
 {
-    findPlayer(idClient)->startShooting(&shots);
+    return findPlayer(idClient)->startShooting();
 }
 
 void Players::keyReleaseRight(qint32 idClient)
@@ -92,6 +92,11 @@ void Players::keyReleaseUp(qint32 idClient)
 void Players::keyReleaseSpace(qint32 idClient)
 {
     findPlayer(idClient)->stopShooting();
+}
+
+void Players::playerPseudo(qint32 idClient, const QString &pseudo)
+{
+    findPlayer(idClient)->pseudo(pseudo);
 }
 
 /* INFOS */

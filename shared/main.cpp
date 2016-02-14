@@ -16,20 +16,21 @@ int main(int argc, char *argv[])
 {
     QString     arg(argv[1]);
 
-    if (arg == "cli")
+
+    if (arg == "srv")
     {
         QApplication    a(argc, argv);
-        Display         display(QSize(SCREEN_WIDTH, SCREEN_HEIGHT));
-        MainWindow      w(&display);
+        Core            *core = new Core(CYCLE_PER_S);
+
+        core->startGame();
 
         return a.exec();
     }
     else
     {
         QApplication    a(argc, argv);
-        Core            *core = new Core;
-
-        core->startGame();
+        Display         display(QSize(SCREEN_WIDTH, SCREEN_HEIGHT));
+        MainWindow      w(&display);
 
         return a.exec();
     }

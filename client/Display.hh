@@ -13,10 +13,10 @@
 
 # include "Minestorm.hh"
 # include "MessageObjects.hh"
-# include "MessageScore.hh"
+# include "MessagePlayersInfos.hh"
+# include "MessagePseudo.hh"
 # include "MessageMouse.hh"
 # include "MessageKey.hh"
-# include "MessageLives.hh"
 # include "Client.hh"
 # include "Images.hh"
 # include "Element.hh"
@@ -34,8 +34,6 @@ private:
     QSharedPointer<QVector<Element>>    _elements;
     Images              _images;
     QPixmap             _image;
-    qint32              _angle;
-    QPointF             _origin;
     PlayersInfos        _playersInfos;
     FpsCounter          _fpsCounter;
 
@@ -45,6 +43,7 @@ public:
 
     void                draw(QPainter &painter, QRect &size);
     void                startDisplay();
+    void                stopDisplay();
 
     // Events triggered from Gameboard
     void                mousePressed(qint32 x, qint32 y);
@@ -54,9 +53,11 @@ public:
 
     // Events triggered from Controller
     void                startNewGame();
-    void                joinGame(const QString &host);
+    void                joinGame(const QString &host, const QString &pseudo);
     void                exitGame();
 
+    // Key events for Display only
+    void                stopGame();
 
     const QSize         &size() const;
     bool                isRunning() const;

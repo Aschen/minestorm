@@ -41,13 +41,29 @@ void Core::step()
 
     if (_isPlaying)
     {
+        bool    refreshPlayersInfo = false;
+
         Collision c(_entities);
 
         /* Move all ships */
         for (QSharedPointer<Entity> &entity : _entities[Entity::SHIP])
         {
+            Ship    *ship = dynamic_cast<Ship*>(entity.data());
+
+            /* Create shots */
+            if (ship->isShooting(_step))
+                addShot(QSharedPointer<Entity>(new Projectile(*ship)));
+
+            /* Collide */
             c.detectShipCollision(entity);
+
+            /* If live/scores changed, send infos to clients */
+            if (ship->livesChanged() || ship->scoreChanged ())
+                refreshPlayersInfo = true;
+
+            /* Move */
             entity->makeEntityMove();
+
         }
         /* Move all mines */
         for (QSharedPointer<Entity> &entity : _entities[Entity::MINE])
@@ -61,20 +77,23 @@ void Core::step()
             entity->makeEntityMove();
         }
 
-        /* All entities can die after colliding */
-        cleanEntities(Entity::ALL);
+        cleanEntities();
 
         /* Send score and lives to players */
-        sendPlayersInfos();
+        if (refreshPlayersInfo)
+            sendPlayersInfos();
 
-        /* Merge the lists */
-        EntityList          entitiesList;
-        for (const EntityList &list : _entities)
-            entitiesList += list;
-
-        /* Send entities list to clients */
-        MessageObjects      message(entitiesList);
-        _server.broadcast(message.messageString());
+        /* Maintain fps rate */
+        if (CYCLE_PER_S == 30)
+        {
+            if (_step % 4)
+                sendObjects();
+        }
+        else
+        {
+            if (_step % (CYCLE_PER_S / 25) == 0)
+                sendObjects();
+        }
     }
 
     ++_step;
@@ -101,8 +120,8 @@ void Core::clientJoin(qint32 idClient)
     else
     {
         DEBUG("Core::clientJoint() : New spectator" << idClient, true);
+        _spectators.push_back(idClient);
     }
-    sendPlayersInfos(true);
 }
 
 void Core::clientLeft(qint32 idClient)
@@ -112,6 +131,10 @@ void Core::clientLeft(qint32 idClient)
     {
         DEBUG("Core::clientLeft() : Player left:" << idClient, true);
         _players.deletePlayer(idClient);
+
+//        /* Make first spectator to play */
+//        addShip (_players.newPlayer(_spectators.front()));
+//        _spectators.pop_front();
     }
     else
     {
@@ -167,80 +190,70 @@ void Core::addShot(QSharedPointer<Entity> shot)
     _entities[Entity::SHOT].push_back(shot);
 }
 
-void Core::cleanEntities(Entity::Type type)
+void Core::cleanEntities()
 {
-    if (type == Entity::ALL || Entity::SHIP)
-    {
-        EntityList  &ships = _entities[Entity::SHIP];
+    EntityList  &shots = _entities[Entity::SHOT];
+    EntityList  &ships = _entities[Entity::SHIP];
+    EntityList  &mines = _entities[Entity::MINE];
 
-        /* Erase dead ships */
-        for (EntityList::iterator it = ships.begin(); it != ships.end();)
+    /* Erase dead ships */
+    for (EntityList::iterator it = ships.begin(); it != ships.end();)
+    {
+        if ((*it)->isDead())
         {
-            if ((*it)->isDead())
-            {
-                it = ships.erase(it);
-            }
-            else
-            {
-                ++it;
-            }
+            it = ships.erase(it);
+        }
+        else
+        {
+            ++it;
         }
     }
 
-    if (type == Entity::ALL || Entity::SHIP)
+    /* Erase dead mines */
+    for (EntityList::iterator it = mines.begin(); it != mines.end();)
     {
-        EntityList  &mines = _entities[Entity::MINE];
-
-        /* Erase dead mines */
-        for (EntityList::iterator it = mines.begin(); it != mines.end();)
+        if ((*it)->isDead())
         {
-            if ((*it)->isDead())
-            {
-                it = mines.erase(it);
-            }
-            else
-            {
-                ++it;
-            }
+            it = mines.erase(it);
+        }
+        else
+        {
+            ++it;
         }
     }
 
-    if (type == Entity::ALL || Entity::SHOT)
+    /* Erase dead shots */
+    for (EntityList::iterator it = shots.begin(); it != shots.end();)
     {
-        EntityList  &shots = _entities[Entity::SHOT];
-
-        /* Erase dead shots */
-        for (EntityList::iterator it = shots.begin(); it != shots.end();)
+        if ((*it)->isDead())
         {
-            if ((*it)->isDead())
-            {
-                it = shots.erase(it);
-            }
-            else
-            {
-                ++it;
-            }
+            it = shots.erase(it);
+        }
+        else
+        {
+            ++it;
         }
     }
 }
 
-void Core::sendPlayersInfos(bool force)
+void Core::sendPlayersInfos()
 {
-    for (const QSharedPointer<Player> &player : _players)
-    {
-        if (force || player->ship().scoreChanged())
-        {
-            DEBUG("Core::sendPlayersInfos() send score for "<< player->number (), true);
-            MessageScore    msg(player->number(), player->ship().score());
-            _server.broadcast(msg.messageString());
-        }
-        if (force || player->ship().livesChanged())
-        {
-            DEBUG("Core::sendPlayersInfos() send lives for "<< player->number (), true);
-            MessageLives    msg(player->number(), player->ship().vie());
-            _server.broadcast(msg.messageString());
-        }
-    }
+    MessagePlayersInfos     msg(_players);
+
+    _server.broadcast(msg.messageString ());
+}
+
+void Core::sendObjects()
+{
+    /* Merge the lists */
+    EntityList          entitiesList;
+
+    for (const EntityList &list : _entities)
+        entitiesList += list;
+
+    /* Send entities list to clients */
+    MessageObjects      message(entitiesList);
+    _server.broadcast(message.messageString());
 }
 
 /**********\
@@ -275,6 +288,12 @@ void Core::messageDispatcher(qint32 idClient, const QString &msg)
             DEBUG("Core::messageDispatcher() : KeyRelease" << msg, false);
             MessageKey          message(msg);
             keyReleased(idClient, message.keyCode());
+            break;
+        }
+        case MessageBase::PSEUDO:
+        {
+            MessagePseudo       message(msg);
+            _players.playerPseudo (idClient, message.pseudo());
             break;
         }
         default:
@@ -322,7 +341,7 @@ void Core::keyPressed(qint32 idClient, qint32 key)
     case Qt::Key_Space:
     {
         DEBUG("Core::keyPressed : Client " << idClient << " KeySpace", false);
-        _players.keyPressSpace(idClient, _entities[Entity::SHOT]);
+        addShot(_players.keyPressSpace(idClient));
         break;
     }
     default:

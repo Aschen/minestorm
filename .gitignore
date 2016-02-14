@@ -1,6 +1,7 @@
 *.o
 moc_*
 minestorm
+multistorm
 *~
 *user
 *autosave

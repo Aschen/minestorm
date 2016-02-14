@@ -1,14 +1,14 @@
+QT      +=  multimedia
 QMAKE_CXX   =   clang++
 QMAKE_CC    =   clang
 
-QT      +=  core gui network testlib
+QT      +=  core gui network multimedia
 
 CONFIG  +=  C++11
-CONFIG  +=  testcase
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = minestorm
+TARGET = multistorm
 TEMPLATE = app
 
 
@@ -36,13 +36,13 @@ SOURCES += server/Core.cpp \
     server/Projectile.cpp \
     shared/MessageScore.cpp \
     shared/MessageLives.cpp \
-    server/MineTimer.cpp \
     server/Player.cpp \
     server/Players.cpp \
     client/PlayerInfos.cpp \
     client/PlayersInfos.cpp \
     shared/MessagePlayersInfos.cpp \
-    client/FpsCounter.cpp
+    client/FpsCounter.cpp \
+    shared/MessagePseudo.cpp
 
 HEADERS  += server/Core.hh \
     client/Controller.hh \
@@ -68,14 +68,14 @@ HEADERS  += server/Core.hh \
     server/Projectile.hh \
     shared/MessageScore.hh \
     shared/MessageLives.hh \
-    server/MineTimer.hh \
     server/Player.hh \
     server/Players.hh \
     client/PlayerInfos.hh \
     client/IDrawable.hh \
     client/PlayersInfos.hh \
     shared/MessagePlayersInfos.hh \
-    client/FpsCounter.hh
+    client/FpsCounter.hh \
+    shared/MessagePseudo.hh
 
 FORMS    +=
 

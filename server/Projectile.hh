@@ -21,11 +21,15 @@ public:
     void        init();
 
 private:
-    Ship&        _ship;
+    Ship&       _ship;
+    bool        _playSound;
+    qint32      _tempo;
 
     // Entity interface
 public:
-    QPointF      center() const override;
+    QPointF     center() const override;
+    bool        playSound() const;
+    void        playSound(bool value);
 
     // Entity interface
 public:

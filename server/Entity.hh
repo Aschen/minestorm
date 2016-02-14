@@ -31,15 +31,18 @@ public:
     enum Etat
     {
         DEAD = 0,
-        ALIVE = 1
+        ALIVE = 1,
+        INVINCIBLE
     };
 
 protected:
     Type                    _type;
     QSize                   _size;
-    qint32                  _speed;
+    qreal                   _speed;
     qint32                  _angle;
     Etat                    _etat;
+    qreal                   _vx;
+    qreal                   _vy;
 
 
 
@@ -57,25 +60,28 @@ public:
     void                    rotate(qint32 angle);
     virtual bool            makeEntityMove();
     double                  getRadian(qint32 angle);
-    void                    setEtatDead();
+    virtual void            setEtatDead();
     bool                    isDead();
 
     Type                    type() const;
     void                    type(Entity::Type type);
     const QSize             &size() const; // rename it
     void                    size(const QSize &value); // rename it
-    qint32                  speed() const;
-    void                    speed(qint32 value);
+    qreal                   speed() const;
+    void                    speed(qreal value);
     qint32                  angle() const;
     void                    angle(qint32 value);
     Etat                    etat() const;
     void                    setEtat(const Etat &etat);
+    qreal                   vy() const;
+    void                    vy(qreal value);
+    qreal                   vx() const;
+    void                    vx(qreal value);
 };
 
 using EntityList = QList<QSharedPointer<Entity>>;
 using EntitiesHash = QHash<Entity::Type, EntityList>;
 
 using EntityVector = QVector<QSharedPointer<Entity>>;
-using EntityHash = QHash<qint32, QSharedPointer<Entity>>;
 
 #endif // ENTITY_HH
