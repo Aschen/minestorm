@@ -45,6 +45,12 @@ void Core::step()
 
         Collision c(_entities);
 
+        /* Repop mines toutes les 30 sec */
+        if (_step % (CYCLE_PER_S * MINE_REPOP_DELAY) == 0)
+        {
+            initMines();
+        }
+
         /* Move all ships */
         for (QSharedPointer<Entity> &entity : _entities[Entity::SHIP])
         {
@@ -97,7 +103,7 @@ void Core::step()
             sendObjects();
         }
 
-        /* respawn mines */
+        /* respawn mines if none left */
         if (mineCount == 0)
         {
             initMines ();
@@ -270,7 +276,7 @@ void Core::sendObjects()
 
 void Core::messageDispatcher(qint32 idClient, const QString &msg)
 {
-    DEBUG("Core::messageDispatcher() : client " << idClient << " : " << msg, true);
+    DEBUG("Core::messageDispatcher() : client " << idClient << " : " << msg, false);
 
     if (_players.contains(idClient))
     {
@@ -301,7 +307,7 @@ void Core::messageDispatcher(qint32 idClient, const QString &msg)
         case MessageBase::PSEUDO:
         {
             MessagePseudo       message(msg);
-            _players.playerPseudo (idClient, message.pseudo());
+            _players.playerPseudo(idClient, message.pseudo());
             break;
         }
         default:
@@ -349,7 +355,8 @@ void Core::keyPressed(qint32 idClient, qint32 key)
     case Qt::Key_Space:
     {
         DEBUG("Core::keyPressed : Client " << idClient << " KeySpace", false);
-        addShot(_players.keyPressSpace(idClient));
+        if (_players.findPlayer(idClient)->lives())
+            addShot(_players.keyPressSpace(idClient));
         break;
     }
     default:

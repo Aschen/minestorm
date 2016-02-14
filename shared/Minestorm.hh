@@ -28,6 +28,7 @@
 # define MINE_MIN_DELAY 4
 # define MINE_MAX_DELAY 10
 # define SHIELD_REPOP   20
+# define MINE_REPOP_DELAY      30
 
 #endif // MINESTORM_HH
 

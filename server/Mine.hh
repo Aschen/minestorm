@@ -28,6 +28,8 @@ private:
     quint32         _delay;
     quint32         _timer;
     quint32         _timerExplo;
+//    quint32         _delayMove;
+//    quint32         _timerMove;
 
 public:
     //Constructor

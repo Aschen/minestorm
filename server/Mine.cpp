@@ -6,6 +6,8 @@ Mine::Mine(TypeMine typeMine, const QPointF &point)
       _armed(false),
       _delay(rand() % MINE_MAX_DELAY),
       _timer(CYCLE_PER_S * _delay)
+//      _delayMove(rand() % 10 + 5),
+//      _timerMove(CYCLE_PER_S * _delayMove)
 {
     DEBUG("Mine::Mine() delay:" << _delay << " timer:" << _timer, false);
     switch(_typeMine)
@@ -98,6 +100,15 @@ bool Mine::makeEntityMove()
             activate();
     }
 
+//    if (_timerMove > 0)
+//    {
+//        _timerMove--;
+//        if (_timerMove == 0)
+//        {
+//            _angle = rand() % 360;
+//            _timerMove = CYCLE_PER_S * _delayMove;
+//        }
+//    }
 
     if(typeMine() == Mine::Exploded)
     {
