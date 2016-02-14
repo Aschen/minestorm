@@ -61,7 +61,8 @@ void Collision::detectShipCollision(QSharedPointer<Entity> &shipEntity)
     //Pour tous les tirs on regarde si il y a collision avec le vaisseau
     for(QSharedPointer<Entity> &entity : _entitiesMap[Entity::SHOT])
     {
-        if(entity->etat() == Entity::ALIVE)
+        Projectile *tir = dynamic_cast<Projectile*>(entity.data());
+        if(tir->ship() != *ship && entity->etat() == Entity::ALIVE)
         {
             if(checkCollision(*shipEntity.data(), *entity))
             {
