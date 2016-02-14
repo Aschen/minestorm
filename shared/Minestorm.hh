@@ -25,7 +25,7 @@
 # define SHOT_PER_S     4
 # define SHIP_SIZE      32
 # define MINE_MIN_DELAY 4
-# define MINE_MAX_DELAY 20
+# define MINE_MAX_DELAY 10
 # define SHIELD_REPOP   20
 
 #endif // MINESTORM_HH

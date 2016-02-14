@@ -87,10 +87,11 @@ void Collision::detectMineCollision(QSharedPointer<Entity> &mineEntity)
         {
             if(checkCollision(*mineEntity.data(), *entity))
             {
-                mine->setEtatDead();
-
                 //Add score to the ship who shot
-                dynamic_cast<Projectile*>(entity.data())->ship().addScore(SCORE_MINE);
+                if (mine->typeMine () != Mine::Exploded)
+                    dynamic_cast<Projectile*>(entity.data())->ship().addScore(SCORE_MINE);
+
+                mine->setEtatDead();
             }
         }
     }
