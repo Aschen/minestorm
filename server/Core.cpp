@@ -41,6 +41,8 @@ void Core::step()
 
     if (_isPlaying)
     {
+        bool    refreshPlayersInfo = false;
+
         Collision c(_entities);
 
         /* Move all ships */
@@ -51,6 +53,10 @@ void Core::step()
             /* Create shots */
             if (ship->isShooting(_step))
                 addShot(QSharedPointer<Entity>(new Projectile(*ship)));
+
+            /* If live/scores changed, send infos to clients */
+            if (ship->livesChanged() || ship->scoreChanged ())
+                refreshPlayersInfo = true;
 
             //            c.detectShipCollision(entity);
             entity->makeEntityMove();
@@ -71,7 +77,7 @@ void Core::step()
         cleanEntities();
 
         /* Send score and lives to players */
-        if (_step % CYCLE_PER_S == 0)
+        if (refreshPlayersInfo)
             sendPlayersInfos();
 
         /* Maintain fps rate */
@@ -103,6 +109,7 @@ void Core::clientJoin(qint32 idClient)
     else
     {
         DEBUG("Core::clientJoint() : New spectator" << idClient, true);
+        _spectators.push_back(idClient);
     }
 }
 
@@ -113,6 +120,10 @@ void Core::clientLeft(qint32 idClient)
     {
         DEBUG("Core::clientLeft() : Player left:" << idClient, true);
         _players.deletePlayer(idClient);
+
+//        /* Make first spectator to play */
+//        addShip (_players.newPlayer(_spectators.front()));
+//        _spectators.pop_front();
     }
     else
     {

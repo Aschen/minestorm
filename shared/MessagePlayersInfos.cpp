@@ -65,5 +65,5 @@ MessagePlayersInfos::MessagePlayersInfos(const Players &players)
         /* Write score */
         _messageString += QString::number(player->score()) + " ";
     }
-    DEBUG("MessagePlayersInfos::MessagePlayersInfos() : " << _messageString, true);
+    DEBUG("MessagePlayersInfos::MessagePlayersInfos() : " << _messageString, false);
 }

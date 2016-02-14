@@ -36,6 +36,7 @@ private:
     qint32              _step;
     Server              _server;
     Players             _players;
+    QList<qint32>       _spectators;
     EntitiesHash        _entities;
 
 public:
