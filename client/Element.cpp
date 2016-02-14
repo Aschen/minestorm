@@ -1,4 +1,5 @@
 #include "Element.hh"
+#include "math.h"
 
 
 Element::Element(Type type, const QPolygon &polygon, qreal angle, bool shield, const QPoint &center)
@@ -44,6 +45,7 @@ void Element::draw(QPainter &painter, Images &images) const
     case Element::MINE_S_ON:
     case Element::MINE_L_ON:
     case Element::MINE_M_ON:
+    case Element::MINE_EXPLO:
         painter.drawImage(_center, images.getImage(_type));
         break;
     case Element::SHIP_1:
@@ -62,9 +64,26 @@ void Element::draw(QPainter &painter, Images &images) const
 //            painter.drawEllipse(_center, SHIP_SIZE / 2, SHIP_SIZE / 2);
         }
 
-//        painter.setPen(QColor("#AAAAAA"));
-//        painter.setBrush(QBrush(Qt::NoBrush));
-//        painter.drawConvexPolygon(_polygon);
+        painter.setPen(QColor("#AAAAAA"));
+        painter.setBrush(QBrush(Qt::NoBrush));
+        painter.drawConvexPolygon(_polygon);
+
+            /*
+             * #SAMASOULAY #SAMASOULAY #SAMASOULAY
+             * /
+             *
+         // p1 = (QPixmap("images/void_viper.png")).scaled(35, 35, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation).transformed(t.rotate(angle()));
+
+            painter.drawImage(QRect(QPoint(_center.x() - 20, _center.y() - 20),QSize(60,60)),
+                                QImage(ship.transformed(t).scaled(QSize(60, 60),Qt::KeepAspectRatioByExpanding,Qt::SmoothTransformation)));
+
+            painter.drawPixmap(QRect(QPoint(_center.x() - 20, _center.y() - 20),QSize(40,40)),
+                               ship..transformed(t).scaled(QSize(60, 60)););
+        else
+            painter.drawPixmap(QPoint(_center.x() - 20, _center.y() - 20),
+                               QPixmap(ship));
+
+        */
         painter.drawImage(QRect(QPoint(_imageCenter .x(), _imageCenter.y()),QSize(32,32))
                         , images.getImage(_type, _angle));
         break;

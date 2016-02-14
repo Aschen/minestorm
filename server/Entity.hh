@@ -59,7 +59,7 @@ public:
     void                    rotate(qint32 angle);
     virtual bool            makeEntityMove();
     double                  getRadian(qint32 angle);
-    void                    setEtatDead();
+    virtual void            setEtatDead();
     bool                    isDead();
 
     Type                    type() const;
