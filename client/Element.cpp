@@ -65,7 +65,8 @@ void Element::draw(QPainter &painter, Images &images) const
     case Element::SHOT:
         painter.setPen(QColor(255, 0, 51)); // RED
         painter.setBrush(QBrush(Qt::NoBrush));
-        painter.drawConvexPolygon(_polygon);
+        //painter.drawConvexPolygon(_polygon);
+        painter.drawImage(QRect(QPoint(_imageCenter.x(), _imageCenter.y()), QSize(60, 42)), images.getImage(_type, _angle));
         break;
     }
 }
