@@ -178,7 +178,7 @@ QPointF Ship::center() const
 
 bool Ship::changeLife(qint32 change)
 {
-    bool aliveOrNot = true;
+    bool changeLife = false;
 
     //On enléve une vie au vaisseau si il n'a pas de shield
     if (this->haveShield())
@@ -190,7 +190,6 @@ bool Ship::changeLife(qint32 change)
         _vie += change;
         if(_vie <= 0)
         {
-            aliveOrNot = false;
             this->setEtatDead();
         }
         else
@@ -198,11 +197,12 @@ bool Ship::changeLife(qint32 change)
             resetSpawn();
         }
 
+        changeLife = true;
         /* Tell Core that lives has changed */
         _livesChanged = true;
     }
 
-    return aliveOrNot;
+    return changeLife;
 }
 
 void Ship::rotateShip()

@@ -69,10 +69,11 @@ void Collision::detectShipCollision(QSharedPointer<Entity> &shipEntity)
                 if(checkCollision(*shipEntity.data(), *entity))
                 {
                     DEBUG("Collision::detectShipCollision() collision vaisseau tir", false);
-                    ship->changeLife(-1);
-
-                    //Add score to the ship who shot
-                    dynamic_cast<Projectile*>(entity.data())->ship().addScore(SCORE_SHIP);
+                    if(ship->changeLife(-1))
+                    {
+                        //Add score to the ship who shot
+                        dynamic_cast<Projectile*>(entity.data())->ship().addScore(SCORE_SHIP);
+                    }
                 }
             }
         }
