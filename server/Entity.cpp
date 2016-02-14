@@ -180,5 +180,4 @@ void Entity::setEtatDead()
 bool Entity::isDead()
 {
     return _etat == Etat::DEAD;
-
 }

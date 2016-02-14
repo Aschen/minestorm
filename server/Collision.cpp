@@ -44,6 +44,7 @@ void Collision::detectShipCollision(QSharedPointer<Entity> &shipEntity)
                 if(checkCollision(*shipEntity.data(), *entity))
                 {
                     ship->changeLife(-1);
+                    break;
                 }
             }
         }
@@ -56,6 +57,7 @@ void Collision::detectShipCollision(QSharedPointer<Entity> &shipEntity)
                 if(checkCollision(*shipEntity.data(), *entity))
                 {
                     ship->changeLife(-1);
+                    break;
                 }
             }
         }
@@ -73,6 +75,7 @@ void Collision::detectShipCollision(QSharedPointer<Entity> &shipEntity)
                     {
                         //Add score to the ship who shot
                         dynamic_cast<Projectile*>(entity.data())->ship().addScore(SCORE_SHIP);
+                        break;
                     }
                 }
             }
