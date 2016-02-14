@@ -110,7 +110,7 @@ void Display::receiveScore(quint32 playerNumber, quint32 score)
 
 void Display::receiveLives(quint32 playerNumber, quint32 lives)
 {
-    DEBUG("Client::receiveLives() : Receive lives " << lives, true);
+    DEBUG("Client::receiveLives() : Receive player" << playerNumber << " lives " << lives, true);
 
     /* Add player to list if not exist */
     if (!_playersInfos.contains(playerNumber))

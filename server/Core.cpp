@@ -61,10 +61,8 @@ void Core::step()
             entity->makeEntityMove();
         }
 
-        cleanEntities();
-
-        /* Collision */
-//        Collision            c(_entitiesMap, _entitiesToDelete);
+        /* All entities can die after colliding */
+        cleanEntities(Entity::ALL);
 
         /* Send score and lives to players */
         sendPlayersInfos();
@@ -169,48 +167,59 @@ void Core::addShot(QSharedPointer<Entity> shot)
     _entities[Entity::SHOT].push_back(shot);
 }
 
-void Core::cleanEntities()
+void Core::cleanEntities(Entity::Type type)
 {
-    EntityList  &ships = _entities[Entity::SHIP];
-    EntityList  &mines = _entities[Entity::MINE];
-    EntityList  &shots = _entities[Entity::SHOT];
-
-    /* Erase dead ships */
-    for (EntityList::iterator it = ships.begin(); it != ships.end();)
+    if (type == Entity::ALL || Entity::SHIP)
     {
-        if ((*it)->isDead())
+        EntityList  &ships = _entities[Entity::SHIP];
+
+        /* Erase dead ships */
+        for (EntityList::iterator it = ships.begin(); it != ships.end();)
         {
-            it = ships.erase(it);
-        }
-        else
-        {
-            ++it;
+            if ((*it)->isDead())
+            {
+                it = ships.erase(it);
+            }
+            else
+            {
+                ++it;
+            }
         }
     }
 
-    /* Erase dead mines */
-    for (EntityList::iterator it = mines.begin(); it != mines.end();)
+    if (type == Entity::ALL || Entity::SHIP)
     {
-        if ((*it)->isDead())
+        EntityList  &mines = _entities[Entity::MINE];
+
+        /* Erase dead mines */
+        for (EntityList::iterator it = mines.begin(); it != mines.end();)
         {
-            it = mines.erase(it);
-        }
-        else
-        {
-            ++it;
+            if ((*it)->isDead())
+            {
+                it = mines.erase(it);
+            }
+            else
+            {
+                ++it;
+            }
         }
     }
 
-    /* Erase dead shots */
-    for (EntityList::iterator it = shots.begin(); it != shots.end();)
+    if (type == Entity::ALL || Entity::SHOT)
     {
-        if ((*it)->isDead())
+        EntityList  &shots = _entities[Entity::SHOT];
+
+        /* Erase dead shots */
+        for (EntityList::iterator it = shots.begin(); it != shots.end();)
         {
-            it = shots.erase(it);
-        }
-        else
-        {
-            ++it;
+            if ((*it)->isDead())
+            {
+                it = shots.erase(it);
+            }
+            else
+            {
+                ++it;
+            }
         }
     }
 }

@@ -25,7 +25,8 @@ public:
     {
         MINE = 0,
         SHIP = 1,
-        SHOT = 2
+        SHOT = 2,
+        ALL  = 3
     };
     enum Etat
     {

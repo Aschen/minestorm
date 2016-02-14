@@ -51,7 +51,7 @@ private:
     void                addMine(Mine::TypeMine type, quint32 x, quint32 y);
     void                addShip(QSharedPointer<Entity> &ship);
     void                addShot(QSharedPointer<Entity> shot);
-    void                cleanEntities();
+    void                cleanEntities(Entity::Type type);
     void                sendPlayersInfos(bool force = false);
 
 private slots:
