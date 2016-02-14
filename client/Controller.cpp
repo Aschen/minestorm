@@ -18,6 +18,9 @@ Controller::Controller(Display *display, QWidget *parent)
 
     QHBoxLayout *layout = new QHBoxLayout(this);
 
+    _inputPseudo->setMaxLength(15);
+    _inputPseudo->setFixedWidth(100);
+
     layout->addWidget (_inputPseudo);
     layout->addWidget(startNewGame);
     layout->addWidget(joinGame);

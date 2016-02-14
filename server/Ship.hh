@@ -32,6 +32,7 @@ private:
     bool            _shield;
     bool            _goingUp;
     Rotation        _rotation;
+    qint32          _shieldRepop;
 
 
 public:

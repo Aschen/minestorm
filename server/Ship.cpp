@@ -11,7 +11,8 @@ Ship::Ship(const QPointF &position, qint32 shipNumber)
       _shooting(false),
       _shield(false),
       _goingUp(false),
-      _rotation(NONE)
+      _rotation(NONE),
+      _shieldRepop(-1)
 {
     _size   = QSize(SHIP_SIZE, SHIP_SIZE);
 
@@ -25,7 +26,7 @@ Ship::Ship(const QPointF &position, qint32 shipNumber)
 void Ship::addScore(quint32 score)
 {
     _score += score;
-    DEBUG("Ship::addScore() : add:" << score << " total:" << _score, true);
+    DEBUG("Ship::addScore() : add:" << score << " total:" << _score, false);
 
     /* Tell the Core that score has changed */
     _scoreChanged = true;
@@ -108,7 +109,7 @@ bool Ship::haveShield() const
 
 void Ship::grantShield()
 {
-    DEBUG("Ship::Shield Lost", true);
+    DEBUG("Ship::Shield grant", true);
     _shield = true;
 }
 
@@ -116,6 +117,7 @@ bool Ship::removeShield()
 {
     DEBUG("Ship::Shield Lost", false);
     _shield = false;
+    _shieldRepop = CYCLE_PER_S * SHIELD_REPOP;
     return _shield;
 }
 
@@ -228,6 +230,12 @@ bool Ship::makeEntityMove()
     rotateShip();
     qreal tempX, tempY;
 
+    /* Repop shield */
+    if (_shieldRepop == 0)
+    {
+        grantShield();
+    }
+    _shieldRepop--;
 
     if (goingUp())
     {
