@@ -40,19 +40,23 @@ bool Client::start()
         if (!_socket.isOpen())
         {
             DEBUG("Client::start() : Unable to connect to" << _host << _port << " :" << _socket.errorString(), true);
+            return false;
         }
         else
         {
             DEBUG("Client::start() : Connected to " << _host << ":" << _port, true);
+            return true;
         }
     }
+
+    return false;
 }
 
 bool Client::start(const QString &host)
 {
     _host = host;
 
-    start();
+    return start();
 }
 
 void Client::stop()
