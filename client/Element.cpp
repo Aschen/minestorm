@@ -10,10 +10,12 @@ Element::Element(Type type, const QPolygon &polygon, qreal angle, bool shield, c
       _shield(shield)
 {
 }
-Element::Element(Type type, const QPolygon &polygon)
+Element::Element(Type type, const QPolygon &polygon, bool sound, const QPoint &center)
     : _type(type),
       _polygon(polygon),
-      _angle(0.0)
+      _angle(0.0),
+      _center(center),
+      _playSound(sound)
 {
 }
 
@@ -65,14 +67,19 @@ void Element::draw(QPainter &painter, Images &images) const
         painter.drawConvexPolygon(_polygon);
         painter.drawImage(QRect(QPoint(_imageCenter .x(), _imageCenter.y()),QSize(32,32))
                         , images.getImage(_type, _angle));
-
         break;
+
     case Element::SHOT:
-        painter.setPen(QColor(255, 0, 51)); // RED
-        painter.setBrush(QBrush(Qt::NoBrush));
-        painter.drawConvexPolygon(_polygon);
+        if(playSound())
+        {
+            QSound::play("sound/shot.wav");
+        }
+//        painter.setPen(QColor(255, 0, 51)); // RED
+//        painter.setBrush(QBrush(Qt::NoBrush));
+//        painter.drawConvexPolygon(_polygon);
+        DEBUG("Type : " << _type, true);
         painter.drawImage(QRect(QPoint(_center.x() - 10, _center.y() - 10), QSize(20, 20)),
-                          images.getImage(_type, _angle));
+                          images.getImage(_type));
 
         break;
     }
@@ -96,6 +103,16 @@ qreal Element::angle() const
 bool Element::shielded() const
 {
     return _shield;
+}
+
+void Element::playSound(bool value)
+{
+    _playSound = value;
+}
+
+bool Element::playSound() const
+{
+    return _playSound;
 }
 
 const QPoint &Element::center() const

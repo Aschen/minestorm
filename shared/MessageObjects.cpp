@@ -71,26 +71,32 @@ void MessageObjects::deserializeShip(QTextStream &stream)
                          QPoint(center_x, center_y)));
 }
 
-/* x1 y1 x2 y2 */
+/* playSound x1 y1 x2 y2 */
 void MessageObjects::deserializeShot(QTextStream &stream)
 {
     QPolygon    polygon(2);
     qint32      x;
     qint32      y;
+    qint32      playSound;
+    qint32      center_x = 0;
+    qint32      center_y = 0;
+
+    /* Read playSound */
+    stream >> playSound;
 
     /* Read 2 points */
     for (quint32 i = 0; i < 2; ++i)
     {
         stream >> x >> y;
+        center_x += x;
+        center_y += y;
         polygon[i] = QPoint(x, y);
     }
 
-    x = ((polygon)[0].x() + (polygon)[1].x()) / 2;
-    y = ((polygon)[0].y() + (polygon)[1].y()) / 2;
-    QPoint center(x, y);
 
     DEBUG("MessageObjects::deserializeShot()", false);
-    _elements->push_back(Element(Element::SHOT, polygon, center));
+    _elements->push_back(Element(Element::SHOT, polygon, playSound ? true : false,
+                                 QPoint(center_x / 2, center_y / 2)));
 }
 
 /* type center_x center_y */
@@ -169,9 +175,12 @@ void MessageObjects::serializeShip(const Ship &ship)
     }
 }
 
-/* x1 y1 x2 y2 */
+/* playSound x1 y1 x2 y2 */
 void MessageObjects::serializeShot(const Projectile &shot)
 {
+    /* Write playSound */
+    _messageString += QString::number(shot.playSound() ? 1 : 0) + " ";
+
     /* Write 2 points */
     for (quint32 i = 0; i < 2; ++i)
     {

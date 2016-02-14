@@ -42,7 +42,7 @@ public:
     void            grantShield();
     bool            removeShield();
     QSharedPointer<Entity>  shot();
-    void            startShooting();
+    QSharedPointer<Entity>  startShooting();
     bool            isShooting(quint32 cycle) const;
     void            stopShooting();
     void            rotateShip();

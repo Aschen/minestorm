@@ -321,7 +321,7 @@ void Core::keyPressed(qint32 idClient, qint32 key)
     case Qt::Key_Space:
     {
         DEBUG("Core::keyPressed : Client " << idClient << " KeySpace", false);
-        _players.keyPressSpace(idClient);
+        addShot(_players.keyPressSpace(idClient));
         break;
     }
     default:

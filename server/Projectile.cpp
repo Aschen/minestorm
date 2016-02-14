@@ -6,7 +6,8 @@ Projectile::Projectile(Ship& ship)
     this->speed(40);
     this->angle(_ship.angle());
     init();
-
+    _playSound = true;
+    _tempo = 0;
     DEBUG("Tir:angle:"<<_angle << ", speed" <<_speed <<", pos" << this->center().x() <<":"<<this->center().y(), false);
 
 }
@@ -51,6 +52,16 @@ QPointF Projectile::center() const
     return QPointF(x, y);
 }
 
+bool Projectile::playSound() const
+{
+    return _playSound;
+}
+
+void Projectile::playSound(bool value)
+{
+    _playSound = value;
+}
+
 bool Projectile::makeEntityMove()
 {
     bool    ret = false;
@@ -69,6 +80,9 @@ bool Projectile::makeEntityMove()
         {
             this->translate(_speed * cos(getRadian(_angle)), _speed * sin(getRadian(_angle)));
             ret =  true;
+            _tempo++;
+            if(_tempo > 1 && _playSound)
+                playSound(false);
         }
     }
 

@@ -15,9 +15,9 @@ Player::~Player()
     this->ship().setEtatDead();
 }
 
-void Player::startShooting()
+QSharedPointer<Entity> Player::startShooting()
 {
-    this->ship().startShooting();
+    return this->ship().startShooting();
 }
 
 void Player::stopShooting()
