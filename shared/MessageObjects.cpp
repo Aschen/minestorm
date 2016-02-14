@@ -82,8 +82,13 @@ void MessageObjects::deserializeShot(QTextStream &stream)
         stream >> x >> y;
         polygon[i] = QPoint(x, y);
     }
+
+    x = ((polygon)[0].x() + (polygon)[1].x()) / 2;
+    y = ((polygon)[0].y() + (polygon)[1].y()) / 2;
+    QPoint center(x, y);
+
     DEBUG("MessageObjects::deserializeShot()", false);
-    _elements->push_back(Element(Element::SHOT, polygon));
+    _elements->push_back(Element(Element::SHOT, polygon, center));
 }
 
 /* type armed center_x center_y */
