@@ -15,7 +15,7 @@ public:
     explicit Player(qint32 idClient, quint32 number, const QPoint &spawn);
     ~Player();
 
-    void                    startShooting();
+    QSharedPointer<Entity>  startShooting();
     void                    stopShooting();
 
     QSharedPointer<Entity>  &entity();

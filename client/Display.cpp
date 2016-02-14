@@ -2,6 +2,7 @@
 #include "Ship.hh"
 
 
+
 Display::Display(const QSize &size, QObject *parent)
     : QObject(parent),
       _isRunning(false),

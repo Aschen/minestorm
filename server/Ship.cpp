@@ -108,9 +108,10 @@ QSharedPointer<Entity> Ship::shot()
     return QSharedPointer<Entity>(new Projectile(*this));
 }
 
-void Ship::startShooting()
+QSharedPointer<Entity> Ship::startShooting()
 {
     _shooting = true;
+    return shot();
 }
 
 bool Ship::isShooting(quint32 cycle) const

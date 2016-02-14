@@ -3,7 +3,7 @@
 
 # include <QPolygon>
 # include <QPainter>
-
+# include <QSound>
 # include "IDrawable.hh"
 # include "Minestorm.hh"
 
@@ -36,12 +36,13 @@ private:
     QPoint          _center;
     QPoint          _imageCenter;
     bool            _shield;
+    bool            _playSound;
 
 public:
     // Ship
     Element(Type type, const QPolygon &polygon, qreal angle, bool shield, const QPoint &center);
     // Shot
-    Element(Type type, const QPolygon &polygon);
+    Element(Type type, const QPolygon &polygon, bool sound);
     // Mine
     Element(Type type, const QPolygon &polygon, const QPoint &center);
 
@@ -55,6 +56,8 @@ public:
     const QPolygon  &polygon() const;
     qreal           angle() const;
     bool            shielded() const;
+    bool            playSound() const;
+    void            playSound(bool value);
 
     // IDrawable interface
 public:

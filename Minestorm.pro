@@ -1,3 +1,4 @@
+QT      +=  multimedia
 QMAKE_CXX   =   clang++
 QMAKE_CC    =   clang
 
