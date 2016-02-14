@@ -78,6 +78,8 @@ void MessageObjects::deserializeShot(QTextStream &stream)
     qint32      x;
     qint32      y;
     qint32      playSound;
+    qint32      center_x = 0;
+    qint32      center_y = 0;
 
     /* Read playSound */
     stream >> playSound;
@@ -86,11 +88,15 @@ void MessageObjects::deserializeShot(QTextStream &stream)
     for (quint32 i = 0; i < 2; ++i)
     {
         stream >> x >> y;
+        center_x += x;
+        center_y += y;
         polygon[i] = QPoint(x, y);
     }
 
+
     DEBUG("MessageObjects::deserializeShot()", false);
-    _elements->push_back(Element(Element::SHOT, polygon, playSound ? true : false));
+    _elements->push_back(Element(Element::SHOT, polygon, playSound ? true : false,
+                                 QPoint(center_x / 2, center_y / 2)));
 }
 
 /* type center_x center_y */

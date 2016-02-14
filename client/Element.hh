@@ -42,7 +42,7 @@ public:
     // Ship
     Element(Type type, const QPolygon &polygon, qreal angle, bool shield, const QPoint &center);
     // Shot
-    Element(Type type, const QPolygon &polygon, bool sound);
+    Element(Type type, const QPolygon &polygon, bool sound, const QPoint &center);
     // Mine
     Element(Type type, const QPolygon &polygon, const QPoint &center);
 
