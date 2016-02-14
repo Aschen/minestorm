@@ -77,11 +77,13 @@ void BaseSocket::readMessage()
 /* PUBLIC SLOT */
 void BaseSocket::sendMessage(qint32 socketFd, const QString &msg)
 {
+
     DEBUG("BaseSocket::sendMessage() :" << _socketFd << socketFd, false);
     if (isOpen() && (socketFd == _socketFd || socketFd == BROADCAST))
     {
         DEBUG("BaseSocket::sendMessage() " << _socketFd << " : " << msg, false);
         write(packMessage(msg));
+        this->waitForBytesWritten();
     }
 }
 

@@ -20,6 +20,7 @@ MainWindow::MainWindow(Display *display, QWidget *parent)
     window->setLayout(layout);
     setObjectName("MainWindow");
     setCentralWidget(window);
+
     setStyleSheet("QMainWindow#MainWindow { background-image: url(images/background.jpg)  no-repeat center center fixed; }");
     show();
 }

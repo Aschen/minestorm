@@ -91,8 +91,7 @@ void Core::step()
         }
         else
         {
-            if (_step % (CYCLE_PER_S / 25) == 0)
-                sendObjects();
+            sendObjects();
         }
     }
 
@@ -147,7 +146,7 @@ void Core::initMines()
     qint32  x, y;
 
     //Small Mines
-    for (quint32 i = 0; i < 2; ++i)
+    for (quint32 i = 0; i < 3; ++i)
     {
         x = rand() % (SCREEN_WIDTH - 20) + 10;
         y = rand() % (SCREEN_HEIGHT - 20) + 10;
@@ -156,7 +155,7 @@ void Core::initMines()
         addMine(Mine::TypeMine::Small, x, y);
     }
 
-    for (quint32 i = 0; i < 2; ++i)
+    for (quint32 i = 0; i < 3; ++i)
     {
         x = rand() % SCREEN_WIDTH - 10;
         y = rand() % SCREEN_HEIGHT - 10;
@@ -165,7 +164,7 @@ void Core::initMines()
         addMine(Mine::TypeMine::Medium, x, y);
     }
 
-    for (quint32 i = 0; i < 2; ++i)
+    for (quint32 i = 0; i < 3; ++i)
     {
         x = rand() % SCREEN_WIDTH - 10;
         y = rand() % SCREEN_HEIGHT - 10;
@@ -262,7 +261,7 @@ void Core::sendObjects()
 
 void Core::messageDispatcher(qint32 idClient, const QString &msg)
 {
-    DEBUG("Core::messageDispatcher() : client " << idClient << " : " << msg, false);
+    DEBUG("Core::messageDispatcher() : client " << idClient << " : " << msg, true);
 
     if (_players.contains(idClient))
     {

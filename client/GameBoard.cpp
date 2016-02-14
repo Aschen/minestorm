@@ -36,6 +36,7 @@ void GameBoard::keyPressEvent(QKeyEvent * event)
     event->accept();
     if (!event->isAutoRepeat())
     {
+        DEBUG("GameBoard::keyPressEvent()", false);
         _display->keyPressed(event->key());
     }
 }
@@ -45,6 +46,7 @@ void GameBoard::keyReleaseEvent(QKeyEvent * event)
     event->accept();
     if (!event->isAutoRepeat())
     {
+        DEBUG("GameBoard::keyReleaseEvent()", false);
         _display->keyReleased(event->key());
     }
 }

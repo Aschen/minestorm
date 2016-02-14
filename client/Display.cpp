@@ -85,37 +85,6 @@ void Display::receiveObjects(const QSharedPointer<QVector<Element>> &elements)
         emit changed();
 }
 
-void Display::receiveScore(quint32 playerNumber, quint32 score)
-{
-    DEBUG("Client::receiveScore() : Receive player" << playerNumber << " score " << score, true);
-
-    /* Add player to list if not exist */
-    if (!_playersInfos.contains(playerNumber))
-    {
-        _playersInfos.addPlayer(playerNumber);
-    }
-
-    _playersInfos.setPlayerScore(playerNumber, score);
-
-}
-
-void Display::receiveLives(quint32 playerNumber, quint32 lives)
-{
-    DEBUG("Client::receiveLives() : Receive player" << playerNumber << " lives " << lives, true);
-
-    /* Add player to list if not exist */
-    if (!_playersInfos.contains(playerNumber))
-    {
-        _playersInfos.addPlayer(playerNumber);
-    }
-
-    _playersInfos.setPlayerLives(playerNumber, lives);
-
-    if (_isRunning)
-        emit changed();
-}
-
-
 /* EVENTS */
 void Display::mousePressed(qint32 x, qint32 y)
 {

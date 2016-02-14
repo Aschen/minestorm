@@ -33,7 +33,6 @@ private:
     QSharedPointer<Client>              _client;
     QSharedPointer<QVector<Element>>    _elements;
     Images              _images;
-    QPixmap             _image;
     PlayersInfos        _playersInfos;
     FpsCounter          _fpsCounter;
 
@@ -65,8 +64,6 @@ public:
 
 private:
     void                receiveObjects(const QSharedPointer<QVector<Element>> &elements);
-    void                receiveScore(quint32 playerNumber, quint32 score);
-    void                receiveLives(quint32 playerNumber, quint32 lives);
 
 signals:
     void                changed();
