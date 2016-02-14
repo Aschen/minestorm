@@ -41,7 +41,7 @@ MessageObjects::MessageObjects(const QString &msg)
     }
 }
 
-/* shipNumber angle center_x center_y x1 y1 x2 y2 x3 y3 x4 y4 */
+/* shipNumber angle shield center_x center_y x1 y1 x2 y2 x3 y3 x4 y4 */
 void MessageObjects::deserializeShip(QTextStream &stream)
 {
     quint32     shipNumber;
@@ -51,9 +51,10 @@ void MessageObjects::deserializeShip(QTextStream &stream)
     qint32      center_y;
     qint32      x;
     qint32      y;
+    qint32      shield;
 
-    /* Read shipNumber angle center_x center_y */
-    stream >> shipNumber >> angle >> center_x >> center_y;
+    /* Read shipNumber angle shield center_x center_y */
+    stream >> shipNumber >> angle >> shield >> center_x >> center_y;
 
     /* Read 4 points */
     for (quint32 i = 0; i < 4; ++i)
@@ -66,6 +67,7 @@ void MessageObjects::deserializeShip(QTextStream &stream)
     _elements->push_back(Element((Element::Type) shipNumber,
                          polygon,
                          angle,
+                         shield ? true : false,
                          QPoint(center_x, center_y)));
 }
 
@@ -86,21 +88,20 @@ void MessageObjects::deserializeShot(QTextStream &stream)
     _elements->push_back(Element(Element::SHOT, polygon));
 }
 
-/* type armed center_x center_y */
+/* type center_x center_y */
 void MessageObjects::deserializeMine(QTextStream &stream)
 {
     QPolygon    polygon(1);
     QPoint      center;
     qint32      type;
-    quint32     armed;
     qint32      center_x;
     qint32      center_y;
 
-    stream >> type >> armed >> center_x >> center_y;
+    stream >> type >> center_x >> center_y;
     center = QPoint(center_x, center_y);
     polygon[0] = center;
-    DEBUG("MessageObjects::deserializeMine() : type: " << type << " armed: " << armed << " center:" << center_x << center_y, false);
-    _elements->push_back(Element((Element::Type) type, polygon, armed, center));
+    DEBUG("MessageObjects::deserializeMine() : type: " << type << " center:" << center_x << center_y, false);
+    _elements->push_back(Element((Element::Type) type, polygon, center));
 }
 
 /* SERIALIZE *******************************************************************/
@@ -139,7 +140,7 @@ MessageObjects::MessageObjects(const EntityList &entities)
     }
 }
 
-/* shipNumber angle center_x center_y x1 y1 x2 y2 x3 y3 x4 y4*/
+/* shipNumber angle shield center_x center_y x1 y1 x2 y2 x3 y3 x4 y4*/
 void MessageObjects::serializeShip(const Ship &ship)
 {
     /* Write shipNumber */
@@ -147,6 +148,9 @@ void MessageObjects::serializeShip(const Ship &ship)
 
     /* Write angle */
     _messageString += QString::number(ship.angle()) + " ";
+
+    /* Write shield */
+    _messageString += QString::number(ship.haveShield() ? 1 : 0) + " ";
 
     /* Write center */
     _messageString += QString::number((qint32) ship.center().x()) + " ";
@@ -171,13 +175,10 @@ void MessageObjects::serializeShot(const Projectile &shot)
     }
 }
 
-/* type armed center_x center_y */
+/* type center_x center_y */
 void MessageObjects::serializeMine(const Mine &mine)
 {
 //    sprintf(buf, "%d ", (int) mine.typeMine());
-//    _messageString += buf;
-
-//    sprintf(buf, "%d ", mine.armed() ? 1 : 0);
 //    _messageString += buf;
 
 //    sprintf(buf, "%d ", (int) mine.center().x());
@@ -189,9 +190,6 @@ void MessageObjects::serializeMine(const Mine &mine)
     /* Write type */
     _messageString += QString::number(mine.typeMine()) + " ";
 
-    /* Write armed */
-    _messageString += QString::number(mine.armed() ? 1 : 0) + " ";
-
     /* Write center_x */
     _messageString += QString::number(mine.center().x()) + " ";
 
@@ -199,10 +197,10 @@ void MessageObjects::serializeMine(const Mine &mine)
     _messageString += QString::number(mine.center().y()) + " ";
 }
 
-void MessageObjects::put_nbr(char *buf, quint32 i)
-{
+//void MessageObjects::put_nbr(char *buf, quint32 i)
+//{
 
-}
+//}
 //void MessageObjects::reverseString (char *s)
 //{
 //  char t, *d = &(s[strlen (s) - 1]);

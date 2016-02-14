@@ -33,11 +33,11 @@ private:
     qreal           _angle;
     QPoint          _center;
     QPoint          _imageCenter;
-    quint32         _armed;
+    bool            _shield;
 
 public:
     // Ship
-    Element(Type type, const QPolygon &polygon, qreal angle, const QPoint &center);
+    Element(Type type, const QPolygon &polygon, qreal angle, bool shield, const QPoint &center);
     // Shot
     Element(Type type, const QPolygon &polygon);
     // Mine
@@ -52,7 +52,7 @@ public:
     Type            type() const;
     const QPolygon  &polygon() const;
     qreal           angle() const;
-    quint32         armed() const;
+    bool            shielded() const;
 
     // IDrawable interface
 public:

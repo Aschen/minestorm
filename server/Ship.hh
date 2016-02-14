@@ -58,7 +58,7 @@ public:
     quint32         score() const;
     bool            scoreChanged();
     bool            livesChanged();
-    bool            haveShield();
+    bool            haveShield() const;
     Rotation        rotation() const;
     void            setRotation(Rotation rotation);
     bool            goingUp();

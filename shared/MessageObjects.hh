@@ -39,7 +39,7 @@ private:
     void                serializeShip(const Ship &ship);
     void                serializeShot(const Projectile &shot);
     void                serializeMine(const Mine &mine);
-    void                put_nbr(char *buf, quint32 i);
+//    void                put_nbr(char *buf, quint32 i);
 };
 
 /*

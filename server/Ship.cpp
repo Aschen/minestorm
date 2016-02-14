@@ -85,7 +85,7 @@ bool Ship::livesChanged()
     return ret;
 }
 
-bool Ship::haveShield()
+bool Ship::haveShield() const
 {
     return _shield == true ;
 }
