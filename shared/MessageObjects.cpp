@@ -84,19 +84,13 @@ void MessageObjects::deserializeShot(QTextStream &stream)
     /* Read playSound */
     stream >> playSound;
 
-    /* Read 2 points */
-    for (quint32 i = 0; i < 2; ++i)
-    {
-        stream >> x >> y;
-        center_x += x;
-        center_y += y;
-        polygon[i] = QPoint(x, y);
-    }
+    stream >> x >> y;
+    polygon[0] = QPoint(x, y);
 
 
     DEBUG("MessageObjects::deserializeShot()", false);
     _elements->push_back(Element(Element::SHOT, polygon, playSound ? true : false,
-                                 QPoint(center_x / 2, center_y / 2)));
+                                 QPoint(x, y)));
 }
 
 /* type center_x center_y */
@@ -182,11 +176,8 @@ void MessageObjects::serializeShot(const Projectile &shot)
     _messageString += QString::number(shot.playSound() ? 1 : 0) + " ";
 
     /* Write 2 points */
-    for (quint32 i = 0; i < 2; ++i)
-    {
-        _messageString += QString::number((qint32)shot[i].x()) + " ";
-        _messageString += QString::number((qint32)shot[i].y()) + " ";
-    }
+    _messageString += QString::number((qint32)shot.center().x()) + " ";
+    _messageString += QString::number((qint32)shot.center().y()) + " ";
 }
 
 /* type center_x center_y */
