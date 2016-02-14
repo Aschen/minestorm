@@ -1,14 +1,14 @@
 QMAKE_CXX   =   clang++
 QMAKE_CC    =   clang
 
-QT      +=  core gui network testlib
+QT      +=  core gui network
 
 CONFIG  +=  C++11
-CONFIG  +=  testcase
+CONFIG  +=  multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = minestorm
+TARGET = multistorm
 TEMPLATE = app
 
 
