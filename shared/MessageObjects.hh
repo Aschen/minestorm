@@ -19,11 +19,13 @@
 # include "Projectile.hh"
 # include "Element.hh"
 
+# define BUF_SIZE 15
+
 class MessageObjects : public MessageBase
 {
 private:
     QSharedPointer<QVector<Element>>           _elements;
-//    char buf[sizeof(qint32)*8+1];
+    char                                       _buf[BUF_SIZE];
 
 public:
     MessageObjects(const QString &msg);
@@ -39,7 +41,8 @@ private:
     void                serializeShip(const Ship &ship);
     void                serializeShot(const Projectile &shot);
     void                serializeMine(const Mine &mine);
-//    void                put_nbr(char *buf, quint32 i);
+    char                *write_nbr(qint32 nbr);
+    quint32             nbr_length(qint32 nbr);
 };
 
 /*

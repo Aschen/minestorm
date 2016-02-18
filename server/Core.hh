@@ -9,6 +9,7 @@
 # include <QPolygon>
 # include <QString>
 # include <QTextStream>
+# include <QApplication>
 
 # include <algorithm>
 
@@ -38,6 +39,7 @@ private:
     Players             _players;
     QList<qint32>       _spectators;
     EntitiesHash        _entities;
+    qint32              _stop;
 
 public:
     Core(qint32 cps);

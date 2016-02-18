@@ -113,16 +113,16 @@ MessageObjects::MessageObjects(const EntityList &entities)
       _elements(nullptr)
 {
     /* Write message type */
-    _messageString = QString::number((qint32) _type) + " ";
+    _messageString = write_nbr((qint32) _type);
 
     /* Write total objects count */
-    _messageString += QString::number(entities.count()) + " ";
+    _messageString += write_nbr(entities.count());
 
     /* Write each object */
     for (const QSharedPointer<Entity> &entity : entities)
     {
         /* Write object type */
-        _messageString += QString::number((qint32) entity->type()) + " ";
+        _messageString += write_nbr((qint32) entity->type());
 
         switch (entity->type())
         {
@@ -147,23 +147,23 @@ MessageObjects::MessageObjects(const EntityList &entities)
 void MessageObjects::serializeShip(const Ship &ship)
 {
     /* Write shipNumber */
-    _messageString += QString::number(ship.shipNumber()) + " ";
+    _messageString += write_nbr(ship.shipNumber());
 
     /* Write angle */
-    _messageString += QString::number(ship.angle()) + " ";
+    _messageString += write_nbr(ship.angle());
 
     /* Write shield */
-    _messageString += QString::number(ship.haveShield() ? 1 : 0) + " ";
+    _messageString += write_nbr(ship.haveShield() ? 1 : 0);
 
     /* Write center */
-    _messageString += QString::number((qint32) ship.center().x()) + " ";
-    _messageString += QString::number((qint32) ship.center().y()) + " ";
+    _messageString += write_nbr((qint32) ship.center().x());
+    _messageString += write_nbr((qint32) ship.center().y());
 
     /* Write 4 points */
     for (quint32 i = 0; i < 4; ++i)
     {
-        _messageString += QString::number((qint32) ship[i].x()) + " ";
-        _messageString += QString::number((qint32) ship[i].y()) + " ";
+        _messageString += write_nbr((qint32) ship[i].x());
+        _messageString += write_nbr((qint32) ship[i].y());
     }
 }
 
@@ -181,56 +181,55 @@ void MessageObjects::serializeShot(const Projectile &shot)
 /* type center_x center_y */
 void MessageObjects::serializeMine(const Mine &mine)
 {
-//    sprintf(buf, "%d ", (int) mine.typeMine());
-//    _messageString += buf;
-
-//    sprintf(buf, "%d ", (int) mine.center().x());
-//    _messageString += buf;
-
-//    sprintf(buf, "%d ", (int) mine.center().y());
-//    _messageString += buf;
-
     /* Write type */
-    _messageString += QString::number(mine.typeMine()) + " ";
+    _messageString += write_nbr((qint32) mine.typeMine());
 
     /* Write center_x */
-    _messageString += QString::number(mine.center().x()) + " ";
+    _messageString += write_nbr(mine.center ().x ());
 
     /* Write center_y */
-    _messageString += QString::number(mine.center().y()) + " ";
+    _messageString += write_nbr(mine.center ().y ());
 }
 
-//void MessageObjects::put_nbr(char *buf, quint32 i)
-//{
+char *MessageObjects::write_nbr(qint32 nbr)
+{
+    qint32      i = nbr_length(nbr);
 
-//}
-//void MessageObjects::reverseString (char *s)
-//{
-//  char t, *d = &(s[strlen (s) - 1]);
-//  while (d > s) {
-//    t = *s;
-//    *s++ = *d;
-//    *d-- = t;
-//  }
-//}
+    if (nbr < 0)
+      {
+        _buf[0] = '-';
+        i += 1;
+        nbr = nbr * -1;
+      }
 
+    quint32     j = i + 1;
 
-//void MessageObjects::write_nbr(char *str, qint32 nbr)
-//{
-//    int     i = 0;
+    while (i > 0)
+      {
+        _buf[--i] = nbr % 10 + '0';
+        nbr = nbr / 10;
+      }
 
-//    while (nbr)
-//      {
-//        str[i] = nbr % 10 + '0';
-//        nbr = nbr / 10;
-//        i++;
-//      }
-//    str[i] = ' ';
-//    while (str[++i])
-//    {
-//        str[i] = '0';
-//    }
-//}
+    _buf[j - 1] = ' ';
+    _buf[j] = '\0';
+
+    return _buf;
+}
+quint32   MessageObjects::nbr_length(qint32 nbr)
+{
+  if (!nbr)
+    return 1;
+
+  quint32 i = 0;
+
+  while (nbr)
+    {
+      nbr = nbr / 10;
+      i++;
+    }
+
+  return i;
+}
 
 
 MessageObjects::~MessageObjects()
