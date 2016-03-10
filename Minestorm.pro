@@ -1,6 +1,6 @@
 QT      +=  multimedia
-QMAKE_CXX   =   clang++
-QMAKE_CC    =   clang
+QMAKE_CXX   =   g++
+QMAKE_CC    =   gcc
 
 QT      +=  core gui network multimedia
 
@@ -77,4 +77,4 @@ FORMS    +=
 
 INCLUDEPATH += $$PWD/shared
 INCLUDEPATH += $$PWD/server
-INCLUDEPATH += $$PWD/client 
+INCLUDEPATH += $$PWD/client

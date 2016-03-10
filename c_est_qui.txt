@@ -1,2 +1,0 @@
-#include <stdio.h>
-int main(){puts("Clément Mabileau\nJulien Catteau\nArnaud Passelaigue\nAdrien Maret");}
