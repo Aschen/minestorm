@@ -4,7 +4,7 @@ Multistorm is a revisited version of the game [Minestorm](https://www.wikiwand.c
 
 You can play with 4 players maximum, thanks to multiplayer mode :-)
 
-This program is realised with in C++11 with QT 5.5.
+This program is realised in C++11 with QT 5.5.
 
 ## How to
 
