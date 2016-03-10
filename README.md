@@ -12,6 +12,7 @@ This program is realised in C++11 with QT 5.5.
   - Compile : ```qmake -makefile && make```
   - Launch a server : ```./multistorm srv```
   - Launch a client : ```./multistorm cli```
+  - Enter host address and click ```Join game```
   - Use ```arrow key``` to move, ```space``` to shoot and ```escape``` to quit
 
 ## Features
