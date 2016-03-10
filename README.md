@@ -28,4 +28,4 @@ This program is realised in C++11 with QT 5.5.
 
 ## Screenshot
 
-![alt text](https://github.com/Aschen/Minestorm/raw/master/doc/multistorm.jpg)
+![alt text](doc/screenshot.jpg)
