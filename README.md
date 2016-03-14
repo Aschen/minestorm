@@ -20,6 +20,7 @@ This program is realised in C++11 with QT 5.5.
   - Random mines direction
   - Shot limitation
   - Circular map
+  - Inertial movement
   - 4 players max
   - Spectator mode
   - Nice graphics and sound
